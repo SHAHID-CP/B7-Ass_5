@@ -5,11 +5,10 @@ import { usePathname } from 'next/navigation';
 import { 
   Home, 
   Building, 
-  Users, 
-  ClipboardList, 
   PlusCircle, 
   Shield, 
-  LogOut 
+  LogOut,
+  Inbox
 } from 'lucide-react';
 
 export type UserRole = 'TENANT' | 'LANDLORD' | 'ADMIN';
@@ -21,17 +20,15 @@ interface SidebarProps {
 
 const navItemsByRole = {
   TENANT: [
-    { label: 'My Rentals', href: '/dashboard', icon: ClipboardList },
-    { label: 'Browse Properties', href: '/properties', icon: Home },
+    { label: 'My Rentals & Payments', href: '/dashboard/tenant', icon: Home },
   ],
   LANDLORD: [
-    { label: 'Overview', href: '/dashboard', icon: Building },
-    { label: 'Add Property', href: '/dashboard/properties/new', icon: PlusCircle },
+    { label: 'My Properties', href: '/dashboard/landlord', icon: Building },
+    { label: 'Add Property', href: '/dashboard/landlord/properties/new', icon: PlusCircle },
+    { label: 'Manage Requests', href: '/dashboard/landlord/requests', icon: Inbox },
   ],
   ADMIN: [
-    { label: 'System Overview', href: '/dashboard', icon: Shield },
-    { label: 'Manage Users', href: '/dashboard/users', icon: Users },
-    { label: 'All Properties', href: '/dashboard/properties', icon: Home },
+    { label: 'User Management', href: '/dashboard/admin', icon: Shield },
   ],
 };
 
