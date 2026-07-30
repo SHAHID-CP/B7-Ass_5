@@ -3,13 +3,11 @@
 import { useState } from 'react';
 import Sidebar, { UserRole } from './_components/Sidebar';
 
-
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  // Demo Context/State (Real app a AuthProvider context implementation use korben)
   const [currentRole, setCurrentRole] = useState<UserRole>('TENANT');
 
   return (
@@ -17,9 +15,8 @@ export default function DashboardLayout({
       <Sidebar role={currentRole} userName="Demo User" />
       
       <main className="flex-1 overflow-y-auto">
-        {/* Dynamic Role Switcher Bar (For testing purposes) */}
         <div className="bg-white border-b border-gray-200 px-6 py-2 flex items-center justify-between text-xs">
-          <span className="text-gray-500">Switch role view for testing:</span>
+          <span className="text-gray-500 font-medium">Switch Role View (For Testing):</span>
           <div className="flex gap-2">
             {(['TENANT', 'LANDLORD', 'ADMIN'] as UserRole[]).map((r) => (
               <button
