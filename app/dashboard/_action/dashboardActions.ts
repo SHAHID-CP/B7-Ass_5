@@ -1,95 +1,123 @@
-
 'use server';
 
 import { cookies } from 'next/headers';
+import { revalidatePath } from 'next/cache';
 
-const BASE_URL = process.env.BACKEND_API_URL;
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
-async function customFetch<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
+async function fetchWithAuth(endpoint: string, options: RequestInit = {}) {
   const cookieStore = await cookies();
-  
-
-  const cookieHeader = cookieStore.toString(); 
+  const token = cookieStore.get('accessToken')?.value;
 
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
-    ...(cookieHeader ? { Cookie: cookieHeader } : {}),
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
     ...(options.headers as Record<string, string>),
   };
 
-  const response = await fetch(`${BASE_URL}${endpoint}`, {
+  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
     ...options,
     headers,
-    cache: 'no-store',
   });
+
+  const data = await response.json();
 
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'API Call Failed');
+    throw new Error(data.message || 'API request failed');
   }
 
-  return response.json();
+  return data;
 }
 
-export async function fetchDashboardData(role: 'TENANT' | 'LANDLORD' | 'ADMIN') {
+// ---------------- TENANT ACTIONS ----------------
+export async function getTenantRentals() {
   try {
-    if (role === 'TENANT') {
-      const history = await customFetch<{ rentals: any[] }>('/tenants/my-rentals');
-      return { rentals: history.rentals || [] };
-    }
-
-    if (role === 'LANDLORD') {
-      const [properties, requests] = await Promise.all([
-        customFetch<any[]>('/landlords/my-properties'),
-        customFetch<any[]>('/landlords/rental-requests'),
-      ]);
-      return { properties: properties || [], requests: requests || [] };
-    }
-
-    if (role === 'ADMIN') {
-      const [users, properties, requests] = await Promise.all([
-        customFetch<any[]>('/admin/users'),
-        customFetch<any[]>('/admin/properties'),
-        customFetch<any[]>('/admin/rental-requests'),
-      ]);
-      return {
-        users: users || [],
-        properties: properties || [],
-        requests: requests || [],
-      };
-    }
-  } catch (err) {
-    console.error('Error in fetchDashboardData:', err);
-    throw err;
+    return await fetchWithAuth('/rentals');
+  } catch (err: any) {
+    return { error: err.message };
   }
 }
 
-
-export async function processPayment(rentalId: string) {
-  return await customFetch<{ url: string }>('/payments/create-checkout-session', {
-    method: 'POST',
-    body: JSON.stringify({ rentalId }),
-  });
+export async function getTenantPayments() {
+  try {
+    return await fetchWithAuth('/payments');
+  } catch (err: any) {
+    return { error: err.message };
+  }
 }
 
-export async function submitReviewAction(data: { propertyId: string; rating: number; comment: string }) {
-  return await customFetch<{ success: boolean }>('/reviews', {
-    method: 'POST',
-    body: JSON.stringify(data),
-  });
+export async function createPaymentSession(requestId: string) {
+  try {
+    return await fetchWithAuth('/payments/create', {
+      method: 'POST',
+      body: JSON.stringify({ requestId }),
+    });
+  } catch (err: any) {
+    return { error: err.message };
+  }
 }
 
-
-export async function updateRentalStatusAction(requestId: string, status: 'APPROVED' | 'REJECTED') {
-  return await customFetch<{ success: boolean }>(`/rental-requests/${requestId}/status`, {
-    method: 'PATCH',
-    body: JSON.stringify({ status }),
-  });
+// ---------------- LANDLORD ACTIONS ----------------
+export async function getLandlordProperties() {
+  try {
+    return await fetchWithAuth('/landlord/properties');
+  } catch (err: any) {
+    return { error: err.message };
+  }
 }
 
+export async function createProperty(data: any) {
+  try {
+    const res = await fetchWithAuth('/landlord/properties', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+    revalidatePath('/dashboard/landlord');
+    return res;
+  } catch (err: any) {
+    return { error: err.message };
+  }
+}
 
-export async function deletePropertyAction(propertyId: string) {
-  return await customFetch<{ success: boolean }>(`/admin/properties/${propertyId}`, {
-    method: 'DELETE',
-  });
+export async function getLandlordRequests() {
+  try {
+    return await fetchWithAuth('/landlord/requests');
+  } catch (err: any) {
+    return { error: err.message };
+  }
+}
+
+export async function updateLandlordRequestStatus(requestId: string, status: 'APPROVED' | 'REJECTED') {
+  try {
+    const res = await fetchWithAuth(`/landlord/requests/${requestId}`, {
+      method: 'PATCH',
+      body: JSON.stringify({ status }),
+    });
+    revalidatePath('/dashboard/landlord/requests');
+    return res;
+  } catch (err: any) {
+    return { error: err.message };
+  }
+}
+
+// ---------------- ADMIN ACTIONS ----------------
+export async function getAdminUsers() {
+  try {
+    return await fetchWithAuth('/admin/users');
+  } catch (err: any) {
+    return { error: err.message };
+  }
+}
+
+export async function updateAdminUserRole(userId: string, role: string) {
+  try {
+    const res = await fetchWithAuth(`/admin/users/${userId}`, {
+      method: 'PATCH',
+      body: JSON.stringify({ role }),
+    });
+    revalidatePath('/dashboard/admin');
+    return res;
+  } catch (err: any) {
+    return { error: err.message };
+  }
 }
