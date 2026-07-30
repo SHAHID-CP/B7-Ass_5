@@ -6,7 +6,6 @@ export const getMe = async () => {
     const cookieStore = await cookies();
 
     const accessToken = cookieStore.get("accessToken")?.value || null;
-
     if(!accessToken){
 
         return {
@@ -14,21 +13,15 @@ export const getMe = async () => {
             message : "User not logged in!"
         }
     }
-
     const res = await fetch(`${process.env.BACKEND_API_URL}/api/auth/me`, {
         headers : {
             Cookie : `accessToken=${accessToken}`
         },
 
-        cache : "force-cache",
-        next : {
-            revalidate : 60 * 60 * 24, // 1day
-            tags : ["my-profile"]
-        }
+        cache : "no-store",
     });
-
-    const result = res.json();
-
+     
+    const result =await res.json();
 
     return result
 }
