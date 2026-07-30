@@ -3,7 +3,7 @@
 import { cookies } from 'next/headers';
 import { revalidatePath } from 'next/cache';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_API_URL;
 
 async function fetchWithAuth(endpoint: string, options: RequestInit = {}) {
   const cookieStore = await cookies();
@@ -15,7 +15,7 @@ async function fetchWithAuth(endpoint: string, options: RequestInit = {}) {
     ...(options.headers as Record<string, string>),
   };
 
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+  const response = await fetch(`${API_BASE_URL}${"/api"}${endpoint}`, {
     ...options,
     headers,
   });
@@ -109,11 +109,11 @@ export async function getAdminUsers() {
   }
 }
 
-export async function updateAdminUserRole(userId: string, role: string) {
+export async function updateAdminUserStatus(userId: string, status: 'ACTIVE' | 'BANNED' | 'SUSPENDED') {
   try {
     const res = await fetchWithAuth(`/admin/users/${userId}`, {
       method: 'PATCH',
-      body: JSON.stringify({ role }),
+      body: JSON.stringify({ status }),
     });
     revalidatePath('/dashboard/admin');
     return res;
