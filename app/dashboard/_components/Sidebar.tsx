@@ -8,7 +8,10 @@ import {
   PlusCircle, 
   Shield, 
   LogOut,
-  Inbox
+  Inbox,
+  Layers ,
+  Building2,
+  FileText
 } from 'lucide-react';
 
 export type UserRole = 'TENANT' | 'LANDLORD' | 'ADMIN';
@@ -29,6 +32,9 @@ const navItemsByRole = {
   ],
   ADMIN: [
     { label: 'User Management', href: '/dashboard/admin', icon: Shield },
+    { label: 'Manage Categories', href: '/dashboard/admin/categories', icon: Layers },
+    { label: 'All Properties', href: '/dashboard/admin/properties', icon: Building2 },
+    { label: 'All Rentals', href: '/dashboard/admin/rentals', icon: FileText },
   ],
 };
 

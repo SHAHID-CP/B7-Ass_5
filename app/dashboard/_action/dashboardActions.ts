@@ -5,7 +5,7 @@ import { revalidatePath } from 'next/cache';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_API_URL;
 
-async function fetchWithAuth(endpoint: string, options: RequestInit = {}) {
+export async function fetchWithAuth(endpoint: string, options: RequestInit = {}) {
   const cookieStore = await cookies();
   const token = cookieStore.get('accessToken')?.value;
 
