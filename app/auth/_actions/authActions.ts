@@ -88,7 +88,6 @@ export const loginAction = async (redirectTo: string, prevState: RegisterState, 
         },
         body: JSON.stringify(payload)
     });
-    // console.log(res.headers.get("set-cookie"));
 
     const result = await res.json();
 

@@ -38,7 +38,6 @@ export const useUserStore = create<UserState>((set) => ({
         set({ user: null, isLoading: false });
       }
     } catch (error) {
-      console.error("Failed to fetch user:", error);
       set({ user: null, isLoading: false });
     }
   },
