@@ -2,7 +2,6 @@
 
 import { fetchWithAuth } from "@/app/dashboard/_action/dashboardActions";
 
-// ১. Fetch All Properties (with Query Parameters)
 export async function getProperties(params?: {
   location?: string;
   minPrice?: string | number;
@@ -20,11 +19,9 @@ export async function getProperties(params?: {
     if (params?.page) query.append('page', params.page.toString());
     if (params?.limit) query.append('limit', params.limit.toString());
 
-    // const url = `${BASE_URL}/api/properties?${query.toString()}`;
-    // const res = await fetch(url, { cache: 'no-store' });
 
     const res = await fetch(`${process.env.BACKEND_API_URL}/api/properties?${query.toString()}`, {
-      cache: "no-store", // Realtime search results
+      cache: "no-store", 
     });
     if (!res.ok) return [];
     const data = await res.json();
@@ -35,13 +32,12 @@ export async function getProperties(params?: {
   }
 }
 
-// ২. Fetch Single Property Details by ID
+
 export async function getPropertyById(id: string) {
   try {
-    // const res = await fetch(`${BASE_URL}/api/properties/${id}`, { cache: 'no-store' });
 
     const res = await fetch(`${process.env.BACKEND_API_URL}/api/properties/${id}`, {
-      cache: "no-store", // Realtime search results
+      cache: "no-store",
     });
     if (!res.ok) return [];
 
@@ -52,13 +48,12 @@ export async function getPropertyById(id: string) {
   }
 }
 
-// ৩. Fetch All Categories
+
 export async function getCategories() {
   try {
-    // const res = await fetch(`${BASE_URL}/api/categories`, { cache: 'no-store' });
 
     const res = await fetch(`${process.env.BACKEND_API_URL}/api/categories`, {
-      next: { revalidate: 3600 }, // 1 hour caching
+      next: { revalidate: 3600 },
     });
     if (!res.ok) return [];
     const data = await res.json();

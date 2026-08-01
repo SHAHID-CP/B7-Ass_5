@@ -146,7 +146,7 @@ export default function AdminPage() {
         </button>
       </div>
 
-      {/* 📊 OVERVIEW METRICS CARDS */}
+
       <section className="space-y-3">
         <h2 className="text-sm font-semibold text-gray-600 uppercase tracking-wider">
           Overview Metrics
@@ -227,7 +227,7 @@ export default function AdminPage() {
         )}
       </section>
 
-      {/* 👥 USER MANAGEMENT SECTION */}
+
       <section className="space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <h2 className="text-sm font-semibold text-gray-600 uppercase tracking-wider">
@@ -342,7 +342,7 @@ export default function AdminPage() {
             </table>
           </div>
 
-          {/* 📄 PAGINATION CONTROLS */}
+
           <div className="flex items-center justify-between p-3 border-t bg-gray-50 text-xs">
             <span className="text-gray-500">
               Page <strong>{pagination.page}</strong> of <strong>{pagination.totalPages}</strong>

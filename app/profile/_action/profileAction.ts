@@ -8,7 +8,7 @@ export async function getCurrentUserProfile() {
   }
 }
 
-// ২. Update Current User Profile
+
 export async function updateUserProfile(data: {
   name?: string;
   phoneNumber?: string;

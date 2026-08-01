@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { fetchWithAuth } from '../../_action/dashboardActions';
 
-// ১. Fetch All Categories
+
 export async function getCategories() {
   try {
     const res = await fetchWithAuth('/categories', { method: 'GET' });
@@ -13,7 +13,7 @@ export async function getCategories() {
   }
 }
 
-// ২. Create Category
+
 export async function createCategory(name: string) {
   try {
     const res = await fetchWithAuth('/categories', {
@@ -27,7 +27,7 @@ export async function createCategory(name: string) {
   }
 }
 
-// ৩. Delete Category
+
 export async function deleteCategory(id: string) {
   try {
     const res = await fetchWithAuth(`/categories/${id}`, {

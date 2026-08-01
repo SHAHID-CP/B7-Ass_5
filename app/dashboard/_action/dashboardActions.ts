@@ -29,7 +29,7 @@ export async function fetchWithAuth(endpoint: string, options: RequestInit = {})
   return data;
 }
 
-// ---------------- TENANT ACTIONS ----------------
+
 export async function getTenantRentals() {
   try {
     return await fetchWithAuth('/rentals');
@@ -57,7 +57,7 @@ export async function createPaymentSession(requestId: string) {
   }
 }
 
-// ---------------- LANDLORD ACTIONS ----------------
+
 export async function getLandlordProperties() {
   try {
     return await fetchWithAuth('/landlord/properties');
@@ -100,14 +100,6 @@ export async function updateLandlordRequestStatus(requestId: string, status: 'AP
   }
 }
 
-// ---------------- ADMIN ACTIONS ----------------
-// export async function getAdminUsers() {
-//   try {
-//     return await fetchWithAuth('/admin/users');
-//   } catch (err: any) {
-//     return { error: err.message };
-//   }
-// }
 
 export async function updateAdminUserStatus(userId: string, status: 'ACTIVE' | 'BANNED' | 'SUSPENDED') {
   try {

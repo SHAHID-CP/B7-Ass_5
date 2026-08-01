@@ -2,7 +2,6 @@
 
 import { fetchWithAuth } from "../../_action/dashboardActions";
 
-// ১. Fetch All Properties for Admin
 export async function getAllPropertiesAdmin() {
   try {
     const res = await fetchWithAuth('/admin/properties', { method: 'GET' });
@@ -12,7 +11,6 @@ export async function getAllPropertiesAdmin() {
   }
 }
 
-// ২. Fetch All Rentals for Admin
 export async function getAllRentalsAdmin() {
   try {
     const res = await fetchWithAuth('/admin/rentals', { method: 'GET' });
@@ -22,7 +20,7 @@ export async function getAllRentalsAdmin() {
   }
 }
 
-// 1. Fetch Admin Overview Stats
+
 export async function getAdminStats() {
   try {
     return await fetchWithAuth('/admin/stats');
@@ -31,7 +29,7 @@ export async function getAdminStats() {
   }
 }
 
-// 2. Fetch Admin Users with Search, Filter & Pagination
+
 export async function getAdminUsers(params?: {
   page?: number;
   limit?: number;

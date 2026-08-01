@@ -57,14 +57,14 @@ export default function ProfilePage() {
     if (res?.success) {
       alert('Profile updated successfully!');
       setIsModalOpen(false);
-      await loadProfile(); // Refresh Data
+      await loadProfile(); 
     } else {
       alert(res?.error || 'Failed to update profile');
     }
     setUpdating(false);
   };
 
-  // Default Image & Avatar Fallback
+
   const defaultImage = `https://ui-avatars.com/api/?name=${encodeURIComponent(
     profile?.name || 'User'
   )}&background=0D8ABC&color=fff&size=128`;
@@ -98,7 +98,6 @@ export default function ProfilePage() {
         {/* Profile Info Area */}
         <div className="px-4 sm:px-6 pb-6 relative">
           
-          {/* 1. Avatar Image Div (ব্যানারের সাথে ওভারল্যাপ করবে) */}
           <div className="flex justify-center sm:justify-start -mt-12 sm:-mt-16 mb-3">
             <img
               src={profile?.profileImage || defaultImage}
@@ -110,7 +109,6 @@ export default function ProfilePage() {
             />
           </div>
 
-          {/* 2. Avatar-এর নিচের Div (যেখানে ডানপাশে Name, Role ও Status থাকবে) */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-4 mb-4">
             <div className="text-center sm:text-left">
               <h2 className="text-xl sm:text-2xl font-bold text-slate-900 truncate">
@@ -118,7 +116,6 @@ export default function ProfilePage() {
               </h2>
             </div>
 
-            {/* Badges Div (ডানপাশে এলাইনড) */}
             <div className="flex flex-wrap items-center justify-center sm:justify-end gap-2">
               <span className="text-[11px] bg-blue-50 text-blue-700 px-2.5 py-1 rounded-full font-mono font-semibold uppercase">
                 {profile?.role}
@@ -186,7 +183,7 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      {/* 📝 EDIT PROFILE MODAL */}
+
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
           <div className="bg-white rounded-2xl w-full max-w-md overflow-hidden shadow-xl animate-in fade-in zoom-in-95 duration-200">

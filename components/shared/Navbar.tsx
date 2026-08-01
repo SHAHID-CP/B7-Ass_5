@@ -14,7 +14,6 @@ import {
 } from "lucide-react";
 import { logout } from "@/service/logout";
 
-// Types
 interface NavbarProps {
   user?: {
     success: boolean;
@@ -26,7 +25,7 @@ interface NavbarProps {
   };
 }
 
-// Navigation items configuration
+
 const navItems = [
   { label: "Home", href: "/" },
   { label: "Properties", href: "/properties" },
@@ -40,7 +39,7 @@ export function Navbar({ user }: NavbarProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Close dropdown when clicking outside
+
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {

@@ -1,12 +1,20 @@
 "use server"
 
+import { fetchWithAuth } from "@/app/dashboard/_action/dashboardActions";
 import { cookies } from "next/headers";
-// import { redirect } from "next/navigation";
 
 export const logout = async () => {
     const cookieStore = await cookies();
     
-    cookieStore.delete("accessToken");
-    cookieStore.delete("refreshToken");
+    try {
+        await fetchWithAuth('/auth/logout', {
+          method: 'POST'
+        });
+      } catch (err: any) {
+        return { error: err.message || 'Failed to create category' };
+      }finally {
+        cookieStore.delete("accessToken");
+        cookieStore.delete("refreshToken");
+      }
 
 }

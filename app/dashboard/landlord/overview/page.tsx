@@ -93,7 +93,6 @@ export default function LandlordDashboardOverview() {
         </Link>
       </div>
 
-      {/* 📊 3 Summary Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {/* Card 1: Total Properties */}
         <div className="bg-white border rounded-2xl p-5 shadow-sm hover:shadow-md transition space-y-3">
@@ -144,7 +143,6 @@ export default function LandlordDashboardOverview() {
         </div>
       </div>
 
-      {/* 📩 Recent Rental Requests Preview Table */}
       <div className="bg-white border rounded-2xl p-5 space-y-4 shadow-sm">
         <div className="flex items-center justify-between">
           <h3 className="font-bold text-gray-800 text-sm flex items-center gap-2">

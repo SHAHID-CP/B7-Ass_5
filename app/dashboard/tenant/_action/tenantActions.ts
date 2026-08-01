@@ -1,14 +1,10 @@
 'use server';
-
-import { cookies } from 'next/headers';
 import { revalidatePath } from 'next/cache';
 import { fetchWithAuth } from '../../_action/dashboardActions';
 
 
 
-// ---------------- TENANT ACTIONS ----------------
 
-// Fetch Rental Requests
 export async function getTenantRentals() {
   try {
     return await fetchWithAuth('/rentals');
@@ -17,7 +13,7 @@ export async function getTenantRentals() {
   }
 }
 
-// Fetch Payment History
+
 export async function getTenantPayments() {
   try {
     return await fetchWithAuth('/payments');
@@ -26,7 +22,7 @@ export async function getTenantPayments() {
   }
 }
 
-// Create Payment Session
+
 export async function createPaymentSession(rentalRequestId: string) {
   try {
     return await fetchWithAuth('/payments/create', {
@@ -38,7 +34,7 @@ export async function createPaymentSession(rentalRequestId: string) {
   }
 }
 
-// Submit Property Review
+
 export async function submitPropertyReview(payload: { propertyId: string; rating: number; comment: string }) {
   try {
     const res = await fetchWithAuth('/reviews', {
