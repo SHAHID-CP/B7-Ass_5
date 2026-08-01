@@ -11,7 +11,7 @@ export default function MyPropertiesPage() {
   const [loading, setLoading] = useState(true);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
-  // Modal State for Editing
+  
   const [editItem, setEditItem] = useState<any | null>(null);
   const [updating, setUpdating] = useState(false);
 
@@ -26,7 +26,6 @@ export default function MyPropertiesPage() {
     loadData();
   }, []);
 
-
   // Handle Delete
   const handleDelete = async (id: string, title: string) => {
     if (!confirm(`Are you sure you want to delete "${title}"?`)) return;
@@ -40,7 +39,7 @@ export default function MyPropertiesPage() {
     setDeletingId(null);
   };
 
-  // Handle Update Form Submit
+ 
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editItem) return;
@@ -53,6 +52,7 @@ export default function MyPropertiesPage() {
       price: Number(editItem.price),
       categoryId: editItem.categoryId,
       isAvailable: editItem.isAvailable,
+      image: editItem.image,
     });
 
     if (res?.error) {
@@ -81,7 +81,7 @@ export default function MyPropertiesPage() {
           <table className="w-full text-left text-xs text-gray-600 min-w-[650px]">
             <thead className="bg-gray-50 uppercase border-b text-gray-700 font-semibold">
               <tr>
-                <th className="p-3">Title</th>
+                <th className="p-3">Property</th>
                 <th className="p-3">Location</th>
                 <th className="p-3">Price</th>
                 <th className="p-3">Availability</th>
@@ -99,7 +99,16 @@ export default function MyPropertiesPage() {
               ) : (
                 properties.map((item) => (
                   <tr key={item.id} className="hover:bg-gray-50 transition">
-                    <td className="p-3 font-semibold text-gray-900">{item.title}</td>
+                    <td className="p-3">
+                      <div className="flex items-center gap-3">
+                        <img
+                          src={item.image || 'https://via.placeholder.com/150'}
+                          alt={item.title}
+                          className="w-10 h-10 object-cover rounded-md border"
+                        />
+                        <span className="font-semibold text-gray-900 line-clamp-1">{item.title}</span>
+                      </div>
+                    </td>
                     <td className="p-3 text-gray-600">{item.location}</td>
                     <td className="p-3 font-semibold text-gray-900">৳{item.price}</td>
                     <td className="p-3">
@@ -120,7 +129,7 @@ export default function MyPropertiesPage() {
                     </td>
                     <td className="p-3 text-right space-x-2">
                       <button
-                        onClick={() => setEditItem(item)}
+                        onClick={() => setEditItem({ ...item, image: item.image || item.images })}
                         className="p-1.5 text-blue-600 hover:bg-blue-50 rounded transition"
                         title="Edit Property"
                       >
@@ -149,8 +158,8 @@ export default function MyPropertiesPage() {
 
       {/* Edit Property Modal */}
       {editItem && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg p-6 max-w-lg w-full space-y-4 relative shadow-lg">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 overflow-y-auto">
+          <div className="bg-white rounded-lg p-6 max-w-lg w-full space-y-4 relative shadow-lg my-8">
             <div className="flex items-center justify-between border-b pb-3">
               <h2 className="text-base font-bold text-gray-800">Edit Property</h2>
               <button onClick={() => setEditItem(null)} className="text-gray-400 hover:text-gray-600">
@@ -159,17 +168,47 @@ export default function MyPropertiesPage() {
             </div>
 
             <form onSubmit={handleUpdate} className="space-y-3">
+              {/* Title */}
               <div>
                 <label className="block text-xs font-semibold text-gray-700 mb-1">Title</label>
                 <input
                   type="text"
                   value={editItem.title}
                   onChange={(e) => setEditItem({ ...editItem, title: e.target.value })}
-                  className="w-full border rounded p-2 text-sm outline-none"
+                  className="w-full border rounded p-2 text-sm outline-none focus:ring-1 focus:ring-blue-500"
                   required
                 />
               </div>
 
+              {/* Image URL Input & Preview */}
+              <div>
+                <label className="block text-xs font-semibold text-gray-700 mb-1">
+                  Image URL
+                </label>
+                <div className="space-y-2">
+                  <input
+                    type="url"
+                    value={editItem.image || ''}
+                    onChange={(e) => setEditItem({ ...editItem, image: e.target.value })}
+                    className="w-full border rounded p-2 text-sm outline-none focus:ring-1 focus:ring-blue-500"
+                    placeholder="https://example.com/image.png"
+                    required
+                  />
+                  {editItem.image && (
+                    <div className="flex items-center gap-2">
+                      <img
+                        src={editItem.image}
+                        alt="Preview"
+                        className="w-12 h-12 object-cover rounded border"
+                        onError={(e) => ((e.target as HTMLElement).style.display = 'none')}
+                      />
+                      <span className="text-[10px] text-gray-400">Current Image Preview</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Location & Price */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-semibold text-gray-700 mb-1">Location</label>
@@ -177,7 +216,7 @@ export default function MyPropertiesPage() {
                     type="text"
                     value={editItem.location}
                     onChange={(e) => setEditItem({ ...editItem, location: e.target.value })}
-                    className="w-full border rounded p-2 text-sm outline-none"
+                    className="w-full border rounded p-2 text-sm outline-none focus:ring-1 focus:ring-blue-500"
                     required
                   />
                 </div>
@@ -187,18 +226,19 @@ export default function MyPropertiesPage() {
                     type="number"
                     value={editItem.price}
                     onChange={(e) => setEditItem({ ...editItem, price: e.target.value })}
-                    className="w-full border rounded p-2 text-sm outline-none"
+                    className="w-full border rounded p-2 text-sm outline-none focus:ring-1 focus:ring-blue-500"
                     required
                   />
                 </div>
               </div>
 
+              {/* Category Dropdown */}
               <div>
                 <label className="block text-xs font-semibold text-gray-700 mb-1">Category</label>
                 <select
                   value={editItem.categoryId}
                   onChange={(e) => setEditItem({ ...editItem, categoryId: e.target.value })}
-                  className="w-full border rounded p-2 text-sm outline-none bg-white"
+                  className="w-full border rounded p-2 text-sm outline-none bg-white focus:ring-1 focus:ring-blue-500"
                 >
                   {categories.map((c) => (
                     <option key={c.id} value={c.id}>
@@ -208,17 +248,19 @@ export default function MyPropertiesPage() {
                 </select>
               </div>
 
+              {/* Description */}
               <div>
                 <label className="block text-xs font-semibold text-gray-700 mb-1">Description</label>
                 <textarea
                   rows={3}
                   value={editItem.description}
                   onChange={(e) => setEditItem({ ...editItem, description: e.target.value })}
-                  className="w-full border rounded p-2 text-sm outline-none"
+                  className="w-full border rounded p-2 text-sm outline-none focus:ring-1 focus:ring-blue-500"
                   required
                 />
               </div>
 
+              {/* Availability Toggle */}
               <div className="flex items-center gap-2 pt-1">
                 <input
                   type="checkbox"
@@ -227,23 +269,24 @@ export default function MyPropertiesPage() {
                   onChange={(e) => setEditItem({ ...editItem, isAvailable: e.target.checked })}
                   className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-4 w-4"
                 />
-                <label htmlFor="isAvailable" className="text-xs font-semibold text-gray-700">
+                <label htmlFor="isAvailable" className="text-xs font-semibold text-gray-700 cursor-pointer">
                   Is Available for Rent
                 </label>
               </div>
 
+              {/* Form Buttons */}
               <div className="flex justify-end gap-2 border-t pt-3">
                 <button
                   type="button"
                   onClick={() => setEditItem(null)}
-                  className="px-4 py-2 text-xs font-medium text-gray-600 hover:bg-gray-100 rounded"
+                  className="px-4 py-2 text-xs font-medium text-gray-600 hover:bg-gray-100 rounded transition"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={updating}
-                  className="px-4 py-2 text-xs font-medium bg-blue-600 text-white rounded hover:bg-blue-700 flex items-center gap-1"
+                  className="px-4 py-2 text-xs font-medium bg-blue-600 text-white rounded hover:bg-blue-700 flex items-center gap-1 transition disabled:opacity-50"
                 >
                   {updating && <Loader2 className="w-3 h-3 animate-spin" />} Save Changes
                 </button>

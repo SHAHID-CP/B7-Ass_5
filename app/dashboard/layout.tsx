@@ -1,43 +1,51 @@
 'use client';
 
-import { useState } from 'react';
-import Sidebar, { UserRole } from './_components/Sidebar';
+import { useEffect, useState } from 'react';
+import Sidebar from './_components/Sidebar';
+import { useUserStore } from '@/store/useUserStore';
+import { Menu } from 'lucide-react';
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [currentRole, setCurrentRole] = useState<UserRole>('TENANT');
+  const fetchUser = useUserStore((state) => state.fetchUser);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      <Sidebar role={currentRole} userName="Demo User" />
-      
-      <main className="flex-1 overflow-y-auto">
-        <div className="bg-white border-b border-gray-200 px-6 py-2 flex items-center justify-between text-xs">
-          <span className="text-gray-500 font-medium">Switch Role View (For Testing):</span>
-          <div className="flex gap-2">
-            {(['TENANT', 'LANDLORD', 'ADMIN'] as UserRole[]).map((r) => (
-              <button
-                key={r}
-                onClick={() => setCurrentRole(r)}
-                className={`px-2.5 py-1 rounded font-semibold transition ${
-                  currentRole === r
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
-              >
-                {r}
-              </button>
-            ))}
-          </div>
-        </div>
+    <div className="flex min-h-screen bg-gray-50 relative">
+      {/* Sidebar Component */}
+      <Sidebar 
+        isOpen={isSidebarOpen} 
+        onClose={() => setIsSidebarOpen(false)} 
+      />
 
-        <div className="p-6">
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col min-w-0">
+        
+        <header className="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between sticky top-0 z-30 shadow-sm lg:hidden">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setIsSidebarOpen(true)}
+              className="p-2 text-slate-700 hover:bg-gray-100 rounded-lg transition"
+              aria-label="Open Sidebar"
+            >
+              <Menu className="w-6 h-6" />
+            </button>
+            <span className="font-semibold text-gray-800">RentalApp</span>
+          </div>
+        </header>
+
+        {/* Main Content Body */}
+        <main className="flex-1 p-4 sm:p-6 overflow-y-auto">
           {children}
-        </div>
-      </main>
+        </main>
+      </div>
     </div>
   );
 }

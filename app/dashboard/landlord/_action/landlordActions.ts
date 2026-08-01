@@ -9,7 +9,7 @@ export async function createProperty(data: {
   description: string;
   location: string;
   price: number;
-  images: string;
+  image: string;
   categoryId: string;
 }) {
   try {
@@ -43,6 +43,7 @@ export async function updateProperty(
     location: string;
     price: number;
     categoryId: string;
+    image:string
     isAvailable: boolean;
   }
 ) {
@@ -101,5 +102,42 @@ export async function getTenantHistory(tenantId: string) {
     return { success: true, data: res.data || res };
   } catch (err: any) {
     return { error: err.message || 'Failed to fetch tenant history' };
+  }
+}
+
+export async function getLandlordOverview() {
+  try {
+    const [propertiesRes, rentalsRes] = await Promise.all([
+      fetchWithAuth('/landlord/requests', { method: 'GET' }),
+      fetchWithAuth('/rentals', { method: 'GET' }),
+    ]);
+
+    const properties = propertiesRes?.data || [];
+    const rentals = rentalsRes?.data || [];
+
+    const totalProperties = Array.isArray(properties) ? properties.length : 0;
+
+    const activeRequests = Array.isArray(rentals)
+      ? rentals.filter((r: any) => r.status === 'PENDING').length
+      : 0;
+
+    const totalEarnings = Array.isArray(rentals)
+      ? rentals
+          .filter((r: any) => r.status === 'PAID' || r.status === 'APPROVED')
+          .reduce((sum: number, r: any) => sum + (r.property?.price || 0), 0)
+      : 0;
+
+    return {
+      success: true,
+      data: {
+        totalProperties,
+        activeRequests,
+        totalEarnings,
+        recentProperties: properties.slice(0, 3), 
+        recentRentals: rentals.slice(0, 5),      
+      },
+    };
+  } catch (err: any) {
+    return { success: false, error: err.message || 'Failed to fetch overview data' };
   }
 }

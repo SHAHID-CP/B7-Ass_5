@@ -7,7 +7,6 @@ import {
   Home, 
   LayoutDashboard, 
   LogOut, 
-  Settings, 
   User, 
   Menu, 
   X, 
@@ -153,15 +152,6 @@ export function Navbar({ user }: NavbarProps) {
                         <User className="w-4 h-4 text-gray-500" />
                         <span>Profile</span>
                       </Link>
-
-                      <Link
-                        href="/settings"
-                        onClick={() => setIsDropdownOpen(false)}
-                        className="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition"
-                      >
-                        <Settings className="w-4 h-4 text-gray-500" />
-                        <span>Settings</span>
-                      </Link>
                     </div>
 
                     <div className="border-t border-gray-100 pt-1">
@@ -258,15 +248,6 @@ export function Navbar({ user }: NavbarProps) {
                 >
                   <User className="w-5 h-5 text-gray-500" />
                   <span>Profile</span>
-                </Link>
-
-                <Link
-                  href="/settings"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="flex items-center gap-3 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-md transition"
-                >
-                  <Settings className="w-5 h-5 text-gray-500" />
-                  <span>Settings</span>
                 </Link>
 
                 <button

@@ -101,13 +101,13 @@ export async function updateLandlordRequestStatus(requestId: string, status: 'AP
 }
 
 // ---------------- ADMIN ACTIONS ----------------
-export async function getAdminUsers() {
-  try {
-    return await fetchWithAuth('/admin/users');
-  } catch (err: any) {
-    return { error: err.message };
-  }
-}
+// export async function getAdminUsers() {
+//   try {
+//     return await fetchWithAuth('/admin/users');
+//   } catch (err: any) {
+//     return { error: err.message };
+//   }
+// }
 
 export async function updateAdminUserStatus(userId: string, status: 'ACTIVE' | 'BANNED' | 'SUSPENDED') {
   try {
