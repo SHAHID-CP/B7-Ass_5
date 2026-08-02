@@ -37,7 +37,6 @@ interface Property {
   isAvailable: boolean;
   categoryId?: string;
   category?: Category;
-  images?: string;
   image?: string;
 }
 
@@ -62,7 +61,7 @@ export default function MyPropertiesPage() {
   });
 
   // Image URL Watcher for Live Preview inside Modal
-  const watchedImage = watch('images');
+  const watchedImage = watch('image');
 
   // Load Initial Data
   const loadData = useCallback(async () => {
@@ -86,7 +85,7 @@ export default function MyPropertiesPage() {
     setEditItem(item);
     reset({
       title: item.title,
-      images: item.images || item.image || '',
+      image: item.image || '',
       location: item.location,
       price: Number(item.price),
       categoryId: item.categoryId || item.category?.id || '',
@@ -103,18 +102,17 @@ export default function MyPropertiesPage() {
 
   // Handle Delete
   const handleDelete = async (id: string, title: string) => {
-    if (!confirm(`Are you sure you want to delete "${title}"?`)) return;
     setDeletingId(id);
     try {
       const res = await deleteProperty(id);
       if (res?.error) {
-        toast(res.error);
+        toast.error(res.error);
       } else {
+        toast.success("Property deleted successfully")
         setProperties((prev) => prev.filter((p) => p.id !== id));
       }
     } catch (err) {
-      console.error('Delete error:', err);
-      toast('Failed to delete property.');
+      toast.error('Failed to delete property.');
     } finally {
       setDeletingId(null);
     }
@@ -128,14 +126,15 @@ export default function MyPropertiesPage() {
       const res = await updateProperty(editItem.id, data);
 
       if (res?.error) {
-        toast(res.error);
+        toast.error(res.error);
       } else {
         handleCloseModal();
+        toast.success("Update property successfully")
         await loadData();
       }
     } catch (err) {
       console.error('Update error:', err);
-      toast('Failed to update property.');
+      toast.error('Failed to update property.');
     }
   };
 
@@ -163,7 +162,7 @@ export default function MyPropertiesPage() {
         </div>
 
         <Link
-          href="/dashboard/landlord/add-property"
+          href="/dashboard/landlord/properties/new"
           className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium px-3.5 py-2 rounded-xl flex items-center gap-1.5 transition active:scale-95 shadow-xs"
         >
           <Plus className="w-4 h-4" />
@@ -189,7 +188,7 @@ export default function MyPropertiesPage() {
             {/* Mobile View */}
             <div className="block md:hidden divide-y divide-gray-100">
               {properties.map((item) => {
-                const imgUrl = item.images || item.image || 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=800';
+                const imgUrl =  item.image || 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=800';
                 return (
                   <div key={item.id} className="p-4 space-y-3">
                     <div className="flex gap-3">
@@ -268,7 +267,7 @@ export default function MyPropertiesPage() {
                 </thead>
                 <tbody className="divide-y divide-gray-100">
                   {properties.map((item) => {
-                    const imgUrl = item.images || item.image || 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=800';
+                    const imgUrl = item.image || 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=800';
                     return (
                       <tr key={item.id} className="hover:bg-gray-50/50 transition">
                         <td className="p-3.5">
@@ -371,16 +370,16 @@ export default function MyPropertiesPage() {
                 <div className="space-y-2">
                   <input
                     type="text"
-                    {...register('images')}
+                    {...register('image')}
                     className="w-full border border-gray-300 rounded-xl p-2.5 text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition"
                     placeholder="https://images.unsplash.com/..."
                   />
-                  {errors.images && (
-                    <p className="text-rose-500 text-[11px] mt-0.5 font-medium">{errors.images.message}</p>
+                  {errors.image && (
+                    <p className="text-rose-500 text-[11px] mt-0.5 font-medium">{errors.image.message}</p>
                   )}
 
                   {/* Live Image Preview using RHF watch */}
-                  {watchedImage && !errors.images && (
+                  {watchedImage && !errors.image && (
                     <div className="flex items-center gap-2.5 bg-gray-50 p-2 rounded-xl border border-gray-100">
                       <img
                         src={watchedImage}

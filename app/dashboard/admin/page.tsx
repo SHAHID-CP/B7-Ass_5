@@ -125,13 +125,14 @@ export default function AdminPage() {
     try {
       const res = await updateAdminUserStatus(userId, status);
       if (res?.error) {
-        toast(res.error || 'Failed to update status');
+        toast.error(res.error || 'Failed to update status');
       } else {
         await loadUsers(pagination.page);
+        toast.success("User Status changes succesfully")
       }
     } catch (err) {
       console.error('Error updating status:', err);
-      toast('An unexpected error occurred.');
+      toast.error('An unexpected error occurred.');
     } finally {
       setUpdatingId(null);
     }
@@ -430,7 +431,7 @@ export default function AdminPage() {
                                   e.target.value as 'ACTIVE' | 'BANNED' | 'SUSPENDED'
                                 )
                               }
-                              className="border border-gray-200 rounded-lg px-2.5 py-1 bg-white text-xs font-semibold text-gray-800 outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 disabled:opacity-50 cursor-pointer shadow-xs"
+                              className=" border border-gray-200 rounded-lg px-2.5 py-1 bg-white text-xs font-semibold text-gray-800 outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 disabled:opacity-50 cursor-pointer shadow-xs"
                             >
                               <option value="ACTIVE">ACTIVE</option>
                               <option value="SUSPENDED">SUSPENDED</option>

@@ -104,7 +104,7 @@ export default function LandlordDashboardOverview() {
           </div>
           <div className="flex items-baseline justify-between pt-1">
             <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900">{data?.totalProperties || 0}</h2>
-            <Link href="/dashboard/landlord/properties" className="text-xs text-blue-600 font-semibold hover:underline flex items-center gap-1">
+            <Link href="/dashboard/landlord" className="text-xs text-blue-600 font-semibold hover:underline flex items-center gap-1">
               View All <ArrowRight className="w-3 h-3" />
             </Link>
           </div>

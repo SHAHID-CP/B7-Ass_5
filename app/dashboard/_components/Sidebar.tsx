@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { useUserStore } from '@/store/useUserStore';
 import { logout } from '@/service/logout';
+import { toast } from 'sonner';
 
 const navItemsByRole: Record<string, Array<{ label: string; href: string; icon: any }>> = {
   TENANT: [
@@ -49,6 +50,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const handleLogout = async () => {
     clearUser();
     await logout();
+    toast.success("User Logout Successfully")
     router.push("/auth/login");
     router.refresh();
   };
@@ -123,7 +125,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             </div>
             <button 
               onClick={handleLogout} 
-              className="text-slate-400 hover:text-red-400 p-1.5 rounded-lg hover:bg-slate-800 transition shrink-0"
+              className="text-slate-400 cursor-pointer hover:text-red-400 p-1.5 rounded-lg hover:bg-slate-800 transition shrink-0"
               title="Logout"
             >
               <LogOut className="w-4 h-4" />

@@ -1,6 +1,6 @@
 'use client';
 
-import { use, useState } from 'react';
+import { use, useState, useEffect } from 'react'; 
 import { useRouter } from 'next/navigation';
 import { createPaymentSession } from '../../../_action/tenantActions';
 import { 
@@ -27,6 +27,22 @@ export default function PaymentInitiationPage({ params }: PayPageProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+
+  useEffect(() => {
+    const handlePageShow = (event: PageTransitionEvent) => {
+
+      if (event.persisted) {
+        setLoading(false);
+      }
+    };
+
+    window.addEventListener('pageshow', handlePageShow);
+
+    return () => {
+      window.removeEventListener('pageshow', handlePageShow);
+    };
+  }, []);
+
   const handleInitiatePayment = async () => {
     setLoading(true);
     setError(null);
@@ -36,12 +52,12 @@ export default function PaymentInitiationPage({ params }: PayPageProps) {
 
       if (res?.data?.checkoutUrl) {
         window.location.href = res.data.checkoutUrl;
-        return; // Redirecting, leave loading as true
+        return;
       }
 
       if (res?.checkoutUrl) {
         window.location.href = res.checkoutUrl;
-        return; // Redirecting, leave loading as true
+        return;
       }
 
       if (res?.success) {
@@ -129,7 +145,7 @@ export default function PaymentInitiationPage({ params }: PayPageProps) {
         <button
           onClick={handleInitiatePayment}
           disabled={loading}
-          className="w-full py-3 sm:py-3.5 bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white font-semibold text-xs sm:text-sm rounded-xl transition shadow-xs flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed touch-manipulation"
+          className="w-full cursor-pointer py-3 sm:py-3.5 bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white font-semibold text-xs sm:text-sm rounded-xl transition shadow-xs flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed touch-manipulation"
         >
           {loading ? (
             <>

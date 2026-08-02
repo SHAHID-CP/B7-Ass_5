@@ -90,15 +90,15 @@ export default function ProfilePage() {
       const res = await updateUserProfile(data);
 
       if (res?.success) {
-        toast('Profile updated successfully!');
+        toast.success('Profile updated successfully!');
         setIsModalOpen(false);
         await loadProfile(); 
       } else {
-        toast(res?.error || 'Failed to update profile');
+        toast.error(res?.error || 'Failed to update profile');
       }
     } catch (error) {
       console.error('Update profile error:', error);
-      toast('An unexpected error occurred.');
+      toast.error('An unexpected error occurred.');
     }
   };
 

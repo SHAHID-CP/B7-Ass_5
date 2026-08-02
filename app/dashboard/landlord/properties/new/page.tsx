@@ -10,8 +10,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { createProperty } from '../../_action/landlordActions';
 import { getCategories } from '@/app/dashboard/admin/_action/categoryActions';
 import { PlusCircle, Loader2, ArrowLeft, Image as ImageIcon } from 'lucide-react';
-import { PropertyFormDataa, propertySchemaa } from '@/utils/contactValidation';
 import { toast } from 'sonner';
+import { PropertyFormData, propertySchema } from '@/utils/contactValidation';
 
 // --- Types ---
 interface Category {
@@ -33,20 +33,20 @@ export default function AddPropertyPage() {
     setValue,
     watch,
     formState: { errors, isSubmitting },
-  } = useForm<PropertyFormDataa>({
-    resolver: zodResolver(propertySchemaa),
-    defaultValues: {
+  } = useForm<PropertyFormData>({
+      resolver: zodResolver(propertySchema),
+      defaultValues: {
       title: '',
       description: '',
       location: '',
       price: undefined,
-      images: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=800',
+      image: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=800',
       categoryId: '',
     },
   });
 
   // Watch image for live preview
-  const watchedImage = watch('images');
+  const watchedImage = watch('image');
 
   // Load Categories for dropdown
   useEffect(() => {
@@ -70,19 +70,20 @@ export default function AddPropertyPage() {
   }, [setValue]);
 
   // Handle Form Submit
-  const onSubmit = async (data: PropertyFormData) => {
+  const onSubmit = async (data: PropertyFormDataa) => {
     try {
       const res = await createProperty(data);
 
       if (res?.error) {
-        toast(res.error);
+        console.log(res.error);
+        toast.error(res.error);
       } else {
-        toast('Property created successfully!');
-        router.push('/dashboard/landlord/properties');
+        toast.success('Property created successfully!');
+        router.push('/dashboard/landlord');
       }
     } catch (err) {
       console.error('Submission error:', err);
-      toast('Failed to create property.');
+      toast.error('Failed to create property.');
     }
   };
 
@@ -196,14 +197,14 @@ export default function AddPropertyPage() {
               <input
                 type="text"
                 placeholder="https://images.unsplash.com/..."
-                {...register('images')}
+                {...register('image')}
                 className="w-full border border-gray-300 rounded-xl p-2.5 text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition"
               />
-              {errors.images && (
-                <p className="text-rose-500 text-[11px] mt-0.5 font-medium">{errors.images.message}</p>
+              {errors.image && (
+                <p className="text-rose-500 text-[11px] mt-0.5 font-medium">{errors.image.message}</p>
               )}
               
-              {watchedImage && !errors.images && (
+              {watchedImage && !errors.image && (
                 <div className="flex items-center gap-3 bg-gray-50 p-2.5 rounded-xl border border-gray-100">
                   <img
                     src={watchedImage}

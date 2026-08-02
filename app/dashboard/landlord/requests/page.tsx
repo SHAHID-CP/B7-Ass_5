@@ -88,11 +88,12 @@ export default function ManageRequestsPage() {
     const res = await updateRentalRequestStatus(id, newStatus);
 
     if (res?.error) {
-      toast(`Error: ${res.error}`);
+      toast.error(`Error: ${res.error}`);
     } else {
       setRequests((prev) =>
         prev.map((req) => (req.id === id ? { ...req, status: newStatus } : req))
       );
+      toast.success("Status changes successfully")
     }
     setUpdatingId(null);
   };
@@ -180,7 +181,7 @@ export default function ManageRequestsPage() {
                 <div className="flex items-center justify-between pt-2.5 border-t border-gray-50 gap-2">
                   <button
                     onClick={() => handleOpenTenantHistory(item.tenant?.id)}
-                    className="inline-flex items-center gap-1 px-2.5 py-1.5 bg-purple-50 text-purple-700 border border-purple-200/60 hover:bg-purple-100 rounded-lg text-xs font-medium transition"
+                    className="cursor-pointer inline-flex items-center gap-1 px-2.5 py-1.5 bg-purple-50 text-purple-700 border border-purple-200/60 hover:bg-purple-100 rounded-lg text-xs font-medium transition"
                   >
                     <History className="w-3.5 h-3.5" /> History
                   </button>
@@ -193,14 +194,14 @@ export default function ManageRequestsPage() {
                         <button
                           onClick={() => handleStatusUpdate(item.id, 'APPROVED')}
                           disabled={item.status === 'APPROVED'}
-                          className="flex items-center gap-1 px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-medium transition disabled:opacity-40"
+                          className="cursor-pointer flex items-center gap-1 px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-medium transition disabled:opacity-40"
                         >
                           <Check className="w-3.5 h-3.5" /> Approve
                         </button>
                         <button
                           onClick={() => handleStatusUpdate(item.id, 'REJECTED')}
                           disabled={item.status === 'REJECTED'}
-                          className="flex items-center gap-1 px-2.5 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-medium transition disabled:opacity-40"
+                          className="cursor-pointer flex items-center gap-1 px-2.5 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-medium transition disabled:opacity-40"
                         >
                           <X className="w-3.5 h-3.5" /> Reject
                         </button>
@@ -275,7 +276,7 @@ export default function ManageRequestsPage() {
                     <td className="py-3.5 px-4 text-center">
                       <button
                         onClick={() => handleOpenTenantHistory(item.tenant?.id)}
-                        className="inline-flex items-center gap-1 px-2.5 py-1 bg-purple-50 text-purple-700 border border-purple-200 hover:bg-purple-100 rounded-lg text-xs font-medium transition"
+                        className="cursor-pointer inline-flex items-center gap-1 px-2.5 py-1 bg-purple-50 text-purple-700 border border-purple-200 hover:bg-purple-100 rounded-lg text-xs font-medium transition"
                         title="View Tenant History"
                       >
                         <History className="w-3.5 h-3.5" /> History
@@ -290,7 +291,7 @@ export default function ManageRequestsPage() {
                           <button
                             onClick={() => handleStatusUpdate(item.id, 'APPROVED')}
                             disabled={item.status === 'APPROVED'}
-                            className="flex items-center gap-1 px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-medium transition disabled:opacity-40"
+                            className="cursor-pointer flex items-center gap-1 px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-medium transition disabled:opacity-40"
                             title="Approve Request"
                           >
                             <Check className="w-3.5 h-3.5" /> Approve
@@ -298,7 +299,7 @@ export default function ManageRequestsPage() {
                           <button
                             onClick={() => handleStatusUpdate(item.id, 'REJECTED')}
                             disabled={item.status === 'REJECTED'}
-                            className="flex items-center gap-1 px-2.5 py-1 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-medium transition disabled:opacity-40"
+                            className="cursor-pointer flex items-center gap-1 px-2.5 py-1 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-medium transition disabled:opacity-40"
                             title="Reject Request"
                           >
                             <X className="w-3.5 h-3.5" /> Reject

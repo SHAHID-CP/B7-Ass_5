@@ -60,14 +60,14 @@ export default function CategoryManagementPage() {
       const res = await createCategory(data.name);
 
       if (res?.error) {
-        toast(res.error || 'Failed to add category');
+        toast.error(res.error || 'Failed to add category');
       } else {
         reset();
         await loadCategories();
+        toast.success("Category created successfully")
       }
     } catch (err) {
-      console.error('Error creating category:', err);
-      toast('An unexpected error occurred.');
+      toast.error('An unexpected error occurred.');
     } finally {
       setSubmitting(false);
     }
@@ -75,16 +75,17 @@ export default function CategoryManagementPage() {
 
   // Handle Delete Category
   const handleDelete = async (id: string, name: string) => {
-    if (!confirm(`Are you sure you want to delete "${name}"?`)) return;
+  
 
     setDeletingId(id);
     try {
       const res = await deleteCategory(id);
 
       if (res?.error) {
-        toast(res.error || 'Failed to delete category');
+        toast.error(res.error || 'Failed to delete category');
       } else {
         await loadCategories();
+        toast.success("Category deleted successfully")
       }
     } catch (err) {
       console.error('Error deleting category:', err);

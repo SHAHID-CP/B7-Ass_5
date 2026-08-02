@@ -256,7 +256,7 @@ export default function TenantDashboard() {
                         {pay.rentalRequest?.property && (
                           <button
                             onClick={() => handleOpenReview(pay.rentalRequest.property)}
-                            className="inline-flex items-center gap-1 bg-yellow-50 hover:bg-yellow-100 text-yellow-700 font-semibold px-2.5 py-1.5 rounded-lg border border-yellow-200 transition text-xs active:scale-[0.98]"
+                            className="inline-flex cursor-pointer items-center gap-1 bg-yellow-50 hover:bg-yellow-100 text-yellow-700 font-semibold px-2.5 py-1.5 rounded-lg border border-yellow-200 transition text-xs active:scale-[0.98]"
                           >
                             <Star className="w-3.5 h-3.5 fill-yellow-500 text-yellow-500" /> Leave Review
                           </button>

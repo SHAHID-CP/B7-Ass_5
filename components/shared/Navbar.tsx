@@ -13,6 +13,7 @@ import {
   ChevronDown 
 } from "lucide-react";
 import { logout } from "@/service/logout";
+import { toast } from "sonner";
 
 interface NavbarProps {
   user?: {
@@ -72,6 +73,7 @@ export function Navbar({ user }: NavbarProps) {
     setIsMobileMenuOpen(false);
 
     await logout();
+    toast.success("User Logout Successfully")
     router.push("/auth/login");
     router.refresh();
   };
@@ -111,7 +113,7 @@ export function Navbar({ user }: NavbarProps) {
               <div className="relative" ref={dropdownRef}>
                 <button
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  className="flex items-center gap-1.5 p-1 rounded-full hover:bg-gray-100 transition focus:outline-none ring-offset-2 focus:ring-2 focus:ring-blue-500"
+                  className="cursor-pointer flex items-center gap-1.5 p-1 rounded-full hover:bg-gray-100 transition focus:outline-none ring-offset-2 focus:ring-2 focus:ring-blue-500"
                 >
                   <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-blue-100 border border-blue-200 flex items-center justify-center text-blue-600 font-bold text-xs sm:text-sm shrink-0">
                     {user.data?.name?.charAt(0).toUpperCase() || "U"}
@@ -121,7 +123,7 @@ export function Navbar({ user }: NavbarProps) {
 
                 {/* Dropdown Menu Card */}
                 {isDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-56 sm:w-60 bg-white rounded-xl shadow-lg border border-gray-100 py-1.5 z-50 animate-in fade-in zoom-in-95 duration-150">
+                  <div className=" absolute right-0 mt-2 w-56 sm:w-60 bg-white rounded-xl shadow-lg border border-gray-100 py-1.5 z-50 animate-in fade-in zoom-in-95 duration-150">
                     {/* User Info Header */}
                     <div className="px-3.5 sm:px-4 py-2 sm:py-2.5 border-b border-gray-100">
                       <p className="text-xs sm:text-sm font-bold text-gray-800 truncate">
@@ -139,7 +141,7 @@ export function Navbar({ user }: NavbarProps) {
                     <div className="py-1">
                       <button
                         onClick={handleDashboardRedirect}
-                        className="w-full flex items-center gap-2.5 px-3.5 sm:px-4 py-2 text-xs sm:text-sm text-gray-700 hover:bg-gray-50 transition text-left"
+                        className="cursor-pointer w-full flex items-center gap-2.5 px-3.5 sm:px-4 py-2 text-xs sm:text-sm text-gray-700 hover:bg-gray-50 transition text-left"
                       >
                         <LayoutDashboard className="w-4 h-4 text-gray-500 shrink-0" />
                         <span>Dashboard</span>
@@ -159,7 +161,7 @@ export function Navbar({ user }: NavbarProps) {
                     <div className="border-t border-gray-100 pt-1">
                       <button
                         onClick={handleLogout}
-                        className="w-full flex items-center gap-2.5 px-3.5 sm:px-4 py-2 text-xs sm:text-sm text-red-600 hover:bg-red-50 transition text-left font-medium"
+                        className="cursor-pointer w-full flex items-center gap-2.5 px-3.5 sm:px-4 py-2 text-xs sm:text-sm text-red-600 hover:bg-red-50 transition text-left font-medium"
                       >
                         <LogOut className="w-4 h-4 shrink-0" />
                         <span>Log out</span>
@@ -246,7 +248,7 @@ export function Navbar({ user }: NavbarProps) {
                   <div className="space-y-0.5">
                     <button
                       onClick={handleDashboardRedirect}
-                      className="w-full flex items-center gap-2.5 px-3 py-2 text-xs sm:text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg transition text-left"
+                      className="cursor-pointer w-full flex items-center gap-2.5 px-3 py-2 text-xs sm:text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg transition text-left"
                     >
                       <LayoutDashboard className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 shrink-0" />
                       <span>Dashboard ({user.data?.role})</span>
@@ -263,7 +265,7 @@ export function Navbar({ user }: NavbarProps) {
 
                     <button
                       onClick={handleLogout}
-                      className="w-full flex items-center gap-2.5 px-3 py-2 text-xs sm:text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition text-left"
+                      className="cursor-pointer w-full flex items-center gap-2.5 px-3 py-2 text-xs sm:text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition text-left"
                     >
                       <LogOut className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" />
                       <span>Log out</span>

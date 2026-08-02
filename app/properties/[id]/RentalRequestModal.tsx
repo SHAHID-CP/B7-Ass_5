@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { createRentalRequests } from '../_action/publicPropertyActions';
 import { Loader2, Send, X, CheckCircle2, Building2, MapPin } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface ModalProps {
   isOpen: boolean;
@@ -30,8 +31,10 @@ export default function RentalRequestModal({ isOpen, onClose, property }: ModalP
 
     if (res.success) {
       setIsSuccess(true);
+      toast.success("Submit your Renatl Request")
     } else {
       setError(res.error || 'Failed to send request');
+      toast.error("Failed your Renatl Request")
     }
 
     setLoading(false);
@@ -117,7 +120,7 @@ export default function RentalRequestModal({ isOpen, onClose, property }: ModalP
                 type="button"
                 onClick={handleClose}
                 disabled={loading}
-                className="w-full sm:flex-1 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl text-xs sm:text-sm font-semibold transition"
+                className="cursor-pointer w-full sm:flex-1 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl text-xs sm:text-sm font-semibold transition"
               >
                 Cancel
               </button>
@@ -125,7 +128,7 @@ export default function RentalRequestModal({ isOpen, onClose, property }: ModalP
                 type="button"
                 onClick={handleSubmit}
                 disabled={loading}
-                className="w-full sm:flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs sm:text-sm font-semibold transition flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20 disabled:opacity-50"
+                className="cursor-pointer w-full sm:flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs sm:text-sm font-semibold transition flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20 disabled:opacity-50"
               >
                 {loading ? (
                   <>

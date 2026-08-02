@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Mail, Phone, MapPin, Send, Loader2, MessageSquare, AlertCircle } from 'lucide-react';
 import { ContactFormData, contactSchema } from '@/utils/contactValidation';
+import { toast } from 'sonner';
 
 
 export default function ContactPage() {
@@ -24,7 +25,7 @@ export default function ContactPage() {
 
   const onSubmit = (data: ContactFormData) => {
     setSubmitting(true);
-    console.log('Validated Form Data:', data);
+    toast.success("Submited your Information")
 
     // Form Submission Simulation
     setTimeout(() => {

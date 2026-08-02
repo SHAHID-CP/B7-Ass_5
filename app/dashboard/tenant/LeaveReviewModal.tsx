@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { submitPropertyReview } from './_action/tenantActions';
 import { Star, X, Loader2, CheckCircle2 } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface ReviewModalProps {
   isOpen: boolean;
@@ -41,8 +42,10 @@ export default function LeaveReviewModal({ isOpen, onClose, property }: ReviewMo
 
     if (res.success) {
       setIsSuccess(true);
+      toast.success("Review submit successfully")
     } else {
       setError(res.error || 'Failed to submit review');
+      toast.error("Review submit failed")
     }
     setLoading(false);
   };
@@ -108,7 +111,7 @@ export default function LeaveReviewModal({ isOpen, onClose, property }: ReviewMo
                     className="p-1 focus:outline-hidden touch-manipulation active:scale-110 transition-transform"
                   >
                     <Star
-                      className={`w-7 h-7 sm:w-8 sm:h-8 transition-colors ${
+                      className={`w-7 h-7 cursor-pointer sm:w-8 sm:h-8 transition-colors ${
                         star <= (hover || rating)
                           ? 'text-yellow-400 fill-yellow-400'
                           : 'text-gray-200 hover:text-gray-300'
@@ -142,14 +145,14 @@ export default function LeaveReviewModal({ isOpen, onClose, property }: ReviewMo
                 type="button"
                 onClick={handleClose}
                 disabled={loading}
-                className="flex-1 py-2 sm:py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl text-xs sm:text-sm font-semibold transition active:scale-[0.98]"
+                className="flex-1 cursor-pointer py-2 sm:py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl text-xs sm:text-sm font-semibold transition active:scale-[0.98]"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={loading}
-                className="flex-1 py-2 sm:py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs sm:text-sm font-semibold transition flex items-center justify-center gap-2 shadow-xs active:scale-[0.98] disabled:opacity-50"
+                className="flex-1 cursor-pointer py-2 sm:py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs sm:text-sm font-semibold transition flex items-center justify-center gap-2 shadow-xs active:scale-[0.98] disabled:opacity-50"
               >
                 {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Submit Review'}
               </button>

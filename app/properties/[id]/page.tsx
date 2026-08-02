@@ -127,7 +127,7 @@ export default function PropertyDetailsPage({ params }: Props) {
             <button
               onClick={() => setIsModalOpen(true)}
               disabled={!property.isAvailable}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 sm:py-3 text-sm sm:text-base rounded-xl shadow-md transition disabled:opacity-50"
+              className="cursor-pointer w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 sm:py-3 text-sm sm:text-base rounded-xl shadow-md transition disabled:opacity-50"
             >
               {property.isAvailable ? 'Request Rental' : 'Not Available'}
             </button>

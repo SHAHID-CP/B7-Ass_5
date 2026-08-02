@@ -41,7 +41,7 @@ export const propertySchema = z.object({
     .string()
     .min(3, 'Title must be at least 3 characters long')
     .nonempty('Title is required'),
-  images: z
+  image: z
     .string()
     .url('Please enter a valid Image URL')
     .nonempty('Image URL is required'),
@@ -66,33 +66,6 @@ export const propertySchema = z.object({
 export type PropertyFormData = z.infer<typeof propertySchema>;
 
 
-export const propertySchemaa = z.object({
-  title: z
-    .string()
-    .min(3, 'Title must be at least 3 characters long')
-    .nonempty('Title is required'),
-  categoryId: z
-    .string()
-    .nonempty('Please select a category'),
-  location: z
-    .string()
-    .min(3, 'Location must be at least 3 characters long')
-    .nonempty('Location is required'),
-  price: z
-    .coerce
-    .number('Price must be a valid number' )
-    .positive('Price must be greater than 0'),
-  images: z
-    .string()
-    .url('Please enter a valid Image URL')
-    .nonempty('Image URL is required'),
-  description: z
-    .string()
-    .min(10, 'Description must be at least 10 characters long')
-    .nonempty('Description is required'),
-});
-
-export type PropertyFormDataa = z.infer<typeof propertySchema>;
 
 export const profileSchema = z.object({
   name: z
