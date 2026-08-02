@@ -54,14 +54,14 @@ export default async function HomePage() {
 
       {/* Featured Properties Section */}
       <section className="max-w-7xl mx-auto px-6 space-y-6">
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center gap-3">
           <div>
             <h2 className="text-2xl font-bold text-gray-800">Featured Properties</h2>
             <p className="text-sm text-gray-500">Handpicked recent listings for you</p>
           </div>
           <Link
             href="/properties"
-            className="text-blue-600 hover:text-blue-700 font-semibold text-sm flex items-center gap-1"
+            className="text-blue-600 hover:text-blue-700 font-semibold text-xs whitespace-nowrap md:text-sm flex items-center gap-1"
           >
             View All <ArrowRight className="w-4 h-4" />
           </Link>

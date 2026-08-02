@@ -24,7 +24,7 @@ export default async function RootLayout({
   const user = await getMe();
   return (
     <html lang="en">
-      <body className={`${inter.className} min-h-screen flex flex-col bg-gray-50 text-gray-900`}>
+      <body className={`${inter.className} min-h-screen flex flex-col bg-gray-50 text-gray-900 max-w-[2480px] mx-auto`}>
         <Navbar user={user} />
         <main className="flex-1">{children}</main>
         <Footer />

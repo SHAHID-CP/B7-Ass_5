@@ -2,14 +2,32 @@
 
 import { useEffect, useState } from 'react';
 import { getAllPropertiesAdmin } from '../_action/adminActions';
-import { Building2, CheckCircle2, XCircle } from 'lucide-react';
+import { Building2, CheckCircle2, XCircle, Loader2, MapPin, Tag, User } from 'lucide-react';
+
+interface PropertyItem {
+  id: string;
+  title: string;
+  location: string;
+  price: number;
+  isAvailable: boolean;
+  category?: {
+    id?: string;
+    name?: string;
+  };
+  landlord?: {
+    id?: string;
+    name?: string;
+    email?: string;
+  };
+}
 
 export default function AdminPropertiesPage() {
-  const [properties, setProperties] = useState<any[]>([]);
+  const [properties, setProperties] = useState<PropertyItem[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadProperties = async () => {
+      setLoading(true);
       const res = await getAllPropertiesAdmin();
       if (res?.success) {
         setProperties(res.data || []);
@@ -20,87 +38,153 @@ export default function AdminPropertiesPage() {
   }, []);
 
   if (loading) {
-    return <div className="p-6 text-sm text-gray-500">Loading properties...</div>;
+    return (
+      <div className="min-h-[60vh] flex flex-col items-center justify-center gap-2 text-gray-500 text-xs sm:text-sm">
+        <Loader2 className="w-7 h-7 sm:w-8 sm:h-8 animate-spin text-blue-600" />
+        <span>Loading all properties...</span>
+      </div>
+    );
   }
 
   return (
-    <div className="space-y-6">
+    <div className="max-w-7xl mx-auto px-3.5 sm:px-6 py-5 sm:py-8 space-y-5 sm:space-y-6">
       {/* Header */}
-      <div className="flex items-center gap-2">
-        <Building2 className="w-6 h-6 text-purple-600" />
-        <h1 className="text-xl md:text-2xl font-bold text-gray-900">
-          All Properties
-        </h1>
+      <div className="flex items-center gap-3 pb-4 border-b border-gray-100">
+        <div className="p-2 bg-purple-50 text-blue-600 rounded-xl shrink-0">
+          <Building2 className="w-5 h-5 sm:w-6 sm:h-6" />
+        </div>
+        <div>
+          <h1 className="text-lg sm:text-2xl font-bold text-gray-900 tracking-tight">
+            All Properties
+          </h1>
+          <p className="text-xs text-gray-500">
+            View and manage all listed properties across the platform
+          </p>
+        </div>
       </div>
 
-      {/* Properties Table */}
-      <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs text-gray-600 min-w-[700px]">
-            <thead className="bg-gray-50 uppercase border-b text-gray-700 font-semibold">
-              <tr>
-                <th className="p-3">Title</th>
-                <th className="p-3">Location</th>
-                <th className="p-3">Category</th>
-                <th className="p-3">Landlord Name</th>
-                <th className="p-3">Price</th>
-                <th className="p-3">Availability</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              {properties.length === 0 ? (
+      {/* Main Content Area */}
+      {properties.length === 0 ? (
+        <div className="text-center py-16 bg-white rounded-2xl border border-dashed border-gray-200 p-6 space-y-2">
+          <Building2 className="w-10 h-10 text-gray-300 mx-auto" />
+          <p className="text-xs sm:text-sm font-medium text-gray-500">
+            No properties found in the system.
+          </p>
+        </div>
+      ) : (
+        <div className="bg-white rounded-2xl border border-gray-200/80 shadow-xs overflow-hidden">
+          {/* Mobile View: Responsive Cards */}
+          <div className="block md:hidden divide-y divide-gray-100">
+            {properties.map((item) => (
+              <div key={item.id} className="p-4 space-y-3">
+                <div className="flex items-start justify-between gap-2">
+                  <div className="space-y-1 min-w-0">
+                    <h3 className="font-bold text-gray-900 text-xs sm:text-sm truncate">
+                      {item.title}
+                    </h3>
+                    <p className="text-[11px] text-gray-500 flex items-center gap-1">
+                      <MapPin className="w-3 h-3 text-gray-400 shrink-0" />
+                      <span className="truncate">{item.location}</span>
+                    </p>
+                  </div>
+                  {item.isAvailable ? (
+                    <span className="inline-flex items-center gap-1 bg-emerald-50 text-emerald-700 border border-emerald-200/60 px-2 py-0.5 rounded-md text-[10px] font-bold shrink-0">
+                      <CheckCircle2 className="w-3 h-3" /> Available
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center gap-1 bg-rose-50 text-rose-700 border border-rose-200/60 px-2 py-0.5 rounded-md text-[10px] font-bold shrink-0">
+                      <XCircle className="w-3 h-3" /> Booked
+                    </span>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-2 gap-2 text-xs pt-1 bg-gray-50/60 p-2.5 rounded-xl border border-gray-100">
+                  <div>
+                    <span className="text-[10px] text-gray-400 block uppercase font-medium">Category</span>
+                    <span className="font-semibold text-blue-700 text-[11px] flex items-center gap-1">
+                      <Tag className="w-3 h-3" />
+                      {item.category?.name || 'N/A'}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-gray-400 block uppercase font-medium">Landlord</span>
+                    <span className="font-semibold text-gray-800 text-[11px] flex items-center gap-1 truncate">
+                      <User className="w-3 h-3 text-gray-400 shrink-0" />
+                      {item.landlord?.name || 'N/A'}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between text-xs pt-1">
+                  <span className="text-gray-500 text-[11px]">Monthly Rent:</span>
+                  <span className="font-extrabold text-gray-900 text-xs">৳{item.price}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Desktop View: Table */}
+          <div className="hidden md:block overflow-x-auto">
+            <table className="w-full text-left text-xs text-gray-600">
+              <thead className="bg-gray-50/80 uppercase text-gray-500 font-semibold border-b border-gray-100">
                 <tr>
-                  <td colSpan={6} className="p-4 text-center text-gray-400">
-                    No properties found.
-                  </td>
+                  <th className="py-3.5 px-4">Title</th>
+                  <th className="py-3.5 px-4">Location</th>
+                  <th className="py-3.5 px-4">Category</th>
+                  <th className="py-3.5 px-4">Landlord Name</th>
+                  <th className="py-3.5 px-4">Price</th>
+                  <th className="py-3.5 px-4">Availability</th>
                 </tr>
-              ) : (
-                properties.map((item) => (
-                  <tr key={item.id} className="hover:bg-gray-50 transition">
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {properties.map((item) => (
+                  <tr key={item.id} className="hover:bg-gray-50/50 transition">
                     {/* Title */}
-                    <td className="p-3 font-semibold text-gray-900">
+                    <td className="py-3.5 px-4 font-bold text-gray-900 max-w-[220px] truncate">
                       {item.title}
                     </td>
 
                     {/* Location */}
-                    <td className="p-3 text-gray-600">{item.location}</td>
+                    <td className="py-3.5 px-4 text-gray-600 max-w-[180px] truncate">
+                      {item.location}
+                    </td>
 
                     {/* Category */}
-                    <td className="p-3">
-                      <span className="bg-purple-50 text-purple-700 px-2 py-0.5 rounded font-medium text-[11px]">
+                    <td className="py-3.5 px-4">
+                      <span className="bg-purple-50 text-blue-700 border border-purple-200/60 px-2.5 py-0.5 rounded-md font-semibold text-[11px]">
                         {item.category?.name || 'N/A'}
                       </span>
                     </td>
 
                     {/* Landlord Name */}
-                    <td className="p-3 font-medium text-gray-800">
+                    <td className="py-3.5 px-4 font-medium text-gray-800">
                       {item.landlord?.name || 'N/A'}
                     </td>
 
                     {/* Price */}
-                    <td className="p-3 font-semibold text-gray-900">
+                    <td className="py-3.5 px-4 font-extrabold text-gray-900">
                       ৳{item.price}
                     </td>
 
                     {/* Is Available */}
-                    <td className="p-3">
+                    <td className="py-3.5 px-4">
                       {item.isAvailable ? (
-                        <span className="inline-flex items-center gap-1 bg-green-100 text-green-700 px-2.5 py-0.5 rounded-full text-[11px] font-semibold">
-                          <CheckCircle2 className="w-3 h-3" /> Available
+                        <span className="inline-flex items-center gap-1 bg-emerald-50 text-emerald-700 border border-emerald-200/60 px-2.5 py-0.5 rounded-full text-[11px] font-semibold">
+                          <CheckCircle2 className="w-3 h-3 text-emerald-600" /> Available
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 bg-red-100 text-red-700 px-2.5 py-0.5 rounded-full text-[11px] font-semibold">
-                          <XCircle className="w-3 h-3" /> Booked
+                        <span className="inline-flex items-center gap-1 bg-rose-50 text-rose-700 border border-rose-200/60 px-2.5 py-0.5 rounded-full text-[11px] font-semibold">
+                          <XCircle className="w-3 h-3 text-rose-600" /> Booked
                         </span>
                       )}
                     </td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
