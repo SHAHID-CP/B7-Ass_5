@@ -20,6 +20,7 @@ import {
   User,
   MapPin,
 } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface RentalRequest {
   id: string;
@@ -87,7 +88,7 @@ export default function ManageRequestsPage() {
     const res = await updateRentalRequestStatus(id, newStatus);
 
     if (res?.error) {
-      alert(`Error: ${res.error}`);
+      toast(`Error: ${res.error}`);
     } else {
       setRequests((prev) =>
         prev.map((req) => (req.id === id ? { ...req, status: newStatus } : req))
@@ -106,7 +107,7 @@ export default function ManageRequestsPage() {
     if (res?.success && res.data) {
       setSelectedTenantHistory(res.data);
     } else {
-      alert(res?.error || 'Failed to fetch tenant history');
+      toast(res?.error || 'Failed to fetch tenant history');
       setHistoryModalOpen(false);
     }
     setFetchingHistory(false);

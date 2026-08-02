@@ -11,6 +11,7 @@ import { createProperty } from '../../_action/landlordActions';
 import { getCategories } from '@/app/dashboard/admin/_action/categoryActions';
 import { PlusCircle, Loader2, ArrowLeft, Image as ImageIcon } from 'lucide-react';
 import { PropertyFormDataa, propertySchemaa } from '@/utils/contactValidation';
+import { toast } from 'sonner';
 
 // --- Types ---
 interface Category {
@@ -74,14 +75,14 @@ export default function AddPropertyPage() {
       const res = await createProperty(data);
 
       if (res?.error) {
-        alert(res.error);
+        toast(res.error);
       } else {
-        alert('Property created successfully!');
+        toast('Property created successfully!');
         router.push('/dashboard/landlord/properties');
       }
     } catch (err) {
       console.error('Submission error:', err);
-      alert('Failed to create property.');
+      toast('Failed to create property.');
     }
   };
 

@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { getCategories, createCategory, deleteCategory } from '../_action/categoryActions';
 import { Layers, Plus, Trash2, Loader2, Tag, Hash, AlertCircle } from 'lucide-react';
 import { CategoryFormData, categorySchema } from '@/utils/contactValidation';
+import { toast } from 'sonner';
 
 interface Category {
   id: string;
@@ -59,14 +60,14 @@ export default function CategoryManagementPage() {
       const res = await createCategory(data.name);
 
       if (res?.error) {
-        alert(res.error || 'Failed to add category');
+        toast(res.error || 'Failed to add category');
       } else {
         reset();
         await loadCategories();
       }
     } catch (err) {
       console.error('Error creating category:', err);
-      alert('An unexpected error occurred.');
+      toast('An unexpected error occurred.');
     } finally {
       setSubmitting(false);
     }
@@ -81,13 +82,13 @@ export default function CategoryManagementPage() {
       const res = await deleteCategory(id);
 
       if (res?.error) {
-        alert(res.error || 'Failed to delete category');
+        toast(res.error || 'Failed to delete category');
       } else {
         await loadCategories();
       }
     } catch (err) {
       console.error('Error deleting category:', err);
-      alert('An unexpected error occurred.');
+      toast('An unexpected error occurred.');
     } finally {
       setDeletingId(null);
     }

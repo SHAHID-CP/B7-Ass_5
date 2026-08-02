@@ -20,6 +20,7 @@ import {
   Image as ImageIcon 
 } from 'lucide-react';
 import { PropertyFormData, propertySchema } from '@/utils/contactValidation';
+import { toast } from 'sonner';
 
 // --- Types ---
 interface Category {
@@ -107,13 +108,13 @@ export default function MyPropertiesPage() {
     try {
       const res = await deleteProperty(id);
       if (res?.error) {
-        alert(res.error);
+        toast(res.error);
       } else {
         setProperties((prev) => prev.filter((p) => p.id !== id));
       }
     } catch (err) {
       console.error('Delete error:', err);
-      alert('Failed to delete property.');
+      toast('Failed to delete property.');
     } finally {
       setDeletingId(null);
     }
@@ -127,14 +128,14 @@ export default function MyPropertiesPage() {
       const res = await updateProperty(editItem.id, data);
 
       if (res?.error) {
-        alert(res.error);
+        toast(res.error);
       } else {
         handleCloseModal();
         await loadData();
       }
     } catch (err) {
       console.error('Update error:', err);
-      alert('Failed to update property.');
+      toast('Failed to update property.');
     }
   };
 

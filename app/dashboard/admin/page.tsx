@@ -19,6 +19,7 @@ import {
   RefreshCw,
   Calendar
 } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface AdminStats {
   totalUsers?: number;
@@ -124,13 +125,13 @@ export default function AdminPage() {
     try {
       const res = await updateAdminUserStatus(userId, status);
       if (res?.error) {
-        alert(res.error || 'Failed to update status');
+        toast(res.error || 'Failed to update status');
       } else {
         await loadUsers(pagination.page);
       }
     } catch (err) {
       console.error('Error updating status:', err);
-      alert('An unexpected error occurred.');
+      toast('An unexpected error occurred.');
     } finally {
       setUpdatingId(null);
     }

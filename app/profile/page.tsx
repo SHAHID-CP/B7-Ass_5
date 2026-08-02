@@ -18,6 +18,7 @@ import {
   Image as ImageIcon
 } from 'lucide-react';
 import { ProfileFormData, profileSchema } from '@/utils/contactValidation';
+import { toast } from 'sonner';
 
 
 interface UserProfile {
@@ -89,15 +90,15 @@ export default function ProfilePage() {
       const res = await updateUserProfile(data);
 
       if (res?.success) {
-        alert('Profile updated successfully!');
+        toast('Profile updated successfully!');
         setIsModalOpen(false);
         await loadProfile(); 
       } else {
-        alert(res?.error || 'Failed to update profile');
+        toast(res?.error || 'Failed to update profile');
       }
     } catch (error) {
       console.error('Update profile error:', error);
-      alert('An unexpected error occurred.');
+      toast('An unexpected error occurred.');
     }
   };
 
