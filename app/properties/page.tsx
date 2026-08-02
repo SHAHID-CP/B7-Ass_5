@@ -2,10 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation'; 
 import { Building2, MapPin, Search, Filter, Loader2, RotateCcw } from 'lucide-react';
 import { getCategories, getProperties } from './_action/publicPropertyActions';
 
 export default function BrowsePropertiesPage() {
+  const searchParams = useSearchParams(); 
+  const urlCategoryId = searchParams.get('categoryId'); 
+
   const [properties, setProperties] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -16,7 +20,14 @@ export default function BrowsePropertiesPage() {
   const [maxPrice, setMaxPrice] = useState('');
   const [categoryId, setCategoryId] = useState('');
 
-  // 1. Fetch Categories once on mount
+
+  useEffect(() => {
+    if (urlCategoryId) {
+      setCategoryId(urlCategoryId);
+    }
+  }, [urlCategoryId]);
+
+  // 2. Fetch Categories once on mount
   useEffect(() => {
     async function loadCategories() {
       const catRes = await getCategories();
@@ -25,7 +36,7 @@ export default function BrowsePropertiesPage() {
     loadCategories();
   }, []);
 
-  // 2. Main API Call Function
+  // 3. Main API Call Function
   const fetchFilteredData = async () => {
     setLoading(true);
     try {
@@ -38,18 +49,16 @@ export default function BrowsePropertiesPage() {
     }
   };
 
-  // 3. Debounced Search & Instant Filter
+  // 4. Fetch Data with Debounce or when Filter State changes
   useEffect(() => {
-    // ৫০০ মিলি-সেকেন্ড অপেক্ষা করবে টাইপিং থামার পর
     const timer = setTimeout(() => {
       fetchFilteredData();
     }, 500);
 
-    // ব্যবহারকারী আবার নতুন করে টাইপ করলে আগের টাইমার ক্যানসেল হয়ে যাবে
     return () => clearTimeout(timer);
   }, [location, minPrice, maxPrice, categoryId]);
 
-  // 4. Reset / Clear Filter Logic
+  // 5. Reset / Clear Filter Logic
   const handleResetFilters = () => {
     setLocation('');
     setMinPrice('');
@@ -62,7 +71,6 @@ export default function BrowsePropertiesPage() {
     fetchFilteredData();
   };
 
-  // ফিল্টার করা আছে কি না চেক করার জন্য
   const isFiltered = Boolean(location || minPrice || maxPrice || categoryId);
 
   return (

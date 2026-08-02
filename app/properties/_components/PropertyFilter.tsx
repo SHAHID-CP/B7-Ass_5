@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useState, useEffect, useTransition } from 'react';
+import { useState, useTransition } from 'react';
 import { Search, X, Loader2 } from 'lucide-react';
 import { Category } from '@/lib/types';
 
