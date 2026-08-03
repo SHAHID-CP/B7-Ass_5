@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { getMyProperties, deleteProperty, updateProperty } from './_action/landlordActions';
+import { getMyProperties, deleteProperty, updateProperty, getLandlordOverview } from './_action/landlordActions';
 import { getCategories } from '../admin/_action/categoryActions';
 import { 
   Building, 
@@ -15,6 +15,10 @@ import {
   Trash2, 
   Loader2, 
   X, 
+  Building2, 
+  Inbox, 
+  Wallet, 
+  ArrowRight, 
   MapPin, 
   Plus, 
   Image as ImageIcon 
@@ -48,6 +52,30 @@ export default function MyPropertiesPage() {
   const [loading, setLoading] = useState(true);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [editItem, setEditItem] = useState<Property | null>(null);
+
+
+
+  const [data, setData] = useState<{
+    totalProperties: number;
+    activeRequests: number;
+    totalEarnings: number;
+    recentProperties: any[];
+    recentRentals: any[];
+  } | null>(null);
+
+  useEffect(() => {
+    async function loadStats() {
+      setLoading(true);
+      const res = await getLandlordOverview();
+      if (res.success && res.data) {
+        setData(res.data);
+      }
+      setLoading(false);
+    }
+    loadStats();
+  }, []);
+
+
 
   // React Hook Form Setup
   const {
@@ -149,6 +177,69 @@ export default function MyPropertiesPage() {
 
   return (
     <div className="max-w-6xl mx-auto px-3.5 sm:px-6 py-5 sm:py-8 space-y-5 sm:space-y-6">
+
+      {/* Top Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 border-b border-gray-100 pb-4 sm:pb-5">
+        <div>
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight">Landlord Overview</h1>
+          <p className="text-xs sm:text-sm text-gray-500 mt-0.5">Track your properties, incoming rental applications, and revenue.</p>
+        </div>
+      </div>
+
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5 sm:gap-5">
+        {/* Card 1: Total Properties */}
+        <div className="bg-white border border-gray-200/80 rounded-2xl p-4 sm:p-5 shadow-xs hover:shadow-md transition space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-semibold text-gray-500">Total Listed Properties</span>
+            <div className="p-2 sm:p-2.5 bg-blue-50 text-blue-600 rounded-xl">
+              <Building2 className="w-4 h-4 sm:w-5 sm:h-5" />
+            </div>
+          </div>
+          <div className="flex items-baseline justify-between pt-1">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900">{data?.totalProperties || 0}</h2>
+            <span className="text-[10px] text-blue-700 font-semibold bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200/60">
+              Total
+            </span>
+          </div>
+        </div>
+
+        {/* Card 2: Active Requests */}
+        <div className="bg-white border border-gray-200/80 rounded-2xl p-4 sm:p-5 shadow-xs hover:shadow-md transition space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-semibold text-gray-500">Active / Pending Requests</span>
+            <div className="p-2 sm:p-2.5 bg-amber-50 text-amber-600 rounded-xl">
+              <Inbox className="w-4 h-4 sm:w-5 sm:h-5" />
+            </div>
+          </div>
+          <div className="flex items-baseline justify-between pt-1">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900">{data?.activeRequests || 0}</h2>
+            <Link href="/dashboard/landlord/requests" className="text-xs text-amber-600 font-semibold hover:underline flex items-center gap-1">
+              Manage <ArrowRight className="w-3 h-3" />
+            </Link>
+          </div>
+        </div>
+
+        {/* Card 3: Total Earnings */}
+        <div className="bg-white border border-gray-200/80 rounded-2xl p-4 sm:p-5 shadow-xs hover:shadow-md transition space-y-3 sm:col-span-2 md:col-span-1">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-semibold text-gray-500">Total Rent Revenue</span>
+            <div className="p-2 sm:p-2.5 bg-emerald-50 text-emerald-600 rounded-xl">
+              <Wallet className="w-4 h-4 sm:w-5 sm:h-5" />
+            </div>
+          </div>
+          <div className="flex items-baseline justify-between pt-1">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900">৳{data?.totalEarnings?.toLocaleString() || 0}</h2>
+            <span className="text-[10px] text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200/60">
+              Approved Sum
+            </span>
+          </div>
+        </div>
+      </div>
+
+
+
+
       {/* Header */}
       <div className="flex items-center justify-between border-b border-gray-100 pb-4">
         <div className="flex items-center gap-2.5">
@@ -177,7 +268,7 @@ export default function MyPropertiesPage() {
             <Building className="w-10 h-10 text-gray-300 mx-auto" />
             <div className="text-xs sm:text-sm text-gray-500">No properties added yet.</div>
             <Link
-              href="/dashboard/landlord/add-property"
+              href="/dashboard/landlord/properties/new"
               className="inline-flex items-center gap-1.5 text-xs text-blue-600 font-semibold hover:underline"
             >
               <Plus className="w-3.5 h-3.5" /> Add your first property

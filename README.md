@@ -1,36 +1,122 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🏡 RentNest — Modern House Rental Platform
+ 
+RentNest is a full-featured, responsive, and intuitive real-estate rental platform built with **Next.js (App Router)**, **TypeScript**, **Tailwind CSS**, and **Prisma ORM**.
+ 
+It connects tenants searching for apartments, flats, and rooms with verified landlords and administrators in an effortless digital environment.
+ 
+---
+ 
+## 🔗 Live Demo
+ 
+- **Live Site:** [https://your-rentnest-app.vercel.app](https://your-rentnest-app.vercel.app)
+- **Backend API:** [https://your-rentnest-api.onrender.com](https://your-rentnest-api.onrender.com)
+- **Backend Repo:** [https://your-rentnest-api.onrender.com](https://your-rentnest-api.onrender.com)
+> ⚠️ Replace the links above with your actual deployed URLs.
+ 
+---
+ 
+## 🔑 Admin Credentials
+ 
+For testing/grading purposes, use the following admin login on the live site:
+ 
+| Field    | Value                                            |
+| -------- | ------------------------------------------------- |
+| Email    | `admin@rentnest.com`                              |
+| Password | `Admin123!`                                       |
+ 
+> ⚠️ Replace with your actual seeded admin credentials before submitting.
+ 
+---
 
-## Getting Started
+## ✨ Features
 
-First, run the development server:
+### 👤 Public & Tenant Features
+- **Dynamic Hero Section:** Interactive image carousel using Framer Motion with real-time property highlights and smooth animations.
+- **Advanced Filtering & Search:** Search rental properties by location, min/max price range, and category with live debounce filtering.
+- **URL Query Parameter Support:** Direct navigation to filtered states (e.g., `/properties?categoryId=...`).
+- **Property Details View:** Detailed view with property specs, location details, landlord info, and responsive photo displays.
+
+### 🏠 Landlord Dashboard
+- **Property Management:** Easily post new properties with image previews, category selection, location details, and price configuration.
+- **Form Validation:** Client and server-side validation using **Zod** and **React Hook Form**.
+- **Interactive Management:** View, edit, or delete listings directly from the dashboard.
+
+### 🛡️ Admin Dashboard
+- **Category Management:** Create, view, update, and manage property categories dynamically.
+- **System Overview:** Administrative control over platform listings and categories.
+
+---
+
+## 🛠️ Tech Stack & Libraries
+
+- **Framework:** Next.js (App Router, Client & Server Components)
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS
+- **Package Manager:** pnpm
+- **Animations:** Framer Motion, `react-responsive-carousel`
+- **Icons:** Lucide React, React Icons
+- **Form & Validation:** React Hook Form, Zod (`@hookform/resolvers`)
+- **Database & ORM:** PostgreSQL / SQLite with Prisma ORM
+- **Notifications:** Sonner (Toast notifications)
+
+---
+
+## 🚀 Getting Started
+
+Follow these steps to set up and run the project locally on your machine.
+
+### 1. Prerequisites
+Ensure you have Node.js (v18 or higher) and pnpm installed:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+node -v
+pnpm -v
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+> If pnpm isn't installed yet: `npm install -g pnpm`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 2. Clone the Repository
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+git clone https://github.com/your-username/rentnest.git
+cd rentnest
+```
 
-## Learn More
+### 3. Install Dependencies
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+pnpm install
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+> If you encounter peer dependency warnings, run `pnpm install --shamefully-hoist`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 4. Configure Environment Variables
 
-## Deploy on Vercel
+Create a `.env` or `.env.local` file in the root directory and add the following:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```env
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# Backend / API Config
+NEXT_PUBLIC_BACKEND_API_URL=your-backend-api-url
+
+# JwT Setup
+JWT_ACCESS_SECRET=access-secret-your
+JWT_REFRESH_SECRET=refresh-secret-your
+```
+
+### 5. Setup Prisma Database
+
+Push the schema to your database and generate the Prisma Client:
+
+```bash
+pnpm prisma db push
+pnpm prisma generate
+```
+
+### 6. Run Development Server
+
+```bash
+pnpm dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser to see the result.

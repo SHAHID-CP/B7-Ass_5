@@ -23,8 +23,7 @@ const navItemsByRole: Record<string, Array<{ label: string; href: string; icon: 
     { label: 'My Rentals & Payments', href: '/dashboard/tenant', icon: Home },
   ],
   LANDLORD: [
-    { label: 'Overview', href: '/dashboard/landlord/overview', icon: Home },
-    { label: 'My Properties', href: '/dashboard/landlord', icon: Building },
+    { label: 'Overview', href: '/dashboard/landlord', icon: Home },
     { label: 'Add Property', href: '/dashboard/landlord/properties/new', icon: PlusCircle },
     { label: 'Manage Requests', href: '/dashboard/landlord/requests', icon: Inbox },
   ],

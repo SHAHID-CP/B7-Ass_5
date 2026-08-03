@@ -2,6 +2,7 @@ import Link from 'next/link';
 
 import { Building2, MapPin, Search, ArrowRight, Tag } from 'lucide-react';
 import { getCategories, getProperties } from './properties/_action/publicPropertyActions';
+import HeroSection from '@/components/shared/HeroSection';
 
 
 export default async function HomePage() {
@@ -15,25 +16,8 @@ export default async function HomePage() {
 
   return (
     <div className="min-h-screen space-y-12 pb-12">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-700 to-indigo-800 text-white py-20 px-6 text-center rounded-b-3xl">
-        <div className="max-w-4xl mx-auto space-y-6">
-          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight">
-            Find Your Dream Rental Home Effortlessly
-          </h1>
-          <p className="text-blue-100 text-lg md:text-xl max-w-2xl mx-auto">
-            Browse verified apartments, flats, and rooms from trusted landlords across the city.
-          </p>
-          <div className="pt-4 flex justify-center gap-4">
-            <Link
-              href="/properties"
-              className="bg-white text-blue-700 font-semibold px-6 py-3 rounded-lg shadow-lg hover:bg-blue-50 transition flex items-center gap-2"
-            >
-              <Search className="w-5 h-5" /> Browse Properties
-            </Link>
-          </div>
-        </div>
-      </section>
+
+      <HeroSection></HeroSection>
 
       {/* Categories Section */}
       <section className="max-w-7xl mx-auto px-6 space-y-6">
