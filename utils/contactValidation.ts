@@ -50,7 +50,6 @@ export const propertySchema = z.object({
     .min(3, 'Location must be at least 3 characters long')
     .nonempty('Location is required'),
   price: z
-    .coerce
     .number('Price must be a number' )
     .positive('Price must be greater than 0'),
   categoryId: z
@@ -60,10 +59,37 @@ export const propertySchema = z.object({
     .string()
     .min(10, 'Description must be at least 10 characters long')
     .nonempty('Description is required'),
-  isAvailable: z.boolean().default(true),
 });
 
 export type PropertyFormData = z.infer<typeof propertySchema>;
+
+export const propertySchemaUpadte = z.object({
+  title: z
+    .string()
+    .min(3, 'Title must be at least 3 characters long')
+    .nonempty('Title is required'),
+  image: z
+    .string()
+    .url('Please enter a valid Image URL')
+    .nonempty('Image URL is required'),
+  location: z
+    .string()
+    .min(3, 'Location must be at least 3 characters long')
+    .nonempty('Location is required'),
+  price: z
+    .number('Price must be a number' )
+    .positive('Price must be greater than 0'),
+  categoryId: z
+    .string()
+    .nonempty('Please select a category'),
+  description: z
+    .string()
+    .min(10, 'Description must be at least 10 characters long')
+    .nonempty('Description is required'),
+  isAvailable: z.boolean(),
+});
+
+export type PropertyFormDataUpdate = z.infer<typeof propertySchemaUpadte>;
 
 
 

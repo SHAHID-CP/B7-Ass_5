@@ -24,7 +24,7 @@ export const propertySchema = z.object({
   title: z.string().min(5, 'Title must be at least 5 characters'),
   description: z.string().min(10, 'Description must be at least 10 characters'),
   location: z.string().min(3, 'Location is required'),
-  price: z.coerce.number().positive('Price must be a positive number'),
+  price: z.number().positive('Price must be a positive number'),
   categoryId: z.string().min(1, 'Please select a category'),
   images: z.string().url('Invalid image URL').min(1, 'At least one image URL is required'),
 });

@@ -23,8 +23,9 @@ import {
   Plus, 
   Image as ImageIcon 
 } from 'lucide-react';
-import { PropertyFormData, propertySchema } from '@/utils/contactValidation';
+
 import { toast } from 'sonner';
+import { PropertyFormDataUpdate, propertySchemaUpadte } from '@/utils/contactValidation';
 
 // --- Types ---
 interface Category {
@@ -84,8 +85,8 @@ export default function MyPropertiesPage() {
     reset,
     watch,
     formState: { errors, isSubmitting },
-  } = useForm<PropertyFormData>({
-    resolver: zodResolver(propertySchema),
+  } = useForm<PropertyFormDataUpdate>({
+    resolver: zodResolver(propertySchemaUpadte),
   });
 
   // Image URL Watcher for Live Preview inside Modal
@@ -147,7 +148,7 @@ export default function MyPropertiesPage() {
   };
 
   // Handle Form Submit (Update Property)
-  const onSubmit = async (data: PropertyFormData) => {
+  const onSubmit = async (data: PropertyFormDataUpdate) => {
     if (!editItem) return;
 
     try {

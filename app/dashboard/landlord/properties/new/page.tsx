@@ -39,7 +39,7 @@ export default function AddPropertyPage() {
       title: '',
       description: '',
       location: '',
-      price: undefined,
+      price: 0,
       image: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=800',
       categoryId: '',
     },
@@ -70,7 +70,7 @@ export default function AddPropertyPage() {
   }, [setValue]);
 
   // Handle Form Submit
-  const onSubmit = async (data: PropertyFormDataa) => {
+  const onSubmit = async (data: PropertyFormData) => {
     try {
       const res = await createProperty(data);
 

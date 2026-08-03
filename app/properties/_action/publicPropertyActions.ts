@@ -23,10 +23,10 @@ export async function getProperties(params?: {
     const res = await fetch(`${process.env.BACKEND_API_URL}/api/properties?${query.toString()}`, {
       cache: "no-store", 
     });
-    if (!res.ok) return [];
+
     const data = await res.json();
 
-    return { success: true, data: data?.data?.items || data?.data || [] };
+    return { success: true, data: data?.data?.items || data?.data  };
   } catch (err: any) {
     return { success: false, error: err.message || 'Failed to fetch properties' };
   }
@@ -39,7 +39,6 @@ export async function getPropertyById(id: string) {
     const res = await fetch(`${process.env.BACKEND_API_URL}/api/properties/${id}`, {
       cache: "no-store",
     });
-    if (!res.ok) return [];
 
     const data = await res.json();
     return { success: true, data: data?.data };
@@ -55,7 +54,7 @@ export async function getCategories() {
     const res = await fetch(`${process.env.BACKEND_API_URL}/api/categories`, {
       next: { revalidate: 3600 },
     });
-    if (!res.ok) return [];
+   
     const data = await res.json();
     return { success: true, data: data?.data || [] };
   } catch (err: any) {
