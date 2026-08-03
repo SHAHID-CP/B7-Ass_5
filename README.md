@@ -8,7 +8,7 @@ It connects tenants searching for apartments, flats, and rooms with verified lan
  
 ## 🔗 Live Demo
  
-- **Live Site:** [https://your-rentnest-app.vercel.app](https://your-rentnest-app.vercel.app)
+- **Live Site:** [https://rental-management-rent-nest.vercel.app/](https://rental-management-rent-nest.vercel.app/)
 - **Backend API:** [https://prisma-ass-4.vercel.app/](https://prisma-ass-4.vercel.app/)
 - **Backend Repo:** [https://github.com/SHAHID-CP/B7-Ass_4](https://github.com/SHAHID-CP/B7-Ass_4)
 > ⚠️ Replace the links above with your actual deployed URLs.
