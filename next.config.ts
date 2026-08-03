@@ -9,6 +9,10 @@ const nextConfig: NextConfig = {
         hostname: "static.vecteezy.com"
       },
       {
+        protocol: "https",
+        hostname: "i.ibb.co",
+      },
+      {
         hostname: "example.com"
       }
     ]

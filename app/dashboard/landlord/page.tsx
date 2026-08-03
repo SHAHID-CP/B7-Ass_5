@@ -45,8 +45,6 @@ interface Property {
   image?: string;
 }
 
-
-
 export default function MyPropertiesPage() {
   const [properties, setProperties] = useState<Property[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -54,9 +52,11 @@ export default function MyPropertiesPage() {
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [editItem, setEditItem] = useState<Property | null>(null);
 
+  // Image Upload State
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
 
-
-  const [data, setData] = useState<{
+  const [overviewData, setOverviewData] = useState<{
     totalProperties: number;
     activeRequests: number;
     totalEarnings: number;
@@ -69,14 +69,12 @@ export default function MyPropertiesPage() {
       setLoading(true);
       const res = await getLandlordOverview();
       if (res.success && res.data) {
-        setData(res.data);
+        setOverviewData(res.data);
       }
       setLoading(false);
     }
     loadStats();
   }, []);
-
-
 
   // React Hook Form Setup
   const {
@@ -112,6 +110,7 @@ export default function MyPropertiesPage() {
   // Open Edit Modal & Populate Form Values
   const handleOpenEditModal = (item: Property) => {
     setEditItem(item);
+    setSelectedFile(null); // Reset previously selected file
     reset({
       title: item.title,
       image: item.image || '',
@@ -126,18 +125,19 @@ export default function MyPropertiesPage() {
   // Close Modal
   const handleCloseModal = () => {
     setEditItem(null);
+    setSelectedFile(null);
     reset();
   };
 
   // Handle Delete
-  const handleDelete = async (id: string, title: string) => {
+  const handleDelete = async (id: string) => {
     setDeletingId(id);
     try {
       const res = await deleteProperty(id);
       if (res?.error) {
         toast.error(res.error);
       } else {
-        toast.success("Property deleted successfully")
+        toast.success("Property deleted successfully");
         setProperties((prev) => prev.filter((p) => p.id !== id));
       }
     } catch (err) {
@@ -148,17 +148,50 @@ export default function MyPropertiesPage() {
   };
 
   // Handle Form Submit (Update Property)
-  const onSubmit = async (data: PropertyFormDataUpdate) => {
+  const onSubmit = async (formDataValues: PropertyFormDataUpdate) => {
     if (!editItem) return;
 
     try {
-      const res = await updateProperty(editItem.id, data);
+      let finalImageUrl = formDataValues.image || '';
+
+      if (!selectedFile && !finalImageUrl) {
+        toast.error('Please select an image file!');
+        return;
+      }
+
+      if (selectedFile) {
+        setUploading(true);
+        const formData = new FormData();
+        formData.append('image', selectedFile);
+
+        const imgbbRes = await fetch(
+          `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API_KEY}`,
+          { method: 'POST', body: formData }
+        );
+
+        const imgbbData = await imgbbRes.json();
+
+        if (imgbbData.success) {
+          finalImageUrl = imgbbData.data.url;
+        } else {
+          toast.error('Image upload failed!');
+          setUploading(false);
+          return;
+        }
+        setUploading(false);
+      }
+
+      const res = await updateProperty(editItem.id, {
+        ...formDataValues,
+        price: Number(formDataValues.price),
+        image: finalImageUrl || "",
+      });
 
       if (res?.error) {
         toast.error(res.error);
       } else {
         handleCloseModal();
-        toast.success("Update property successfully")
+        toast.success("Property updated successfully");
         await loadData();
       }
     } catch (err) {
@@ -198,7 +231,7 @@ export default function MyPropertiesPage() {
             </div>
           </div>
           <div className="flex items-baseline justify-between pt-1">
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900">{data?.totalProperties || 0}</h2>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900">{overviewData?.totalProperties || 0}</h2>
             <span className="text-[10px] text-blue-700 font-semibold bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200/60">
               Total
             </span>
@@ -214,7 +247,7 @@ export default function MyPropertiesPage() {
             </div>
           </div>
           <div className="flex items-baseline justify-between pt-1">
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900">{data?.activeRequests || 0}</h2>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900">{overviewData?.activeRequests || 0}</h2>
             <Link href="/dashboard/landlord/requests" className="text-xs text-amber-600 font-semibold hover:underline flex items-center gap-1">
               Manage <ArrowRight className="w-3 h-3" />
             </Link>
@@ -230,16 +263,13 @@ export default function MyPropertiesPage() {
             </div>
           </div>
           <div className="flex items-baseline justify-between pt-1">
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900">৳{data?.totalEarnings?.toLocaleString() || 0}</h2>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900">৳{overviewData?.totalEarnings?.toLocaleString() || 0}</h2>
             <span className="text-[10px] text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200/60">
               Approved Sum
             </span>
           </div>
         </div>
       </div>
-
-
-
 
       {/* Header */}
       <div className="flex items-center justify-between border-b border-gray-100 pb-4">
@@ -280,7 +310,7 @@ export default function MyPropertiesPage() {
             {/* Mobile View */}
             <div className="block md:hidden divide-y divide-gray-100">
               {properties.map((item) => {
-                const imgUrl =  item.image || 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=800';
+                const imgUrl = item.image || 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=800';
                 return (
                   <div key={item.id} className="p-4 space-y-3">
                     <div className="flex gap-3">
@@ -326,7 +356,7 @@ export default function MyPropertiesPage() {
                           <Edit className="w-4 h-4" />
                         </button>
                         <button
-                          onClick={() => handleDelete(item.id, item.title)}
+                          onClick={() => handleDelete(item.id)}
                           disabled={deletingId === item.id}
                           className="p-1.5 text-rose-600 hover:bg-rose-50 rounded-lg transition disabled:opacity-50 cursor-pointer"
                           title="Delete Property"
@@ -400,7 +430,7 @@ export default function MyPropertiesPage() {
                             <Edit className="w-4 h-4" />
                           </button>
                           <button
-                            onClick={() => handleDelete(item.id, item.title)}
+                            onClick={() => handleDelete(item.id)}
                             disabled={deletingId === item.id}
                             className="p-1.5 text-rose-600 hover:bg-rose-50 rounded-lg transition disabled:opacity-50 cursor-pointer"
                             title="Delete Property"
@@ -456,25 +486,29 @@ export default function MyPropertiesPage() {
                 )}
               </div>
 
-              {/* Image URL Input & Preview */}
+              {/* Image Input & Preview */}
               <div>
-                <label className="block text-xs font-semibold text-gray-700 mb-1">Image URL</label>
+                <label className="block text-xs font-semibold text-gray-700 mb-1">Image File</label>
                 <div className="space-y-2">
                   <input
-                    type="text"
-                    {...register('image')}
-                    className="w-full border border-gray-300 rounded-xl p-2.5 text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition"
-                    placeholder="https://images.unsplash.com/..."
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      if (e.target.files && e.target.files[0]) {
+                        setSelectedFile(e.target.files[0]);
+                      }
+                    }}
+                    className="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition cursor-pointer border border-gray-300 rounded-xl"
                   />
                   {errors.image && (
                     <p className="text-rose-500 text-[11px] mt-0.5 font-medium">{errors.image.message}</p>
                   )}
 
                   {/* Live Image Preview using RHF watch */}
-                  {watchedImage && !errors.image && (
+                  {(selectedFile || watchedImage) && !errors.image && (
                     <div className="flex items-center gap-2.5 bg-gray-50 p-2 rounded-xl border border-gray-100">
                       <img
-                        src={watchedImage}
+                        src={selectedFile ? URL.createObjectURL(selectedFile) : watchedImage}
                         alt="Preview"
                         className="w-10 h-10 object-cover rounded-lg border border-gray-200 shrink-0 bg-white"
                         onError={(e) => ((e.target as HTMLElement).style.display = 'none')}
@@ -504,7 +538,7 @@ export default function MyPropertiesPage() {
                   <label className="block text-xs font-semibold text-gray-700 mb-1">Price (৳)</label>
                   <input
                     type="number"
-                    {...register('price')}
+                    {...register('price', { valueAsNumber: true })}
                     className="w-full border border-gray-300 rounded-xl p-2.5 text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition"
                   />
                   {errors.price && (
@@ -569,10 +603,10 @@ export default function MyPropertiesPage() {
                 </button>
                 <button
                   type="submit"
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || uploading}
                   className="px-4 py-2 text-xs font-semibold bg-blue-600 text-white rounded-xl hover:bg-blue-700 active:scale-[0.98] flex items-center gap-1.5 transition disabled:opacity-50 cursor-pointer"
                 >
-                  {isSubmitting && <Loader2 className="w-3.5 h-3.5 animate-spin" />} Save Changes
+                  {(isSubmitting || uploading) && <Loader2 className="w-3.5 h-3.5 animate-spin" />} Save Changes
                 </button>
               </div>
             </form>

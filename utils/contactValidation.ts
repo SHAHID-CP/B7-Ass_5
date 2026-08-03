@@ -44,7 +44,7 @@ export const propertySchema = z.object({
   image: z
     .string()
     .url('Please enter a valid Image URL')
-    .nonempty('Image URL is required'),
+    .optional().or(z.literal('')),
   location: z
     .string()
     .min(3, 'Location must be at least 3 characters long')
@@ -71,7 +71,7 @@ export const propertySchemaUpadte = z.object({
   image: z
     .string()
     .url('Please enter a valid Image URL')
-    .nonempty('Image URL is required'),
+    .optional().or(z.literal('')),
   location: z
     .string()
     .min(3, 'Location must be at least 3 characters long')

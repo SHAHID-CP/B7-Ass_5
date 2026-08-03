@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-
 import { createProperty } from '../../_action/landlordActions';
 import { getCategories } from '@/app/dashboard/admin/_action/categoryActions';
 import { PlusCircle, Loader2, ArrowLeft, Image as ImageIcon } from 'lucide-react';
@@ -19,14 +18,15 @@ interface Category {
   name: string;
 }
 
-
-
 export default function AddPropertyPage() {
   const router = useRouter();
   const [categories, setCategories] = useState<Category[]>([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
 
- 
+  // Image Upload State
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -34,18 +34,17 @@ export default function AddPropertyPage() {
     watch,
     formState: { errors, isSubmitting },
   } = useForm<PropertyFormData>({
-      resolver: zodResolver(propertySchema),
-      defaultValues: {
+    resolver: zodResolver(propertySchema),
+    defaultValues: {
       title: '',
       description: '',
       location: '',
       price: 0,
-      image: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=800',
+      image: '',
       categoryId: '',
     },
   });
 
-  // Watch image for live preview
   const watchedImage = watch('image');
 
   // Load Categories for dropdown
@@ -56,7 +55,6 @@ export default function AddPropertyPage() {
         if (res?.success && res?.data) {
           setCategories(res.data);
           if (res.data.length > 0) {
-            // Automatically set first category as default
             setValue('categoryId', res.data[0].id);
           }
         }
@@ -69,10 +67,49 @@ export default function AddPropertyPage() {
     loadCategories();
   }, [setValue]);
 
-  // Handle Form Submit
+  // Handle Form Submit with ImgBB Upload
   const onSubmit = async (data: PropertyFormData) => {
     try {
-      const res = await createProperty(data);
+      let finalImageUrl = data.image;
+
+      if (!selectedFile && !finalImageUrl) {
+         toast.error('Please select an image file!');
+         return;
+
+  
+        finalImageUrl = 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=800';
+      }
+
+      if (selectedFile) {
+        setUploading(true);
+        const formData = new FormData();
+        formData.append('image', selectedFile);
+
+        const imgbbRes = await fetch(
+          `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API_KEY}`,
+          { method: 'POST', body: formData }
+        );
+
+        const imgbbData = await imgbbRes.json();
+
+        if (imgbbData.success) {
+          finalImageUrl = imgbbData.data.url;
+        } else {
+          toast.error('Image upload failed!');
+          setUploading(false);
+          return;
+        }
+        setUploading(false);
+      }
+
+
+      const updatedData = {
+        ...data,
+        price: Number(data.price),
+        image: finalImageUrl || "",
+      };
+
+      const res = await createProperty(updatedData);
 
       if (res?.error) {
         console.log(res.error);
@@ -84,6 +121,7 @@ export default function AddPropertyPage() {
     } catch (err) {
       console.error('Submission error:', err);
       toast.error('Failed to create property.');
+      setUploading(false);
     }
   };
 
@@ -179,7 +217,7 @@ export default function AddPropertyPage() {
               <input
                 type="number"
                 placeholder="e.g. 15000"
-                {...register('price')}
+                {...register('price', { valueAsNumber: true })}
                 className="w-full border border-gray-300 rounded-xl p-2.5 text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition"
               />
               {errors.price && (
@@ -188,35 +226,42 @@ export default function AddPropertyPage() {
             </div>
           </div>
 
-          {/* Image URL & Preview */}
+          {/* Property Image File Upload */}
           <div>
             <label className="block text-xs font-semibold text-gray-700 mb-1">
-              Image URL
+              Property Image
             </label>
             <div className="space-y-2">
               <input
-                type="text"
-                placeholder="https://images.unsplash.com/..."
-                {...register('image')}
-                className="w-full border border-gray-300 rounded-xl p-2.5 text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition"
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  if (e.target.files && e.target.files[0]) {
+                    setSelectedFile(e.target.files[0]);
+                  }
+                }}
+                className="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition cursor-pointer border border-gray-300 rounded-xl"
               />
               {errors.image && (
                 <p className="text-rose-500 text-[11px] mt-0.5 font-medium">{errors.image.message}</p>
               )}
               
-              {watchedImage && !errors.image && (
+              {/* Image Preview */}
+              {(selectedFile || watchedImage) && (
                 <div className="flex items-center gap-3 bg-gray-50 p-2.5 rounded-xl border border-gray-100">
                   <img
-                    src={watchedImage}
+                    src={selectedFile ? URL.createObjectURL(selectedFile) : watchedImage}
                     alt="Preview"
                     className="w-12 h-12 object-cover rounded-lg border border-gray-200 shrink-0 bg-white"
-                    onError={(e) => ((e.target as HTMLElement).style.display = 'none')}
                   />
                   <div className="text-[11px] text-gray-500 min-w-0">
                     <span className="font-semibold text-gray-700 block flex items-center gap-1">
-                      <ImageIcon className="w-3 h-3 text-blue-600" /> Image Preview
+                      <ImageIcon className="w-3 h-3 text-blue-600" /> 
+                      {selectedFile ? 'Selected Image Preview' : 'Image Preview'}
                     </span>
-                    <span className="truncate block text-gray-400">{watchedImage}</span>
+                    <span className="truncate block text-gray-400">
+                      {selectedFile ? selectedFile.name : watchedImage}
+                    </span>
                   </div>
                 </div>
               )}
@@ -243,13 +288,13 @@ export default function AddPropertyPage() {
           <div className="pt-2">
             <button
               type="submit"
-              disabled={isSubmitting}
+              disabled={isSubmitting || uploading}
               className="w-full bg-blue-600 hover:bg-blue-700 active:scale-[0.99] text-white font-semibold py-2.5 sm:py-3 rounded-xl transition flex items-center justify-center gap-2 text-xs sm:text-sm shadow-xs disabled:opacity-50 touch-manipulation cursor-pointer"
             >
-              {isSubmitting ? (
+              {isSubmitting || uploading ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  <span>Adding Property...</span>
+                  <span>{uploading ? 'Uploading Image...' : 'Adding Property...'}</span>
                 </>
               ) : (
                 <>
