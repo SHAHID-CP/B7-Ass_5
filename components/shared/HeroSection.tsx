@@ -7,7 +7,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Search, CheckCircle2 } from "lucide-react";
 
-// Rental Focused Slides Data
+
 const slides = [
   {
     id: 1,

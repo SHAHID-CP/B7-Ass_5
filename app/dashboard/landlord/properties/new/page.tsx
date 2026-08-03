@@ -26,7 +26,7 @@ export default function AddPropertyPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
 
-  // React Hook Form Setup
+ 
   const {
     register,
     handleSubmit,

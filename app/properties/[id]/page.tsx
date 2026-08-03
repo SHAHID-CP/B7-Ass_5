@@ -44,14 +44,14 @@ export default function PropertyDetailsPage({ params }: Props) {
   }
 
   return (
-    // Mobile-এ padding p-4 এবং spacing space-y-6 করা হয়েছে
+
     <div className="max-w-5xl mx-auto p-4 sm:p-6 space-y-6 sm:space-y-8">
       {/* Title & Header */}
       <div className="space-y-1.5 sm:space-y-2">
         <span className="bg-blue-100 text-blue-700 text-xs font-bold px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full inline-block">
           {property.category?.name || 'Property'}
         </span>
-        {/* Mobile-এ text-xl/2xl এবং md-তে text-3xl */}
+   
         <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-gray-900 leading-tight">
           {property.title}
         </h1>
@@ -60,7 +60,7 @@ export default function PropertyDetailsPage({ params }: Props) {
         </p>
       </div>
 
-      {/* Image Banner - Mobile-এ h-52/h-64 এবং md-তে h-80 */}
+  
       <div className="h-52 sm:h-64 md:h-80 bg-gray-100 rounded-xl sm:rounded-2xl flex items-center justify-center overflow-hidden border">
         {property.image ? (
           <img src={property.image} alt={property.title} className="w-full h-full object-cover" />
@@ -69,7 +69,7 @@ export default function PropertyDetailsPage({ params }: Props) {
         )}
       </div>
 
-      {/* Main Info Grid - Gap কমানো হয়েছে mobile-এর জন্য */}
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
         {/* Left Side: Description & Reviews */}
         <div className="md:col-span-2 space-y-4 sm:space-y-6">

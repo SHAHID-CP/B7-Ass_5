@@ -14,7 +14,7 @@ export default function BrowsePropertiesPage() {
   const [categories, setCategories] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Filter States
+
   const [location, setLocation] = useState('');
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
@@ -27,7 +27,7 @@ export default function BrowsePropertiesPage() {
     }
   }, [urlCategoryId]);
 
-  // 2. Fetch Categories once on mount
+
   useEffect(() => {
     async function loadCategories() {
       const catRes = await getCategories();
@@ -36,7 +36,7 @@ export default function BrowsePropertiesPage() {
     loadCategories();
   }, []);
 
-  // 3. Main API Call Function
+
   const fetchFilteredData = async () => {
     setLoading(true);
     try {
@@ -49,7 +49,7 @@ export default function BrowsePropertiesPage() {
     }
   };
 
-  // 4. Fetch Data with Debounce or when Filter State changes
+
   useEffect(() => {
     const timer = setTimeout(() => {
       fetchFilteredData();
@@ -58,7 +58,7 @@ export default function BrowsePropertiesPage() {
     return () => clearTimeout(timer);
   }, [location, minPrice, maxPrice, categoryId]);
 
-  // 5. Reset / Clear Filter Logic
+
   const handleResetFilters = () => {
     setLocation('');
     setMinPrice('');

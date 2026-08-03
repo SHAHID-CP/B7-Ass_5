@@ -9,8 +9,8 @@ It connects tenants searching for apartments, flats, and rooms with verified lan
 ## 🔗 Live Demo
  
 - **Live Site:** [https://your-rentnest-app.vercel.app](https://your-rentnest-app.vercel.app)
-- **Backend API:** [https://your-rentnest-api.onrender.com](https://your-rentnest-api.onrender.com)
-- **Backend Repo:** [https://your-rentnest-api.onrender.com](https://your-rentnest-api.onrender.com)
+- **Backend API:** [https://prisma-ass-4.vercel.app/](https://prisma-ass-4.vercel.app/)
+- **Backend Repo:** [https://github.com/SHAHID-CP/B7-Ass_4](https://github.com/SHAHID-CP/B7-Ass_4)
 > ⚠️ Replace the links above with your actual deployed URLs.
  
 ---
@@ -21,8 +21,8 @@ For testing/grading purposes, use the following admin login on the live site:
  
 | Field    | Value                                            |
 | -------- | ------------------------------------------------- |
-| Email    | `admin@rentnest.com`                              |
-| Password | `Admin123!`                                       |
+| Email    | `admin@gmail.com`                              |
+| Password | `12345678`                                       |
  
 > ⚠️ Replace with your actual seeded admin credentials before submitting.
  

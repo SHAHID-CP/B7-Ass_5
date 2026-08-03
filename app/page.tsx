@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { Building2, MapPin, Search, ArrowRight, Tag } from 'lucide-react';
+import { Building2, MapPin, ArrowRight, Tag } from 'lucide-react';
 import { getCategories, getProperties } from './properties/_action/publicPropertyActions';
 import HeroSection from '@/components/shared/HeroSection';
 

@@ -47,13 +47,9 @@ export default function RentalRequestModal({ isOpen, onClose, property }: ModalP
   };
 
   return (
-    /* Background Overlay - Padding p-3 বা p-4 নিশ্চিত করে যে মোডাল স্ক্রিনের বর্ডারে লেগে যাবে না */
+
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 z-50">
-      {/* 
-        Modal Container Changes:
-        1. p-4 sm:p-6 (মোবাইলে কম প্যাডিং)
-        2. max-h-[90vh] overflow-y-auto (ছোট স্ক্রিনে স্ক্রল করার সুবিধা)
-      */}
+
       <div className="bg-white rounded-2xl max-w-md w-full p-4 sm:p-6 space-y-4 sm:space-y-5 relative shadow-2xl animate-in fade-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto">
         
         {/* Close Button */}
@@ -114,7 +110,7 @@ export default function RentalRequestModal({ isOpen, onClose, property }: ModalP
               </div>
             )}
 
-            {/* Action Buttons - মোবাইলে Flex Row ও কাস্টম হাইট যুক্ত */}
+
             <div className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 pt-2">
               <button
                 type="button"
