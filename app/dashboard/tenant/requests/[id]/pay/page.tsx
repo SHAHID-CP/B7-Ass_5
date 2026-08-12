@@ -27,10 +27,8 @@ export default function PaymentInitiationPage({ params }: PayPageProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-
   useEffect(() => {
     const handlePageShow = (event: PageTransitionEvent) => {
-
       if (event.persisted) {
         setLoading(false);
       }
@@ -77,53 +75,53 @@ export default function PaymentInitiationPage({ params }: PayPageProps) {
       {/* Back Button */}
       <Link 
         href="/dashboard/tenant" 
-        className="inline-flex items-center gap-2 text-xs sm:text-sm text-gray-600 hover:text-gray-900 font-medium transition active:scale-95"
+        className="inline-flex items-center gap-2 text-xs sm:text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 font-medium transition active:scale-95"
       >
         <ArrowLeft className="w-4 h-4" /> Back to Dashboard
       </Link>
 
       {/* Main Payment Box */}
-      <div className="bg-white border border-gray-200/80 rounded-2xl p-4 sm:p-8 space-y-5 sm:space-y-6 shadow-xs">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-4 sm:p-8 space-y-5 sm:space-y-6 shadow-xs transition-colors">
         
         {/* Header */}
-        <div className="border-b border-gray-100 pb-4 sm:pb-5 space-y-2">
+        <div className="border-b border-slate-100 dark:border-slate-800 pb-4 sm:pb-5 space-y-2">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-            <h1 className="text-lg sm:text-xl font-bold text-gray-900 flex items-center gap-2 tracking-tight">
-              <CreditCard className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 shrink-0" /> Checkout
+            <h1 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2 tracking-tight">
+              <CreditCard className="w-5 h-5 sm:w-6 sm:h-6 text-emerald-600 dark:text-emerald-400 shrink-0" /> Checkout
             </h1>
-            <span className="self-start sm:self-auto px-2.5 py-1 bg-blue-50 text-blue-700 text-[11px] sm:text-xs font-semibold rounded-full border border-blue-200/60 truncate max-w-full">
+            <span className="self-start sm:self-auto px-2.5 py-1 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 text-[11px] sm:text-xs font-semibold rounded-full border border-emerald-200/60 dark:border-emerald-800/60 truncate max-w-full">
               Ref: {requestId.substring(0, 8)}...
             </span>
           </div>
-          <p className="text-xs text-gray-500 leading-relaxed">
+          <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
             You will be redirected to Stripe to complete your payment securely.
           </p>
         </div>
 
         {/* Request & Pricing Summary */}
-        <div className="bg-gray-50/80 border border-gray-100 rounded-xl p-3.5 sm:p-4 space-y-3">
+        <div className="bg-slate-50/80 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800/80 rounded-xl p-3.5 sm:p-4 space-y-3">
           <div className="flex items-center gap-3">
-            <div className="p-2 sm:p-2.5 bg-white border border-gray-200/70 rounded-lg text-blue-600 shrink-0 shadow-2xs">
+            <div className="p-2 sm:p-2.5 bg-white dark:bg-slate-800 border border-slate-200/70 dark:border-slate-700/70 rounded-lg text-emerald-600 dark:text-emerald-400 shrink-0 shadow-2xs">
               <Building2 className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
             <div>
-              <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Payment Gateway</p>
-              <p className="text-xs sm:text-sm font-bold text-gray-800">Stripe Secure Checkout</p>
+              <p className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Payment Gateway</p>
+              <p className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200">Stripe Secure Checkout</p>
             </div>
           </div>
 
-          <hr className="border-dashed border-gray-200" />
+          <hr className="border-dashed border-slate-200 dark:border-slate-700/70" />
 
-          <div className="space-y-2 text-xs text-gray-600">
+          <div className="space-y-2 text-xs text-slate-600 dark:text-slate-400">
             <div className="flex items-center justify-between gap-2">
               <span className="shrink-0">Rental Request ID:</span>
-              <span className="font-mono font-medium text-gray-800 text-[11px] sm:text-xs truncate max-w-[180px] sm:max-w-none">
+              <span className="font-mono font-medium text-slate-800 dark:text-slate-200 text-[11px] sm:text-xs truncate max-w-[180px] sm:max-w-none">
                 {requestId}
               </span>
             </div>
             <div className="flex items-center justify-between">
               <span>Security Guarantee:</span>
-              <span className="text-emerald-600 font-medium flex items-center gap-1 text-[11px] sm:text-xs">
+              <span className="text-emerald-600 dark:text-emerald-400 font-medium flex items-center gap-1 text-[11px] sm:text-xs">
                 <ShieldCheck className="w-3.5 h-3.5 shrink-0" /> 256-bit Encrypted
               </span>
             </div>
@@ -132,7 +130,7 @@ export default function PaymentInitiationPage({ params }: PayPageProps) {
 
         {/* Error Alert */}
         {error && (
-          <div className="bg-rose-50 border border-rose-200/80 p-3 sm:p-3.5 rounded-xl flex items-start gap-2.5 text-rose-700 text-xs animate-in fade-in">
+          <div className="bg-rose-50 dark:bg-rose-950/40 border border-rose-200/80 dark:border-rose-900/60 p-3 sm:p-3.5 rounded-xl flex items-start gap-2.5 text-rose-700 dark:text-rose-400 text-xs animate-in fade-in">
             <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
             <div>
               <p className="font-bold">Checkout Error</p>
@@ -145,7 +143,7 @@ export default function PaymentInitiationPage({ params }: PayPageProps) {
         <button
           onClick={handleInitiatePayment}
           disabled={loading}
-          className="w-full cursor-pointer py-3 sm:py-3.5 bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white font-semibold text-xs sm:text-sm rounded-xl transition shadow-xs flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed touch-manipulation"
+          className="w-full cursor-pointer py-3 sm:py-3.5 bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-600 dark:hover:bg-emerald-500 active:scale-[0.98] text-white font-semibold text-xs sm:text-sm rounded-xl transition shadow-xs flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed touch-manipulation"
         >
           {loading ? (
             <>
@@ -158,7 +156,7 @@ export default function PaymentInitiationPage({ params }: PayPageProps) {
           )}
         </button>
 
-        <p className="text-[10px] sm:text-[11px] text-center text-gray-400">
+        <p className="text-[10px] sm:text-[11px] text-center text-slate-400 dark:text-slate-500">
           Powered by Stripe. Card details are processed securely offsite.
         </p>
       </div>

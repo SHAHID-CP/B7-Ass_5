@@ -12,6 +12,7 @@ import {
   ShieldAlert,
   MessageSquare,
   PhoneCall,
+  X,
 } from 'lucide-react';
 
 // FAQ Category Type
@@ -99,30 +100,38 @@ export default function SupportPage() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-10 sm:space-y-14">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-10 sm:space-y-14 transition-colors">
       {/* Hero & Search Bar */}
       <div className="text-center space-y-4 max-w-2xl mx-auto">
-        <div className="inline-flex items-center gap-2 bg-purple-50 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold border border-purple-200/60">
-          <HelpCircle className="w-3.5 h-3.5" />
+        <div className="inline-flex items-center gap-2 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 px-3 py-1 rounded-full text-xs font-semibold border border-emerald-200/60 dark:border-emerald-800/60">
+          <HelpCircle className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
           <span>Support & FAQ</span>
         </div>
-        <h1 className="text-2xl sm:text-4xl font-extrabold text-gray-900 tracking-tight">
+        <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
           How Can We Help You Today?
         </h1>
-        <p className="text-xs sm:text-sm text-gray-500">
+        <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
           Search for common questions or browse categories below to find quick answers.
         </p>
 
         {/* Search Bar Input */}
         <div className="relative mt-4 max-w-xl mx-auto">
-          <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+          <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
           <input
             type="text"
             placeholder="Search questions, keywords, topics..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-white border border-gray-200 rounded-2xl pl-11 pr-4 py-3 text-xs sm:text-sm shadow-xs outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition"
+            className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl pl-11 pr-10 py-3 text-xs sm:text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 shadow-xs outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition"
           />
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery('')}
+              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
         </div>
       </div>
 
@@ -135,13 +144,13 @@ export default function SupportPage() {
             <button
               key={cat.id}
               onClick={() => setActiveCategory(cat.id as Category)}
-              className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition cursor-pointer ${
+              className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium transition cursor-pointer ${
                 isActive
-                  ? 'bg-blue-600 text-white shadow-xs'
-                  : 'bg-white border border-gray-200/80 text-gray-600 hover:bg-gray-50'
+                  ? 'bg-emerald-600 text-white shadow-xs'
+                  : 'bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60'
               }`}
             >
-              <Icon className="w-4 h-4" />
+              <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-slate-500 dark:text-slate-400'}`} />
               <span>{cat.label}</span>
             </button>
           );
@@ -156,24 +165,24 @@ export default function SupportPage() {
             return (
               <div
                 key={faq.id}
-                className="bg-white rounded-2xl border border-gray-200/80 overflow-hidden shadow-xs transition"
+                className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 overflow-hidden shadow-xs transition"
               >
                 <button
                   onClick={() => toggleFaq(faq.id)}
-                  className="w-full text-left p-4 sm:p-5 flex items-center justify-between gap-4 cursor-pointer hover:bg-slate-50/50 transition"
+                  className="w-full text-left p-4 sm:p-5 flex items-center justify-between gap-4 cursor-pointer hover:bg-slate-50/60 dark:hover:bg-slate-800/40 transition"
                 >
-                  <span className="font-semibold text-gray-900 text-xs sm:text-sm">
+                  <span className="font-semibold text-slate-900 dark:text-slate-100 text-xs sm:text-sm">
                     {faq.question}
                   </span>
                   <ChevronDown
-                    className={`w-4 h-4 text-gray-400 shrink-0 transition-transform duration-200 ${
-                      isOpen ? 'rotate-180 text-blue-600' : ''
+                    className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${
+                      isOpen ? 'rotate-180 text-emerald-600 dark:text-emerald-400' : ''
                     }`}
                   />
                 </button>
 
                 {isOpen && (
-                  <div className="px-4 sm:px-5 pb-5 text-xs sm:text-sm text-gray-500 border-t border-gray-100 pt-3 leading-relaxed">
+                  <div className="px-4 sm:px-5 pb-5 text-xs sm:text-sm text-slate-500 dark:text-slate-400 border-t border-slate-100 dark:border-slate-800 pt-3 leading-relaxed">
                     {faq.answer}
                   </div>
                 )}
@@ -181,9 +190,9 @@ export default function SupportPage() {
             );
           })
         ) : (
-          <div className="text-center py-10 bg-white rounded-2xl border border-gray-200/80 space-y-2">
-            <p className="font-medium text-gray-900 text-sm">No results found</p>
-            <p className="text-xs text-gray-500">
+          <div className="text-center py-10 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 space-y-2">
+            <p className="font-medium text-slate-900 dark:text-slate-100 text-sm">No results found</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400">
               Try searching with a different word or select another category.
             </p>
           </div>
@@ -191,10 +200,10 @@ export default function SupportPage() {
       </div>
 
       {/* Need More Help Banner */}
-      <div className="bg-linear-to-r from-blue-700 to-blue-900 text-white rounded-3xl p-6 sm:p-10 flex flex-col md:flex-row items-center justify-between gap-6 shadow-md">
+      <div className="bg-gradient-to-r from-emerald-800 via-emerald-900 to-slate-900 text-white rounded-3xl p-6 sm:p-10 flex flex-col md:flex-row items-center justify-between gap-6 shadow-md border border-emerald-800/30">
         <div className="space-y-2 text-center md:text-left">
           <h2 className="text-lg sm:text-2xl font-bold">Still need help?</h2>
-          <p className="text-xs sm:text-sm text-indigo-200 max-w-md">
+          <p className="text-xs sm:text-sm text-emerald-100/80 max-w-md">
             Can’t find the answer you are looking for? Please reach out to our dedicated support team directly.
           </p>
         </div>
@@ -202,16 +211,16 @@ export default function SupportPage() {
         <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
           <Link
             href="/contact"
-            className="inline-flex items-center justify-center gap-2 bg-white text-blue-900 hover:bg-indigo-50 font-semibold text-xs sm:text-sm px-5 py-2.5 rounded-xl transition"
+            className="inline-flex items-center justify-center gap-2 bg-white text-emerald-950 hover:bg-emerald-50 font-semibold text-xs sm:text-sm px-5 py-2.5 rounded-xl transition shadow-xs"
           >
-            <MessageSquare className="w-4 h-4" />
+            <MessageSquare className="w-4 h-4 text-emerald-700" />
             <span>Send Us a Message</span>
           </Link>
           <a
             href="tel:+8801700000000"
-            className="inline-flex items-center justify-center gap-2 bg-blue-800/60 hover:bg-blue-800/80 border border-blue-400/30 text-white font-semibold text-xs sm:text-sm px-5 py-2.5 rounded-xl transition"
+            className="inline-flex items-center justify-center gap-2 bg-emerald-950/60 hover:bg-emerald-950/80 border border-emerald-500/30 text-white font-semibold text-xs sm:text-sm px-5 py-2.5 rounded-xl transition"
           >
-            <PhoneCall className="w-4 h-4" />
+            <PhoneCall className="w-4 h-4 text-emerald-400" />
             <span>Call Support</span>
           </a>
         </div>

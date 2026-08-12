@@ -3,16 +3,15 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Mail, Phone, MapPin, Send, Loader2, MessageSquare, AlertCircle } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, Loader2, MessageSquare, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { ContactFormData, contactSchema } from '@/utils/contactValidation';
 import { toast } from 'sonner';
-
 
 export default function ContactPage() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  // ২. React Hook Form Setup
+  // React Hook Form Setup
   const {
     register,
     handleSubmit,
@@ -25,28 +24,28 @@ export default function ContactPage() {
 
   const onSubmit = (data: ContactFormData) => {
     setSubmitting(true);
-    toast.success("Submited your Information")
 
     // Form Submission Simulation
     setTimeout(() => {
       setSubmitting(false);
       setSubmitted(true);
+      toast.success("Submitted your information successfully!");
       reset(); 
     }, 1200);
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-10">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-10 transition-colors">
       {/* Header */}
       <div className="text-center space-y-3 max-w-2xl mx-auto">
-        <div className="inline-flex items-center gap-2 bg-purple-50 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold border border-purple-200/60">
-          <MessageSquare className="w-3.5 h-3.5" />
+        <div className="inline-flex items-center gap-2 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 px-3 py-1 rounded-full text-xs font-semibold border border-emerald-200/60 dark:border-emerald-800/60">
+          <MessageSquare className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
           <span>Get In Touch</span>
         </div>
-        <h1 className="text-2xl sm:text-4xl font-extrabold text-gray-900 tracking-tight">
+        <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
           We’d Love to Hear From You
         </h1>
-        <p className="text-xs sm:text-sm text-gray-500">
+        <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
           Have questions, feedback, or need support? Send us a message and our team will get back to you shortly.
         </p>
       </div>
@@ -54,73 +53,71 @@ export default function ContactPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Contact Info Cards */}
         <div className="space-y-4">
-          <div className="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-xs flex items-start gap-4">
-            <div className="p-3 bg-purple-50 text-blue-600 rounded-xl shrink-0">
+          <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs flex items-start gap-4 hover:border-emerald-500/30 transition duration-300">
+            <div className="p-3 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 rounded-xl shrink-0 border border-emerald-100 dark:border-emerald-900/40">
               <Mail className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="font-bold text-gray-900 text-sm">Email Us</h3>
-              <p className="text-xs text-gray-500 mt-0.5">support@rentalsystem.com</p>
-              <p className="text-xs text-gray-500">info@rentalsystem.com</p>
+              <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm">Email Us</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">support@rentalsystem.com</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">info@rentalsystem.com</p>
             </div>
           </div>
 
-          <div className="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-xs flex items-start gap-4">
-            <div className="p-3 bg-purple-50 text-blue-600 rounded-xl shrink-0">
+          <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs flex items-start gap-4 hover:border-emerald-500/30 transition duration-300">
+            <div className="p-3 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 rounded-xl shrink-0 border border-emerald-100 dark:border-emerald-900/40">
               <Phone className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="font-bold text-gray-900 text-sm">Call Us</h3>
-              <p className="text-xs text-gray-500 mt-0.5">+880 1700-000000</p>
-              <p className="text-xs text-gray-500">Sat - Thu: 9 AM - 7 PM</p>
+              <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm">Call Us</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">+880 1700-000000</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Sat - Thu: 9 AM - 7 PM</p>
             </div>
           </div>
 
-          <div className="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-xs flex items-start gap-4">
-            <div className="p-3 bg-purple-50 text-blue-600 rounded-xl shrink-0">
+          <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs flex items-start gap-4 hover:border-emerald-500/30 transition duration-300">
+            <div className="p-3 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 rounded-xl shrink-0 border border-emerald-100 dark:border-emerald-900/40">
               <MapPin className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="font-bold text-gray-900 text-sm">Our Office</h3>
-              <p className="text-xs text-gray-500 mt-0.5">Gulshan-2, Dhaka, Bangladesh</p>
+              <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm">Our Office</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Gulshan-2, Dhaka, Bangladesh</p>
             </div>
           </div>
         </div>
 
         {/* Contact Form with Zod & React Hook Form */}
-        <div className="lg:col-span-2 bg-white p-6 sm:p-8 rounded-2xl border border-gray-200/80 shadow-xs">
+        <div className="lg:col-span-2 bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs">
           {submitted ? (
             <div className="py-12 text-center space-y-3">
-              <div className="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto">
-                ✓
-              </div>
-              <h3 className="text-lg font-bold text-gray-900">Message Sent Successfully!</h3>
-              <p className="text-xs sm:text-sm text-gray-500 max-w-md mx-auto">
+              <CheckCircle2 className="w-12 h-12 text-emerald-500 mx-auto animate-bounce" />
+              <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">Message Sent Successfully!</h3>
+              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 max-w-md mx-auto">
                 Thank you for reaching out. We have received your query and will reply as soon as possible.
               </p>
               <button
                 onClick={() => setSubmitted(false)}
-                className="mt-4 text-xs font-semibold text-blue-600 hover:underline cursor-pointer"
+                className="mt-4 text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:underline cursor-pointer"
               >
                 Send another message
               </button>
             </div>
           ) : (
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
-              <h2 className="text-base font-bold text-gray-900">Send a Message</h2>
+              <h2 className="text-base font-bold text-slate-900 dark:text-slate-100">Send a Message</h2>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {/* Name Field */}
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-gray-700">Your Name</label>
+                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Your Name</label>
                   <input
                     type="text"
                     placeholder="John Doe"
                     {...register('name')}
-                    className={`w-full border rounded-xl px-3.5 py-2 text-xs sm:text-sm outline-none transition ${
+                    className={`w-full border bg-slate-50/50 dark:bg-slate-800/50 text-slate-900 dark:text-slate-100 rounded-xl px-3.5 py-2 text-xs sm:text-sm outline-none transition ${
                       errors.name
                         ? 'border-rose-500 focus:ring-2 focus:ring-rose-500/20'
-                        : 'border-gray-200 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500'
+                        : 'border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500'
                     }`}
                   />
                   {errors.name && (
@@ -133,15 +130,15 @@ export default function ContactPage() {
 
                 {/* Email Field */}
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-gray-700">Your Email</label>
+                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Your Email</label>
                   <input
                     type="email"
                     placeholder="john@example.com"
                     {...register('email')}
-                    className={`w-full border rounded-xl px-3.5 py-2 text-xs sm:text-sm outline-none transition ${
+                    className={`w-full border bg-slate-50/50 dark:bg-slate-800/50 text-slate-900 dark:text-slate-100 rounded-xl px-3.5 py-2 text-xs sm:text-sm outline-none transition ${
                       errors.email
                         ? 'border-rose-500 focus:ring-2 focus:ring-rose-500/20'
-                        : 'border-gray-200 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500'
+                        : 'border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500'
                     }`}
                   />
                   {errors.email && (
@@ -155,15 +152,15 @@ export default function ContactPage() {
 
               {/* Subject Field */}
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-gray-700">Subject</label>
+                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Subject</label>
                 <input
                   type="text"
                   placeholder="How can we help?"
                   {...register('subject')}
-                  className={`w-full border rounded-xl px-3.5 py-2 text-xs sm:text-sm outline-none transition ${
+                  className={`w-full border bg-slate-50/50 dark:bg-slate-800/50 text-slate-900 dark:text-slate-100 rounded-xl px-3.5 py-2 text-xs sm:text-sm outline-none transition ${
                     errors.subject
                       ? 'border-rose-500 focus:ring-2 focus:ring-rose-500/20'
-                      : 'border-gray-200 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500'
+                      : 'border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500'
                   }`}
                 />
                 {errors.subject && (
@@ -176,15 +173,15 @@ export default function ContactPage() {
 
               {/* Message Field */}
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-gray-700">Message</label>
+                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Message</label>
                 <textarea
                   rows={4}
                   placeholder="Type your message here..."
                   {...register('message')}
-                  className={`w-full border rounded-xl px-3.5 py-2 text-xs sm:text-sm outline-none transition resize-none ${
+                  className={`w-full border bg-slate-50/50 dark:bg-slate-800/50 text-slate-900 dark:text-slate-100 rounded-xl px-3.5 py-2 text-xs sm:text-sm outline-none transition resize-none ${
                     errors.message
                       ? 'border-rose-500 focus:ring-2 focus:ring-rose-500/20'
-                      : 'border-gray-200 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500'
+                      : 'border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500'
                   }`}
                 />
                 {errors.message && (
@@ -199,7 +196,7 @@ export default function ContactPage() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs sm:text-sm px-6 py-2.5 rounded-xl transition disabled:opacity-50 cursor-pointer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-semibold text-xs sm:text-sm px-6 py-2.5 rounded-xl transition disabled:opacity-50 cursor-pointer shadow-xs"
               >
                 {submitting ? (
                   <>

@@ -62,7 +62,7 @@ export default function AdminAnalyticsPage() {
         if (propsRes?.success) setProperties(propsRes.data || []);
         if (categoriesRes?.success) setCategories(categoriesRes.data || []);
       } catch (error) {
-        toast.error('Analytics Data Fetching Error:');
+        toast.error('Analytics Data Fetching Error');
       } finally {
         setLoading(false);
       }
@@ -73,8 +73,8 @@ export default function AdminAnalyticsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-[60vh] flex flex-col items-center justify-center gap-2 text-gray-500 text-xs sm:text-sm">
-        <Loader2 className="w-8 h-8 animate-spin text-purple-600" />
+      <div className="min-h-[60vh] flex flex-col items-center justify-center gap-2 text-slate-500 dark:text-slate-400 text-xs sm:text-sm">
+        <Loader2 className="w-8 h-8 animate-spin text-emerald-600 dark:text-emerald-400" />
         <span>Loading Admin Analytics...</span>
       </div>
     );
@@ -87,7 +87,7 @@ export default function AdminAnalyticsPage() {
 
   const userRoleData = [
     { name: 'Tenants', value: stats?.activeTenants ?? tenantCount, color: '#10B981' },
-    { name: 'Landlords', value: stats?.activeLandlords ?? landlordCount, color: '#3B82F6' },
+    { name: 'Landlords', value: stats?.activeLandlords ?? landlordCount, color: '#0284C7' },
     { name: 'Admins', value: adminCount, color: '#8B5CF6' },
   ].filter((item) => item.value > 0);
 
@@ -114,15 +114,15 @@ export default function AdminAnalyticsPage() {
   return (
     <div className="max-w-7xl mx-auto px-3.5 sm:px-6 py-5 sm:py-8 space-y-6 sm:space-y-8">
       {/* Header */}
-      <div className="flex items-center gap-3 pb-4 border-b border-gray-100">
-        <div className="p-2 bg-purple-50 text-purple-600 rounded-xl shrink-0">
+      <div className="flex items-center gap-3 pb-4 border-b border-slate-200/80 dark:border-slate-800">
+        <div className="p-2 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 rounded-xl shrink-0 border border-emerald-200/60 dark:border-emerald-800/60">
           <Shield className="w-5 h-5 sm:w-6 sm:h-6" />
         </div>
         <div>
-          <h1 className="text-lg sm:text-2xl font-bold text-gray-900 tracking-tight">
+          <h1 className="text-lg sm:text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
             System Level Analytics
           </h1>
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-slate-500 dark:text-slate-400">
             Platform performance metrics, user statistics, and rental property distribution
           </p>
         </div>
@@ -130,44 +130,50 @@ export default function AdminAnalyticsPage() {
 
       {/* Primary KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-        <div className="bg-white p-4 rounded-2xl border border-gray-200/80 shadow-xs flex items-center justify-between">
+        <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs flex items-center justify-between transition-colors">
           <div>
-            <p className="text-xs font-medium text-gray-500">Total System Users</p>
-            <p className="text-xl sm:text-2xl font-black text-gray-900 mt-1">{stats?.totalUsers ?? users.length}</p>
+            <p className="text-xs font-medium text-slate-500 dark:text-slate-400">Total System Users</p>
+            <p className="text-xl sm:text-2xl font-black text-slate-900 dark:text-slate-100 mt-1">
+              {stats?.totalUsers ?? users.length}
+            </p>
           </div>
-          <div className="bg-purple-50 p-3 rounded-xl text-purple-600">
+          <div className="bg-emerald-50 dark:bg-emerald-950/50 p-3 rounded-xl text-emerald-600 dark:text-emerald-400">
             <Users className="w-5 h-5 sm:w-6 sm:h-6" />
           </div>
         </div>
 
-        <div className="bg-white p-4 rounded-2xl border border-gray-200/80 shadow-xs flex items-center justify-between">
+        <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs flex items-center justify-between transition-colors">
           <div>
-            <p className="text-xs font-medium text-gray-500">Total Properties</p>
-            <p className="text-xl sm:text-2xl font-black text-gray-900 mt-1">{stats?.totalProperties ?? properties.length}</p>
+            <p className="text-xs font-medium text-slate-500 dark:text-slate-400">Total Properties</p>
+            <p className="text-xl sm:text-2xl font-black text-slate-900 dark:text-slate-100 mt-1">
+              {stats?.totalProperties ?? properties.length}
+            </p>
           </div>
-          <div className="bg-blue-50 p-3 rounded-xl text-blue-600">
+          <div className="bg-sky-50 dark:bg-sky-950/50 p-3 rounded-xl text-sky-600 dark:text-sky-400">
             <Building2 className="w-5 h-5 sm:w-6 sm:h-6" />
           </div>
         </div>
 
-        <div className="bg-white p-4 rounded-2xl border border-gray-200/80 shadow-xs flex items-center justify-between">
+        <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs flex items-center justify-between transition-colors">
           <div>
-            <p className="text-xs font-medium text-gray-500">Pending Requests</p>
-            <p className="text-xl sm:text-2xl font-black text-amber-600 mt-1">{stats?.pendingRentalRequests ?? pendingRentals}</p>
+            <p className="text-xs font-medium text-slate-500 dark:text-slate-400">Pending Requests</p>
+            <p className="text-xl sm:text-2xl font-black text-amber-600 dark:text-amber-400 mt-1">
+              {stats?.pendingRentalRequests ?? pendingRentals}
+            </p>
           </div>
-          <div className="bg-amber-50 p-3 rounded-xl text-amber-600">
+          <div className="bg-amber-50 dark:bg-amber-950/50 p-3 rounded-xl text-amber-600 dark:text-amber-400">
             <Clock className="w-5 h-5 sm:w-6 sm:h-6" />
           </div>
         </div>
 
-        <div className="bg-white p-4 rounded-2xl border border-gray-200/80 shadow-xs flex items-center justify-between">
+        <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs flex items-center justify-between transition-colors">
           <div>
-            <p className="text-xs font-medium text-gray-500">Total System Revenue</p>
-            <p className="text-xl sm:text-2xl font-black text-emerald-600 mt-1">
+            <p className="text-xs font-medium text-slate-500 dark:text-slate-400">Total System Revenue</p>
+            <p className="text-xl sm:text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-1">
               ৳{(stats?.totalRevenue ?? 0).toLocaleString()}
             </p>
           </div>
-          <div className="bg-emerald-50 p-3 rounded-xl text-emerald-600">
+          <div className="bg-emerald-50 dark:bg-emerald-950/50 p-3 rounded-xl text-emerald-600 dark:text-emerald-400">
             <DollarSign className="w-5 h-5 sm:w-6 sm:h-6" />
           </div>
         </div>
@@ -176,17 +182,17 @@ export default function AdminAnalyticsPage() {
       {/* Charts Grid Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* User Roles Breakdown (Pie Chart) */}
-        <div className="bg-white p-5 sm:p-6 rounded-2xl border border-gray-200/80 shadow-xs space-y-4">
+        <div className="bg-white dark:bg-slate-900 p-5 sm:p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-4 transition-colors">
           <div>
-            <h2 className="text-base font-bold text-gray-800 flex items-center gap-2">
-              <PieIcon className="w-4 h-4 text-purple-600" /> User Role Distribution
+            <h2 className="text-base font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2">
+              <PieIcon className="w-4 h-4 text-emerald-600 dark:text-emerald-400" /> User Role Distribution
             </h2>
-            <p className="text-xs text-gray-400">Proportion of Tenants, Landlords, and Admins</p>
+            <p className="text-xs text-slate-400 dark:text-slate-500">Proportion of Tenants, Landlords, and Admins</p>
           </div>
 
           <div className="h-64 w-full flex items-center justify-center">
             {userRoleData.length === 0 ? (
-              <p className="text-xs text-gray-400">No user data available</p>
+              <p className="text-xs text-slate-400 dark:text-slate-500">No user data available</p>
             ) : (
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
@@ -203,7 +209,15 @@ export default function AdminAnalyticsPage() {
                       <Cell key={`cell-${index}`} fill={entry.color} />
                     ))}
                   </Pie>
-                  <Tooltip contentStyle={{ backgroundColor: '#fff', borderRadius: '12px', borderColor: '#E5E7EB', fontSize: '12px' }} />
+                  <Tooltip 
+                    contentStyle={{ 
+                      backgroundColor: 'var(--tooltip-bg, #ffffff)', 
+                      borderRadius: '12px', 
+                      borderColor: 'var(--tooltip-border, #E5E7EB)', 
+                      fontSize: '12px',
+                      color: 'var(--tooltip-text, #0f172a)'
+                    }} 
+                  />
                   <Legend verticalAlign="bottom" height={36} iconType="circle" />
                 </PieChart>
               </ResponsiveContainer>
@@ -212,17 +226,17 @@ export default function AdminAnalyticsPage() {
         </div>
 
         {/* Rental Application Breakdown (Pie Chart) */}
-        <div className="bg-white p-5 sm:p-6 rounded-2xl border border-gray-200/80 shadow-xs space-y-4">
+        <div className="bg-white dark:bg-slate-900 p-5 sm:p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-4 transition-colors">
           <div>
-            <h2 className="text-base font-bold text-gray-800 flex items-center gap-2">
-              <FileText className="w-4 h-4 text-amber-500" /> Rental Application Status
+            <h2 className="text-base font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2">
+              <FileText className="w-4 h-4 text-amber-500 dark:text-amber-400" /> Rental Application Status
             </h2>
-            <p className="text-xs text-gray-400">Breakdown of active, approved, and rejected rentals</p>
+            <p className="text-xs text-slate-400 dark:text-slate-500">Breakdown of active, approved, and rejected rentals</p>
           </div>
 
           <div className="h-64 w-full flex items-center justify-center">
             {rentalStatusData.length === 0 ? (
-              <p className="text-xs text-gray-400">No rental application data</p>
+              <p className="text-xs text-slate-400 dark:text-slate-500">No rental application data</p>
             ) : (
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
@@ -239,7 +253,15 @@ export default function AdminAnalyticsPage() {
                       <Cell key={`cell-${index}`} fill={entry.color} />
                     ))}
                   </Pie>
-                  <Tooltip contentStyle={{ backgroundColor: '#fff', borderRadius: '12px', borderColor: '#E5E7EB', fontSize: '12px' }} />
+                  <Tooltip 
+                    contentStyle={{ 
+                      backgroundColor: 'var(--tooltip-bg, #ffffff)', 
+                      borderRadius: '12px', 
+                      borderColor: 'var(--tooltip-border, #E5E7EB)', 
+                      fontSize: '12px',
+                      color: 'var(--tooltip-text, #0f172a)'
+                    }} 
+                  />
                   <Legend verticalAlign="bottom" height={36} iconType="circle" />
                 </PieChart>
               </ResponsiveContainer>
@@ -249,28 +271,43 @@ export default function AdminAnalyticsPage() {
       </div>
 
       {/* Property Count per Category (Bar Chart) */}
-      <div className="bg-white p-5 sm:p-6 rounded-2xl border border-gray-200/80 shadow-xs space-y-4">
+      <div className="bg-white dark:bg-slate-900 p-5 sm:p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-4 transition-colors">
         <div>
-          <h2 className="text-base font-bold text-gray-800 flex items-center gap-2">
-            <Layers className="w-4 h-4 text-blue-600" /> Properties per Category
+          <h2 className="text-base font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2">
+            <Layers className="w-4 h-4 text-emerald-600 dark:text-emerald-400" /> Properties per Category
           </h2>
-          <p className="text-xs text-gray-400">Total properties listed under each category</p>
+          <p className="text-xs text-slate-400 dark:text-slate-500">Total properties listed under each category</p>
         </div>
 
         <div className="h-72 w-full flex items-center justify-center">
           {categoryChartData.length === 0 ? (
-            <p className="text-xs text-gray-400">No category data available</p>
+            <p className="text-xs text-slate-400 dark:text-slate-500">No category data available</p>
           ) : (
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={categoryChartData}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#F3F4F6" />
-                <XAxis dataKey="name" tickLine={false} axisLine={false} tick={{ fontSize: 11, fill: '#6B7280' }} />
-                <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 11, fill: '#6B7280' }} allowDecimals={false} />
-                <Tooltip 
-                  cursor={{ fill: '#F9FAFB' }}
-                  contentStyle={{ backgroundColor: '#fff', borderRadius: '12px', borderColor: '#E5E7EB', fontSize: '12px' }}
+                <CartesianGrid strokeDasharray="3 3" vertical={false} className="stroke-slate-100 dark:stroke-slate-800" />
+                <XAxis 
+                  dataKey="name" 
+                  tickLine={false} 
+                  axisLine={false} 
+                  tick={{ fontSize: 11, fill: '#64748B' }} 
                 />
-                <Bar dataKey="Properties" fill="#8B5CF6" radius={[6, 6, 0, 0]} barSize={40} />
+                <YAxis 
+                  tickLine={false} 
+                  axisLine={false} 
+                  tick={{ fontSize: 11, fill: '#64748B' }} 
+                  allowDecimals={false} 
+                />
+                <Tooltip 
+                  cursor={{ fill: 'rgba(100, 116, 139, 0.08)' }}
+                  contentStyle={{ 
+                    backgroundColor: 'var(--tooltip-bg, #ffffff)', 
+                    borderRadius: '12px', 
+                    borderColor: 'var(--tooltip-border, #E5E7EB)', 
+                    fontSize: '12px' 
+                  }}
+                />
+                <Bar dataKey="Properties" fill="#10B981" radius={[6, 6, 0, 0]} barSize={40} />
               </BarChart>
             </ResponsiveContainer>
           )}

@@ -18,7 +18,16 @@ export default function DashboardLayout({
   }, [fetchUser]);
 
   return (
-    <div className="flex min-h-screen bg-gray-50 relative">
+    <div className="flex min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 relative transition-colors duration-200">
+      {/* Floating Menu Button for Mobile */}
+      <button
+        onClick={() => setIsSidebarOpen(true)}
+        className="fixed top-15 sm:top-20 right-8 z-30 lg:hidden p-2 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-xl shadow-sm hover:bg-slate-100 dark:hover:bg-slate-800 transition active:scale-95 cursor-pointer"
+        aria-label="Open Sidebar"
+      >
+        <Menu className="w-3 h-3" />
+      </button>
+
       {/* Sidebar Component */}
       <Sidebar 
         isOpen={isSidebarOpen} 
@@ -27,22 +36,8 @@ export default function DashboardLayout({
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0">
-        
-        <header className="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between sticky top-0 z-30 shadow-sm lg:hidden">
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => setIsSidebarOpen(true)}
-              className="p-2 text-slate-700 hover:bg-gray-100 rounded-lg transition"
-              aria-label="Open Sidebar"
-            >
-              <Menu className="w-6 h-6" />
-            </button>
-            <span className="font-semibold text-gray-800">RentalApp</span>
-          </div>
-        </header>
-
         {/* Main Content Body */}
-        <main className="flex-1 p-4 sm:p-6 overflow-y-auto">
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto max-w-7xl w-full mx-auto">
           {children}
         </main>
       </div>

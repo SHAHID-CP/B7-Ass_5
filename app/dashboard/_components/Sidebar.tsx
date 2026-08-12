@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { 
   Home, 
-  Building, 
   PlusCircle, 
   Shield, 
   LogOut,
@@ -25,7 +24,7 @@ const navItemsByRole: Record<string, Array<{ label: string; href: string; icon: 
   TENANT: [
     { label: 'Analytics', href: '/dashboard/tenant/analytic', icon: IoAnalyticsOutline },
     { label: 'My Rentals', href: '/dashboard/tenant', icon: Home },
-    { label: 'My Payments', href: '/dashboard/tenant/paymenthistory', icon: MdPayment},
+    { label: 'My Payments', href: '/dashboard/tenant/paymenthistory', icon: MdPayment },
     { label: 'Settings', href: '/dashboard/profile', icon: Settings },
   ],
   LANDLORD: [
@@ -59,38 +58,43 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const handleLogout = async () => {
     clearUser();
     await logout();
-    toast.success("User Logout Successfully")
+    toast.success("Logged out successfully");
     router.push("/auth/login");
     router.refresh();
   };
 
   return (
     <>
+      {/* Mobile Backdrop Overlay */}
       {isOpen && (
         <div 
-          className="fixed inset-0 top-16 z-30 bg-slate-900/60 backdrop-blur-sm lg:hidden transition-opacity"
+          className="fixed inset-0 z-30 bg-slate-900/60 backdrop-blur-xs lg:hidden transition-opacity"
           onClick={onClose}
         />
       )}
 
-      {/* Main Sidebar Component */}
+      {/* Main Sidebar Drawer */}
       <aside
-        className={`fixed lg:static top-16 lg:top-0 left-0 z-40 h-[calc(100vh-4rem)] lg:h-screen w-64 bg-slate-900 text-slate-100 flex flex-col justify-between transition-transform duration-300 ease-in-out border-r border-slate-800 shrink-0 ${
+        className={`fixed lg:static top-12 lg:top-16 left-0 z-40 h-screen not-lg:h-11/12 w-64 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 flex flex-col justify-between transition-transform duration-300 ease-in-out border-r border-slate-200 dark:border-slate-800 shrink-0 ${
           isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         }`}
       >
         <div>
           {/* Header Area */}
-          <div className="p-4 border-b border-slate-800 flex items-center justify-between">
-            {/* Logo Section */}
-            <div className="flex items-center gap-2">
-              <Building className="w-6 h-6 text-blue-400" />
-              <span className="font-bold text-lg text-white">RentNest</span>
-            </div>
+          <div className="p-4 sm:p-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+            {/* RentNest Logo Section */}
+            <Link href="/" className="flex items-center gap-2.5">
+              <div className="w-8 h-8 bg-emerald-600 rounded-xl flex items-center justify-center text-white font-bold shadow-xs">
+                <Home className="w-4 h-4" />
+              </div>
+              <span className=" not-lg:hidden font-extrabold text-lg text-slate-900 dark:text-white tracking-tight">
+                Rent<span className="text-emerald-600 dark:text-emerald-400">Nest</span>
+              </span>
+            </Link>
 
             <button
               onClick={onClose}
-              className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition lg:hidden"
+              className="p-1.5 text-slate-500 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800 rounded-xl transition lg:hidden cursor-pointer"
               aria-label="Close Sidebar"
             >
               <X className="w-5 h-5" />
@@ -98,7 +102,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           </div>
 
           {/* Navigation Items */}
-          <nav className="p-4 space-y-1">
+          <nav className="p-3.5 space-y-1">
             {items.map((item) => {
               const Icon = item.icon;
               const isActive = pathname === item.href;
@@ -109,13 +113,13 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                   onClick={() => {
                     if (window.innerWidth < 1024) onClose();
                   }}
-                  className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition ${
+                  className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition ${
                     isActive
-                      ? 'bg-blue-600 text-white'
-                      : 'text-slate-400 hover:bg-slate-800 hover:text-slate-100'
+                      ? 'bg-emerald-600 text-white shadow-xs'
+                      : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800/70 dark:hover:text-slate-100'
                   }`}
                 >
-                  <Icon className="w-4 h-4 shrink-0" />
+                  <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-white' : 'text-slate-500 dark:text-slate-400'}`} />
                   <span>{item.label}</span>
                 </Link>
               );
@@ -123,18 +127,25 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           </nav>
         </div>
 
-        {/* User Profile & Logout */}
-        <div className="p-4 border-t border-slate-800">
-          <div className="flex items-center justify-between">
-            <div className="truncate">
-              <p className="text-sm font-semibold text-white truncate">{user?.name || 'User'}</p>
-              <span className="text-[10px] bg-slate-800 text-blue-400 px-2 py-0.5 rounded font-mono uppercase">
-                {user?.role || 'GUEST'}
-              </span>
+        {/* User Profile Footer & Logout */}
+        <div className="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50">
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3 truncate">
+              {/* User Avatar Circle */}
+              <div className="w-8 h-8 rounded-full bg-emerald-100 dark:bg-emerald-950/80 border border-emerald-200 dark:border-emerald-800/50 text-emerald-700 dark:text-emerald-400 font-bold flex items-center justify-center text-xs shrink-0">
+                {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
+              </div>
+              <div className="truncate">
+                <p className="text-xs font-bold text-slate-900 dark:text-white truncate">{user?.name || 'User'}</p>
+                <span className="inline-block text-[10px] bg-slate-200 dark:bg-slate-800 text-emerald-700 dark:text-emerald-400 font-semibold px-2 py-0.5 rounded-md border border-slate-300 dark:border-slate-700/60 uppercase tracking-wider">
+                  {user?.role || 'GUEST'}
+                </span>
+              </div>
             </div>
+            
             <button 
               onClick={handleLogout} 
-              className="text-slate-400 cursor-pointer hover:text-red-400 p-1.5 rounded-lg hover:bg-slate-800 transition shrink-0"
+              className="text-slate-500 dark:text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 p-2 rounded-xl hover:bg-rose-50 dark:hover:bg-rose-950/40 hover:border hover:border-rose-200 dark:hover:border-rose-900/40 transition shrink-0 cursor-pointer active:scale-95"
               title="Logout"
             >
               <LogOut className="w-4 h-4" />

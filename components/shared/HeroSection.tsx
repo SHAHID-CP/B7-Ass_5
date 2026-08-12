@@ -7,7 +7,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Search, CheckCircle2 } from "lucide-react";
 
-
 const slides = [
   {
     id: 1,
@@ -66,7 +65,7 @@ export default function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   return (
-    <div className="w-full h-[70vh] min-h-[550px] relative overflow-hidden bg-gray-900">
+    <div className="w-full h-[70vh] min-h-[550px] relative overflow-hidden bg-slate-900">
       <Carousel
         infiniteLoop
         autoPlay
@@ -74,15 +73,15 @@ export default function HeroSection() {
         showThumbs={false}
         showStatus={false}
         showArrows={true}
-        className="h-full"
+        className="h-full hero-carousel"
         onChange={(index) => setCurrentSlide(index)}
       >
         {slides.map(({ id, title, description, extraInfo, image, buttonText, buttonLink }, index) => (
           <div key={id} className="relative h-[70vh] min-h-[550px] w-full overflow-hidden">
             
-            {/* Background Image with Dark Overlay */}
+            {/* Background Image with High-Contrast Dark Overlay */}
             <motion.div 
-              className="absolute inset-0 bg-black/50 z-10" 
+              className="absolute inset-0 bg-slate-950/65 dark:bg-black/75 z-10 transition-colors duration-300" 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
             />
@@ -105,7 +104,7 @@ export default function HeroSection() {
               
               {/* Title */}
               <motion.h1
-                className="text-3xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight leading-tight drop-shadow-md"
+                className="text-3xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight leading-tight drop-shadow-lg"
                 initial={{ y: -25, opacity: 0 }}
                 animate={
                   currentSlide === index ? { y: 0, opacity: 1 } : { y: -25, opacity: 0 }
@@ -117,7 +116,7 @@ export default function HeroSection() {
 
               {/* Sub-description */}
               <motion.p
-                className="text-sm sm:text-lg md:text-xl text-blue-100 max-w-2xl font-light leading-relaxed"
+                className="text-sm sm:text-lg md:text-xl text-slate-200 max-w-2xl font-light leading-relaxed drop-shadow-sm"
                 initial={{ y: -15, opacity: 0 }}
                 animate={
                   currentSlide === index ? { y: 0, opacity: 1 } : { y: -15, opacity: 0 }
@@ -132,7 +131,7 @@ export default function HeroSection() {
                 {extraInfo.map((info, idx) => (
                   <motion.div
                     key={idx}
-                    className="flex items-center gap-2 bg-white/15 backdrop-blur-md border border-white/20 px-3 py-2 sm:py-2.5 rounded-xl shadow-lg text-xs sm:text-sm text-white font-medium"
+                    className="flex items-center gap-2 bg-slate-900/50 dark:bg-black/50 backdrop-blur-md border border-slate-700/60 dark:border-slate-800/80 px-3 py-2 sm:py-2.5 rounded-xl shadow-lg text-xs sm:text-sm text-slate-100 font-medium"
                     custom={idx}
                     initial="hidden"
                     animate={currentSlide === index ? "visible" : "hidden"}
@@ -154,7 +153,7 @@ export default function HeroSection() {
                 className="pt-2"
               >
                 <Link href={buttonLink}>
-                  <button className="cursor-pointer inline-flex items-center gap-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-7 py-3.5 rounded-xl shadow-xl hover:shadow-blue-600/30 active:scale-95 transition-all text-sm sm:text-base">
+                  <button className="cursor-pointer inline-flex items-center gap-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-7 py-3.5 rounded-xl shadow-lg shadow-emerald-900/20 hover:shadow-emerald-600/30 active:scale-95 transition-all text-sm sm:text-base border border-emerald-500/20">
                     <Search className="w-4 h-4 sm:w-5 sm:h-5" />
                     {buttonText}
                   </button>

@@ -57,7 +57,7 @@ export default function CategoryManagementPage() {
         setCategories(fetchedData);
       }
     } catch (err) {
-      toast.error('Failed to load categories:');
+      toast.error('Failed to load categories');
     } finally {
       setLoading(false);
     }
@@ -86,7 +86,7 @@ export default function CategoryManagementPage() {
       } else {
         reset();
         await loadCategories();
-        toast.success("Category created successfully");
+        toast.success('Category created successfully');
       }
     } catch (err) {
       toast.error('An unexpected error occurred.');
@@ -109,10 +109,10 @@ export default function CategoryManagementPage() {
         if (paginatedCategories.length === 1 && currentPage > 1) {
           setCurrentPage((prev) => prev - 1);
         }
-        toast.success("Category deleted successfully");
+        toast.success('Category deleted successfully');
       }
     } catch (err) {
-      toast.error('An unexpected error occurred cetegory.');
+      toast.error('An unexpected error occurred deleting category.');
     } finally {
       setDeletingId(null);
     }
@@ -121,24 +121,24 @@ export default function CategoryManagementPage() {
   return (
     <div className="max-w-4xl mx-auto px-3.5 sm:px-6 py-5 sm:py-8 space-y-6">
       {/* Header */}
-      <div className="flex items-center gap-3 pb-4 border-b border-gray-100">
-        <div className="p-2 bg-purple-50 text-blue-600 rounded-xl shrink-0">
+      <div className="flex items-center gap-3 pb-4 border-b border-slate-200/80 dark:border-slate-800">
+        <div className="p-2 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 rounded-xl shrink-0 border border-emerald-200/60 dark:border-emerald-800/60">
           <Layers className="w-5 h-5 sm:w-6 sm:h-6" />
         </div>
         <div>
-          <h1 className="text-lg sm:text-2xl font-bold text-gray-900 tracking-tight">
+          <h1 className="text-lg sm:text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
             Manage Categories
           </h1>
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-slate-500 dark:text-slate-400">
             Create and organize property categories for your platform
           </p>
         </div>
       </div>
 
       {/* Create Category Form */}
-      <div className="bg-white p-4 sm:p-5 rounded-2xl border border-gray-200/80 shadow-xs space-y-3">
-        <h2 className="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
-          <Tag className="w-3.5 h-3.5 text-blue-600" />
+      <div className="bg-white dark:bg-slate-900 p-4 sm:p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-3 transition-colors">
+        <h2 className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+          <Tag className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
           Add New Category
         </h2>
         
@@ -149,10 +149,10 @@ export default function CategoryManagementPage() {
                 type="text"
                 placeholder="e.g., Warehouse, Apartment, Duplex"
                 {...register('name')}
-                className={`w-full border rounded-xl px-3.5 py-2 text-xs sm:text-sm outline-none transition bg-gray-50/30 focus:bg-white ${
+                className={`w-full border rounded-xl px-3.5 py-2 text-xs sm:text-sm outline-none transition bg-slate-50/50 dark:bg-slate-800/50 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 ${
                   errors.name
                     ? 'border-rose-500 focus:ring-2 focus:ring-rose-500/20'
-                    : 'border-gray-200 focus:ring-2 focus:ring-purple-500/20 focus:border-blue-500'
+                    : 'border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 dark:focus:border-emerald-400'
                 }`}
               />
             </div>
@@ -160,7 +160,7 @@ export default function CategoryManagementPage() {
             <button
               type="submit"
               disabled={submitting}
-              className="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold text-xs sm:text-sm px-5 py-2.5 rounded-xl transition shadow-xs disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed shrink-0"
+              className="inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white font-semibold text-xs sm:text-sm px-5 py-2.5 rounded-xl transition shadow-xs disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed shrink-0"
             >
               {submitting ? (
                 <>
@@ -178,7 +178,7 @@ export default function CategoryManagementPage() {
 
           {/* Error Message Display */}
           {errors.name && (
-            <p className="text-[11px] text-rose-500 flex items-center gap-1 mt-1">
+            <p className="text-[11px] text-rose-500 dark:text-rose-400 flex items-center gap-1 mt-1">
               <AlertCircle className="w-3 h-3 shrink-0" />
               <span>{errors.name.message}</span>
             </p>
@@ -187,31 +187,35 @@ export default function CategoryManagementPage() {
       </div>
 
       {/* Categories Content Area */}
-      <div className="bg-white rounded-2xl border border-gray-200/80 shadow-xs overflow-hidden">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs overflow-hidden transition-colors">
         {loading ? (
-          <div className="p-12 text-center text-gray-400 text-xs">
+          <div className="p-12 text-center text-slate-400 dark:text-slate-500 text-xs">
             <div className="flex justify-center items-center gap-2">
-              <Loader2 className="w-5 h-5 animate-spin text-purple-600" />
+              <Loader2 className="w-5 h-5 animate-spin text-emerald-600 dark:text-emerald-400" />
               <span>Loading categories list...</span>
             </div>
           </div>
         ) : categories.length === 0 ? (
           <div className="text-center py-12 p-6 space-y-2">
-            <Layers className="w-9 h-9 text-gray-300 mx-auto mb-2" />
-            <p className="text-xs sm:text-sm font-semibold text-gray-600">No categories found</p>
-            <p className="text-xs text-gray-400">Add a new category above to get started.</p>
+            <Layers className="w-9 h-9 text-slate-300 dark:text-slate-700 mx-auto mb-2" />
+            <p className="text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-300">
+              No categories found
+            </p>
+            <p className="text-xs text-slate-400 dark:text-slate-500">
+              Add a new category above to get started.
+            </p>
           </div>
         ) : (
           <>
             {/* Mobile View: Cards */}
-            <div className="block md:hidden divide-y divide-gray-100">
+            <div className="block md:hidden divide-y divide-slate-100 dark:divide-slate-800">
               {paginatedCategories.map((item) => (
                 <div key={item.id} className="p-4 flex items-center justify-between gap-3">
                   <div className="space-y-1 min-w-0">
-                    <p className="font-bold text-gray-900 text-xs sm:text-sm truncate">
+                    <p className="font-bold text-slate-900 dark:text-slate-100 text-xs sm:text-sm truncate">
                       {item.name}
                     </p>
-                    <p className="text-[10px] font-mono text-gray-400 flex items-center gap-0.5">
+                    <p className="text-[10px] font-mono text-slate-400 dark:text-slate-500 flex items-center gap-0.5">
                       <Hash className="w-2.5 h-2.5" />
                       <span className="truncate">{item.id}</span>
                     </p>
@@ -220,7 +224,7 @@ export default function CategoryManagementPage() {
                   <button
                     onClick={() => handleDelete(item.id, item.name)}
                     disabled={deletingId === item.id}
-                    className="p-2 text-rose-600 hover:bg-rose-50 rounded-xl transition disabled:opacity-50 shrink-0 border border-rose-100 cursor-pointer"
+                    className="p-2 text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-xl transition disabled:opacity-50 shrink-0 border border-rose-100 dark:border-rose-900/40 cursor-pointer"
                     title="Delete Category"
                   >
                     {deletingId === item.id ? (
@@ -235,24 +239,24 @@ export default function CategoryManagementPage() {
 
             {/* Desktop View: Table */}
             <div className="hidden md:block overflow-x-auto">
-              <table className="w-full text-left text-xs text-gray-600">
-                <thead className="bg-gray-50/80 uppercase text-gray-500 font-semibold border-b border-gray-100">
+              <table className="w-full text-left text-xs text-slate-600 dark:text-slate-300">
+                <thead className="bg-slate-50/80 dark:bg-slate-800/60 uppercase text-slate-500 dark:text-slate-400 font-semibold border-b border-slate-100 dark:border-slate-800">
                   <tr>
                     <th className="py-3.5 px-4 w-1/3">Category ID</th>
                     <th className="py-3.5 px-4">Category Name</th>
                     <th className="py-3.5 px-4 text-right">Action</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-100">
+                <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                   {paginatedCategories.map((item) => (
-                    <tr key={item.id} className="hover:bg-gray-50/50 transition">
+                    <tr key={item.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/40 transition">
                       {/* ID */}
-                      <td className="py-3.5 px-4 font-mono text-gray-400 text-[11px]">
+                      <td className="py-3.5 px-4 font-mono text-slate-400 dark:text-slate-500 text-[11px]">
                         {item.id}
                       </td>
 
                       {/* Name */}
-                      <td className="py-3.5 px-4 font-bold text-gray-900 text-xs sm:text-sm">
+                      <td className="py-3.5 px-4 font-bold text-slate-900 dark:text-slate-100 text-xs sm:text-sm">
                         {item.name}
                       </td>
 
@@ -261,7 +265,7 @@ export default function CategoryManagementPage() {
                         <button
                           onClick={() => handleDelete(item.id, item.name)}
                           disabled={deletingId === item.id}
-                          className="p-1.5 text-rose-600 hover:bg-rose-50 hover:border-rose-200 border border-transparent rounded-lg transition disabled:opacity-50 cursor-pointer"
+                          className="p-1.5 text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 hover:border-rose-200 dark:hover:border-rose-800 border border-transparent rounded-lg transition disabled:opacity-50 cursor-pointer"
                           title="Delete Category"
                         >
                           {deletingId === item.id ? (
@@ -278,28 +282,29 @@ export default function CategoryManagementPage() {
             </div>
 
             {/* Pagination Controls */}
-            <div className="flex items-center justify-between p-3.5 border-t border-gray-100 bg-gray-50/50 text-xs">
-              <span className="text-gray-500">
-                Page <strong>{currentPage}</strong> of <strong>{totalPages}</strong> ({categories.length} total categories)
+            <div className="flex items-center justify-between p-3.5 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/40 text-xs">
+              <span className="text-slate-500 dark:text-slate-400">
+                Page <strong className="text-slate-700 dark:text-slate-200">{currentPage}</strong> of{' '}
+                <strong className="text-slate-700 dark:text-slate-200">{totalPages}</strong> ({categories.length} total categories)
               </span>
 
               <div className="flex items-center gap-1.5">
                 <button
                   disabled={currentPage <= 1}
                   onClick={() => setCurrentPage((prev) => prev - 1)}
-                  className="p-1.5 border border-gray-200 rounded-lg bg-white hover:bg-gray-50 disabled:opacity-40 transition shadow-xs cursor-pointer disabled:cursor-not-allowed"
+                  className="p-1.5 border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/80 disabled:opacity-40 transition shadow-xs cursor-pointer disabled:cursor-not-allowed"
                   title="Previous Page"
                 >
-                  <ChevronLeft className="w-4 h-4 text-gray-600" />
+                  <ChevronLeft className="w-4 h-4 text-slate-600 dark:text-slate-300" />
                 </button>
 
                 <button
                   disabled={currentPage >= totalPages}
                   onClick={() => setCurrentPage((prev) => prev + 1)}
-                  className="p-1.5 border border-gray-200 rounded-lg bg-white hover:bg-gray-50 disabled:opacity-40 transition shadow-xs cursor-pointer disabled:cursor-not-allowed"
+                  className="p-1.5 border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/80 disabled:opacity-40 transition shadow-xs cursor-pointer disabled:cursor-not-allowed"
                   title="Next Page"
                 >
-                  <ChevronRight className="w-4 h-4 text-gray-600" />
+                  <ChevronRight className="w-4 h-4 text-slate-600 dark:text-slate-300" />
                 </button>
               </div>
             </div>

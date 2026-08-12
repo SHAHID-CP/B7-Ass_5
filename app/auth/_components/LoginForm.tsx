@@ -5,7 +5,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
-import { LogIn, Loader2, Eye, EyeOff, UserCheck } from 'lucide-react';
+import { LogIn, Loader2, Eye, EyeOff, UserCheck, AlertCircle } from 'lucide-react';
 import { loginSchema, LoginInput } from '@/lib/validations';
 import { googleLoginAction, loginAction } from '../_actions/authActions';
 import { toast } from 'sonner';
@@ -31,7 +31,7 @@ export default function LoginForm() {
     register,
     handleSubmit,
     setError,
-    setValue, 
+    setValue,
     formState: { errors },
   } = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
@@ -52,7 +52,7 @@ export default function LoginForm() {
     if (state) {
       if (!state.success) {
         toast.error(state.message || 'Login failed! Please check your credentials.');
-        
+
         // If server returns specific field errors
         if (state.errors?.email) {
           setError('email', { message: state.errors.email });
@@ -84,11 +84,12 @@ export default function LoginForm() {
       startTransition(async () => {
         try {
           const res = await googleLoginAction(tokenResponse.access_token, redirectTo);
-          toast.success('Google login Successfully');
+          toast.success('Google login successfully!');
           if (res && !res.success) {
             toast.error(res.message || 'Google login failed!');
           }
         } catch (err) {
+          toast.error('An error occurred during Google Sign-In.');
         } finally {
           setIsGoogleLoading(false);
         }
@@ -100,47 +101,52 @@ export default function LoginForm() {
   });
 
   return (
-    <div className="max-w-md w-full bg-white p-5 sm:p-8 rounded-xl sm:rounded-2xl border border-gray-200/80 shadow-xs space-y-5 sm:space-y-6">
-      <div className="text-center space-y-1">
-        <LogIn className="w-8 h-8 sm:w-10 sm:h-10 text-blue-600 mx-auto mb-1.5" />
-        <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Sign in to RentNest</h2>
-        <p className="text-xs text-gray-500">
+    <div className="max-w-md w-full bg-white dark:bg-slate-900 p-5 sm:p-8 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-5 sm:space-y-6 transition-colors">
+      <div className="text-center space-y-1.5">
+        <div className="w-10 h-10 sm:w-12 sm:h-12 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 rounded-2xl border border-emerald-100 dark:border-emerald-900/40 flex items-center justify-center mx-auto mb-2">
+          <LogIn className="w-5 h-5 sm:w-6 sm:h-6" />
+        </div>
+        <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
+          Sign in to RentNest
+        </h2>
+        <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
           Access your Tenant, Landlord, or Admin Portal
         </p>
       </div>
 
       {/* Global Server Error Message Banner */}
       {state && !state.success && (
-        <div className="p-3 bg-rose-50 text-rose-700 text-xs rounded-xl border border-rose-200/80 font-medium">
-          {state.message || 'Login failed! Please check your credentials.'}
+        <div className="p-3 bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 text-xs rounded-xl border border-rose-200/80 dark:border-rose-900/50 font-medium flex items-center gap-2">
+          <AlertCircle className="w-4 h-4 shrink-0" />
+          <span>{state.message || 'Login failed! Please check your credentials.'}</span>
         </div>
       )}
 
       {/* Demo Credentials Section / Role Buttons */}
-      <div className="bg-gray-50 p-3 rounded-xl border border-gray-200/70 space-y-2">
-        <div className="flex items-center gap-1.5 text-xs font-semibold text-gray-700">
-          <UserCheck className="w-3.5 h-3.5 text-blue-600" />
+      <div className="bg-slate-50 dark:bg-slate-800/50 p-3 rounded-xl border border-slate-200/70 dark:border-slate-700/60 space-y-2">
+        <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-700 dark:text-slate-300">
+          <UserCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
           <span>Demo Accounts (Auto-fill)</span>
         </div>
         <div className="grid grid-cols-3 gap-2">
           <button
             type="button"
             onClick={() => handleAutoFill('admin@gmail.com', '12345678')}
-            className="px-2 py-1.5 bg-white hover:bg-blue-50 hover:border-blue-300 text-gray-700 hover:text-blue-600 text-xs font-medium rounded-lg border border-gray-200 transition text-center shadow-2xs active:scale-95 cursor-pointer"
+            className="px-2 py-1.5 bg-white dark:bg-slate-900 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 hover:border-emerald-300 dark:hover:border-emerald-700 text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 text-xs font-medium rounded-lg border border-slate-200 dark:border-slate-700 transition text-center shadow-2xs active:scale-95 cursor-pointer"
           >
             Admin
           </button>
           <button
             type="button"
             onClick={() => handleAutoFill('landlord@gmail.com', '12345678')}
-            className="px-2 py-1.5 bg-white hover:bg-blue-50 hover:border-blue-300 text-gray-700 hover:text-blue-600 text-xs font-medium rounded-lg border border-gray-200 transition text-center shadow-2xs active:scale-95 cursor-pointer"
+            className="px-2 py-1.5 bg-white dark:bg-slate-900 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 hover:border-emerald-300 dark:hover:border-emerald-700 text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 text-xs font-medium rounded-lg border border-slate-200 dark:border-slate-700 transition text-center shadow-2xs active:scale-95 cursor-pointer"
           >
             Landlord
           </button>
           <button
             type="button"
             onClick={() => handleAutoFill('tenant11@gmail.com', '12345678')}
-            className="px-2 py-1.5 bg-white hover:bg-blue-50 hover:border-blue-300 text-gray-700 hover:text-blue-600 text-xs font-medium rounded-lg border border-gray-200 transition text-center shadow-2xs active:scale-95 cursor-pointer"
+            className="px-2 py-1.5 bg-white dark:bg-slate-900 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 hover:border-emerald-300 dark:hover:border-emerald-700 text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 text-xs font-medium rounded-lg border border-slate-200 dark:border-slate-700 transition text-center shadow-2xs active:scale-95 cursor-pointer"
           >
             Tenant
           </button>
@@ -152,12 +158,12 @@ export default function LoginForm() {
         type="button"
         onClick={() => handleGoogleLogin()}
         disabled={isGoogleLoading || isPending}
-        className="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 hover:bg-gray-50 active:scale-95 text-gray-700 font-semibold py-2.5 rounded-xl text-xs sm:text-sm transition shadow-xs cursor-pointer disabled:opacity-50"
+        className="w-full flex items-center justify-center gap-3 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/60 active:scale-95 text-slate-700 dark:text-slate-200 font-semibold py-2.5 rounded-xl text-xs sm:text-sm transition shadow-xs cursor-pointer disabled:opacity-50"
       >
         {isGoogleLoading ? (
-          <Loader2 className="w-4 h-4 animate-spin text-gray-500" />
+          <Loader2 className="w-4 h-4 animate-spin text-slate-500 dark:text-slate-400" />
         ) : (
-          <svg className="w-4 h-4" viewBox="0 0 24 24">
+          <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
             <path
               fill="#4285F4"
               d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -181,55 +187,56 @@ export default function LoginForm() {
 
       {/* Divider */}
       <div className="relative flex items-center justify-center my-2">
-        <div className="border-t border-gray-200 w-full" />
-        <span className="bg-white px-3 text-xs text-gray-400 font-medium absolute">
+        <div className="border-t border-slate-200 dark:border-slate-800 w-full" />
+        <span className="bg-white dark:bg-slate-900 px-3 text-[11px] text-slate-400 dark:text-slate-500 font-semibold tracking-wider absolute">
           OR
         </span>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {/* Email Field */}
-        <div>
-          <label className="block text-xs font-semibold text-gray-700 mb-1">
+        <div className="space-y-1">
+          <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
             Email Address
           </label>
           <input
             type="email"
             {...register('email')}
-            className={`w-full px-3.5 py-2.5 sm:py-2 border rounded-xl text-base sm:text-sm focus:outline-none transition ${
+            className={`w-full px-3.5 py-2.5 sm:py-2 border bg-slate-50/50 dark:bg-slate-800/50 text-slate-900 dark:text-slate-100 rounded-xl text-xs sm:text-sm focus:outline-none transition ${
               errors.email
                 ? 'border-rose-500 focus:ring-2 focus:ring-rose-500/20'
-                : 'border-gray-300 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600'
+                : 'border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500'
             }`}
             placeholder="tenant@rentnest.com"
           />
           {errors.email && (
-            <p className="text-rose-500 text-xs mt-1 font-medium">
-              {errors.email.message}
+            <p className="text-rose-500 text-[11px] font-medium flex items-center gap-1 mt-1">
+              <AlertCircle className="w-3 h-3 shrink-0" />
+              <span>{errors.email.message}</span>
             </p>
           )}
         </div>
 
         {/* Password Field */}
-        <div>
-          <label className="block text-xs font-semibold text-gray-700 mb-1">
+        <div className="space-y-1">
+          <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
             Password
           </label>
           <div className="relative">
             <input
               type={showPassword ? 'text' : 'password'}
               {...register('password')}
-              className={`w-full pl-3.5 pr-10 py-2.5 sm:py-2 border rounded-xl text-base sm:text-sm focus:outline-none transition ${
+              className={`w-full pl-3.5 pr-10 py-2.5 sm:py-2 border bg-slate-50/50 dark:bg-slate-800/50 text-slate-900 dark:text-slate-100 rounded-xl text-xs sm:text-sm focus:outline-none transition ${
                 errors.password
                   ? 'border-rose-500 focus:ring-2 focus:ring-rose-500/20'
-                  : 'border-gray-300 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600'
+                  : 'border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500'
               }`}
               placeholder="••••••••"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-1 transition cursor-pointer"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 p-1 transition cursor-pointer"
             >
               {showPassword ? (
                 <EyeOff className="w-4 h-4" />
@@ -239,8 +246,9 @@ export default function LoginForm() {
             </button>
           </div>
           {errors.password && (
-            <p className="text-rose-500 text-xs mt-1 font-medium">
-              {errors.password.message}
+            <p className="text-rose-500 text-[11px] font-medium flex items-center gap-1 mt-1">
+              <AlertCircle className="w-3 h-3 shrink-0" />
+              <span>{errors.password.message}</span>
             </p>
           )}
         </div>
@@ -249,7 +257,7 @@ export default function LoginForm() {
         <button
           type="submit"
           disabled={isPending || isGoogleLoading}
-          className="w-full bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-semibold py-2.5 rounded-xl text-xs sm:text-sm transition flex items-center justify-center gap-2 shadow-xs disabled:opacity-50 cursor-pointer mt-2"
+          className="w-full bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-semibold py-2.5 rounded-xl text-xs sm:text-sm transition flex items-center justify-center gap-2 shadow-xs disabled:opacity-50 cursor-pointer mt-2"
         >
           {isPending ? (
             <>
@@ -263,11 +271,11 @@ export default function LoginForm() {
       </form>
 
       {/* Footer / Register Link */}
-      <div className="text-center text-xs text-gray-500 pt-2 border-t border-gray-100">
+      <div className="text-center text-xs text-slate-500 dark:text-slate-400 pt-2 border-t border-slate-100 dark:border-slate-800">
         Don&apos;t have an account?{' '}
         <Link
           href="/auth/register"
-          className="text-blue-600 font-semibold hover:underline"
+          className="text-emerald-600 dark:text-emerald-400 font-semibold hover:underline"
         >
           Register here
         </Link>
