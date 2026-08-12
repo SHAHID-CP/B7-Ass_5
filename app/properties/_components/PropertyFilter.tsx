@@ -12,22 +12,23 @@ export default function PropertyFilter({ categories }: { categories: Category[] 
 
   const [search, setSearch] = useState(searchParams.get('search') || '');
   const [selectedCategory, setSelectedCategory] = useState(searchParams.get('categoryId') || '');
+  const [sortBy, setSortBy] = useState(searchParams.get('sort') || 'createdAt-desc');
 
   // Update URL params
-  const applyFilter = (searchValue: string, categoryValue: string) => {
+  const applyFilter = (searchValue: string, categoryValue: string, sortValue: string) => {
     const params = new URLSearchParams(searchParams.toString());
 
-    if (searchValue.trim()) {
-      params.set('search', searchValue.trim());
-    } else {
-      params.delete('search');
-    }
+    if (searchValue.trim()) params.set('search', searchValue.trim());
+    else params.delete('search');
 
-    if (categoryValue) {
-      params.set('categoryId', categoryValue);
-    } else {
-      params.delete('categoryId');
-    }
+    if (categoryValue) params.set('categoryId', categoryValue);
+    else params.delete('categoryId');
+
+    if (sortValue) params.set('sort', sortValue);
+    else params.delete('sort');
+
+    // Filter change hole standard practice holo page 1 e niye jaoya
+    params.set('page', '1');
 
     startTransition(() => {
       router.push(`/properties?${params.toString()}`);
@@ -36,19 +37,19 @@ export default function PropertyFilter({ categories }: { categories: Category[] 
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    applyFilter(search, selectedCategory);
+    applyFilter(search, selectedCategory, sortBy);
   };
 
-  // Clear search and category
   const handleReset = () => {
     setSearch('');
     setSelectedCategory('');
+    setSortBy('createdAt-desc');
     startTransition(() => {
       router.push('/properties');
     });
   };
 
-  const isFiltered = Boolean(search || selectedCategory);
+  const isFiltered = Boolean(search || selectedCategory || sortBy !== 'createdAt-desc');
 
   return (
     <form
@@ -82,7 +83,7 @@ export default function PropertyFilter({ categories }: { categories: Category[] 
           value={selectedCategory}
           onChange={(e) => {
             setSelectedCategory(e.target.value);
-            applyFilter(search, e.target.value); 
+            applyFilter(search, e.target.value, sortBy); 
           }}
           className="w-full sm:w-auto border border-gray-300 rounded-xl px-3 py-2.5 sm:py-2 text-base sm:text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 text-gray-700 cursor-pointer transition"
         >
@@ -92,6 +93,23 @@ export default function PropertyFilter({ categories }: { categories: Category[] 
               {cat.name}
             </option>
           ))}
+        </select>
+      </div>
+
+      {/* Sort Dropdown */}
+      <div className="w-full sm:w-auto">
+        <select
+          value={sortBy}
+          onChange={(e) => {
+            setSortBy(e.target.value);
+            applyFilter(search, selectedCategory, e.target.value);
+          }}
+          className="w-full sm:w-auto border border-gray-300 rounded-xl px-3 py-2.5 sm:py-2 text-base sm:text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 text-gray-700 cursor-pointer transition"
+        >
+          <option value="createdAt-desc">Newest First</option>
+          <option value="createdAt-asc">Oldest First</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
         </select>
       </div>
 
@@ -109,7 +127,6 @@ export default function PropertyFilter({ categories }: { categories: Category[] 
           )}
           <span>Filter</span>
         </button>
-
 
         {isFiltered && (
           <button

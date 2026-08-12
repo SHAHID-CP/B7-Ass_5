@@ -21,7 +21,9 @@ import {
   ArrowRight, 
   MapPin, 
   Plus, 
-  Image as ImageIcon 
+  Image as ImageIcon,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 
 import { toast } from 'sonner';
@@ -51,6 +53,10 @@ export default function MyPropertiesPage() {
   const [loading, setLoading] = useState(true);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [editItem, setEditItem] = useState<Property | null>(null);
+
+  // Pagination State
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   // Image Upload State
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -97,7 +103,7 @@ export default function MyPropertiesPage() {
       if (propRes?.success) setProperties(propRes.data || []);
       if (catRes?.success) setCategories(catRes.data || []);
     } catch (err) {
-      console.error('Failed to load data:', err);
+      toast.error('Failed to load data:');
     } finally {
       setLoading(false);
     }
@@ -106,6 +112,18 @@ export default function MyPropertiesPage() {
   useEffect(() => {
     loadData();
   }, [loadData]);
+
+  // Pagination Logic Calculations
+  const totalPages = Math.ceil(properties.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedProperties = properties.slice(startIndex, endIndex);
+
+  const handlePageChange = (newPage: number) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    }
+  };
 
   // Open Edit Modal & Populate Form Values
   const handleOpenEditModal = (item: Property) => {
@@ -138,7 +156,14 @@ export default function MyPropertiesPage() {
         toast.error(res.error);
       } else {
         toast.success("Property deleted successfully");
-        setProperties((prev) => prev.filter((p) => p.id !== id));
+        setProperties((prev) => {
+          const updated = prev.filter((p) => p.id !== id);
+          // If current page gets empty after deletion, move back one page
+          if ((currentPage - 1) * itemsPerPage >= updated.length && currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+          }
+          return updated;
+        });
       }
     } catch (err) {
       toast.error('Failed to delete property.');
@@ -195,7 +220,6 @@ export default function MyPropertiesPage() {
         await loadData();
       }
     } catch (err) {
-      console.error('Update error:', err);
       toast.error('Failed to update property.');
     }
   };
@@ -309,7 +333,7 @@ export default function MyPropertiesPage() {
           <div>
             {/* Mobile View */}
             <div className="block md:hidden divide-y divide-gray-100">
-              {properties.map((item) => {
+              {paginatedProperties.map((item) => {
                 const imgUrl = item.image || 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=800';
                 return (
                   <div key={item.id} className="p-4 space-y-3">
@@ -388,7 +412,7 @@ export default function MyPropertiesPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
-                  {properties.map((item) => {
+                  {paginatedProperties.map((item) => {
                     const imgUrl = item.image || 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=800';
                     return (
                       <tr key={item.id} className="hover:bg-gray-50/50 transition">
@@ -448,6 +472,58 @@ export default function MyPropertiesPage() {
                 </tbody>
               </table>
             </div>
+
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-4 py-3 border-t border-gray-100 bg-gray-50/50">
+                <p className="text-xs text-gray-500">
+                  Showing <span className="font-semibold text-gray-700">{startIndex + 1}</span> to{' '}
+                  <span className="font-semibold text-gray-700">
+                    {Math.min(endIndex, properties.length)}
+                  </span>{' '}
+                  of <span className="font-semibold text-gray-700">{properties.length}</span> properties
+                </p>
+
+                <div className="flex items-center gap-1.5">
+                  {/* Previous Button */}
+                  <button
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    className="p-1.5 rounded-lg border border-gray-200 bg-white text-gray-600 hover:bg-gray-100 disabled:opacity-40 disabled:hover:bg-white transition cursor-pointer"
+                    title="Previous Page"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                  </button>
+
+                  {/* Page Number Buttons */}
+                  <div className="flex items-center gap-1">
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                      <button
+                        key={page}
+                        onClick={() => handlePageChange(page)}
+                        className={`px-3 py-1 text-xs font-semibold rounded-lg transition cursor-pointer ${
+                          currentPage === page
+                            ? 'bg-blue-600 text-white'
+                            : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-100'
+                        }`}
+                      >
+                        {page}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Next Button */}
+                  <button
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                    className="p-1.5 rounded-lg border border-gray-200 bg-white text-gray-600 hover:bg-gray-100 disabled:opacity-40 disabled:hover:bg-white transition cursor-pointer"
+                    title="Next Page"
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>

@@ -1,8 +1,18 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { getAllRentalsAdmin } from '../_action/adminActions';
-import { FileText, CheckCircle2, XCircle, Loader2, CreditCard, User, Building } from 'lucide-react';
+import { 
+  FileText, 
+  CheckCircle2, 
+  XCircle, 
+  Loader2, 
+  CreditCard, 
+  User, 
+  Building, 
+  ChevronLeft, 
+  ChevronRight 
+} from 'lucide-react';
 
 interface RentalItem {
   id: string;
@@ -29,6 +39,10 @@ export default function AdminRentalsPage() {
   const [rentals, setRentals] = useState<RentalItem[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // Client-side Pagination State
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
   useEffect(() => {
     const loadRentals = async () => {
       setLoading(true);
@@ -40,6 +54,14 @@ export default function AdminRentalsPage() {
     };
     loadRentals();
   }, []);
+
+  // Pagination Calculations
+  const totalPages = Math.max(1, Math.ceil(rentals.length / itemsPerPage));
+
+  const paginatedRentals = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return rentals.slice(startIndex, startIndex + itemsPerPage);
+  }, [rentals, currentPage, itemsPerPage]);
 
   if (loading) {
     return (
@@ -79,7 +101,7 @@ export default function AdminRentalsPage() {
         <div className="bg-white rounded-2xl border border-gray-200/80 shadow-xs overflow-hidden">
           {/* Mobile View: Responsive Cards */}
           <div className="block md:hidden divide-y divide-gray-100">
-            {rentals.map((item) => (
+            {paginatedRentals.map((item) => (
               <div key={item.id} className="p-4 space-y-3">
                 <div className="flex items-start justify-between gap-2">
                   <div className="space-y-0.5">
@@ -157,7 +179,7 @@ export default function AdminRentalsPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
-                {rentals.map((item) => (
+                {paginatedRentals.map((item) => (
                   <tr key={item.id} className="hover:bg-gray-50/50 transition">
                     {/* Property Title */}
                     <td className="py-3.5 px-4 font-bold text-gray-900 max-w-[220px] truncate">
@@ -218,6 +240,33 @@ export default function AdminRentalsPage() {
                 ))}
               </tbody>
             </table>
+          </div>
+
+          {/* Pagination Controls */}
+          <div className="flex items-center justify-between p-3.5 border-t border-gray-100 bg-gray-50/50 text-xs">
+            <span className="text-gray-500">
+              Page <strong>{currentPage}</strong> of <strong>{totalPages}</strong> ({rentals.length} total rental requests)
+            </span>
+
+            <div className="flex items-center gap-1.5">
+              <button
+                disabled={currentPage <= 1}
+                onClick={() => setCurrentPage((prev) => prev - 1)}
+                className="p-1.5 border border-gray-200 rounded-lg bg-white hover:bg-gray-50 disabled:opacity-40 transition shadow-xs cursor-pointer disabled:cursor-not-allowed"
+                title="Previous Page"
+              >
+                <ChevronLeft className="w-4 h-4 text-gray-600" />
+              </button>
+
+              <button
+                disabled={currentPage >= totalPages}
+                onClick={() => setCurrentPage((prev) => prev + 1)}
+                className="p-1.5 border border-gray-200 rounded-lg bg-white hover:bg-gray-50 disabled:opacity-40 transition shadow-xs cursor-pointer disabled:cursor-not-allowed"
+                title="Next Page"
+              >
+                <ChevronRight className="w-4 h-4 text-gray-600" />
+              </button>
+            </div>
           </div>
         </div>
       )}

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { getCurrentUserProfile, updateUserProfile } from './_action/profileAction';
+
 import { 
   Mail, 
   Phone, 
@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { ProfileFormData, profileSchema } from '@/utils/contactValidation';
 import { toast } from 'sonner';
+import { getCurrentUserProfile, updateUserProfile } from '@/app/profile/_action/profileAction';
 
 interface UserProfile {
   id: string;

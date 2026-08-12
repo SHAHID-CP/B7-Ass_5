@@ -12,26 +12,36 @@ import {
   Layers,
   Building2,
   FileText,
-  X
+  X,
+  Settings
 } from 'lucide-react';
+import { IoAnalyticsOutline } from "react-icons/io5";
+import { MdPayment } from "react-icons/md";
 import { useUserStore } from '@/store/useUserStore';
 import { logout } from '@/service/logout';
 import { toast } from 'sonner';
 
 const navItemsByRole: Record<string, Array<{ label: string; href: string; icon: any }>> = {
   TENANT: [
-    { label: 'My Rentals & Payments', href: '/dashboard/tenant', icon: Home },
+    { label: 'Analytics', href: '/dashboard/tenant/analytic', icon: IoAnalyticsOutline },
+    { label: 'My Rentals', href: '/dashboard/tenant', icon: Home },
+    { label: 'My Payments', href: '/dashboard/tenant/paymenthistory', icon: MdPayment},
+    { label: 'Settings', href: '/dashboard/profile', icon: Settings },
   ],
   LANDLORD: [
     { label: 'Overview', href: '/dashboard/landlord', icon: Home },
+    { label: 'Analytics', href: '/dashboard/landlord/analytic', icon: IoAnalyticsOutline },
     { label: 'Add Property', href: '/dashboard/landlord/properties/new', icon: PlusCircle },
     { label: 'Manage Requests', href: '/dashboard/landlord/requests', icon: Inbox },
+    { label: 'Settings', href: '/dashboard/profile', icon: Settings },
   ],
   ADMIN: [
     { label: 'Dashboard', href: '/dashboard/admin', icon: Shield },
+    { label: 'Analytics', href: '/dashboard/admin/analytic', icon: IoAnalyticsOutline },
     { label: 'Manage Categories', href: '/dashboard/admin/categories', icon: Layers },
     { label: 'All Properties', href: '/dashboard/admin/properties', icon: Building2 },
     { label: 'All Rentals', href: '/dashboard/admin/rentals', icon: FileText },
+    { label: 'Settings', href: '/dashboard/profile', icon: Settings },
   ],
 };
 
@@ -75,7 +85,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             {/* Logo Section */}
             <div className="flex items-center gap-2">
               <Building className="w-6 h-6 text-blue-400" />
-              <span className="font-bold text-lg text-white">RentalApp</span>
+              <span className="font-bold text-lg text-white">RentNest</span>
             </div>
 
             <button

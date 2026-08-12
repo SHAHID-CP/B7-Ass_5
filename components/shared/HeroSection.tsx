@@ -66,7 +66,7 @@ export default function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   return (
-    <div className="w-full h-[85vh] min-h-[550px] relative overflow-hidden bg-gray-900">
+    <div className="w-full h-[70vh] min-h-[550px] relative overflow-hidden bg-gray-900">
       <Carousel
         infiniteLoop
         autoPlay
@@ -78,7 +78,7 @@ export default function HeroSection() {
         onChange={(index) => setCurrentSlide(index)}
       >
         {slides.map(({ id, title, description, extraInfo, image, buttonText, buttonLink }, index) => (
-          <div key={id} className="relative h-[85vh] min-h-[550px] w-full overflow-hidden">
+          <div key={id} className="relative h-[70vh] min-h-[550px] w-full overflow-hidden">
             
             {/* Background Image with Dark Overlay */}
             <motion.div 

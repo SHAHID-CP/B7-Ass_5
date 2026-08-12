@@ -1,8 +1,9 @@
 import Link from 'next/link';
 
-import { Building2, MapPin, ArrowRight, Tag } from 'lucide-react';
+import { Building2, MapPin, ArrowRight, Tag, Sparkles, LayoutGrid } from 'lucide-react';
 import { getCategories, getProperties } from './properties/_action/publicPropertyActions';
 import HeroSection from '@/components/shared/HeroSection';
+import LandingExtraSections from '@/components/shared/LandingExtraSections';
 
 
 export default async function HomePage() {
@@ -11,7 +12,7 @@ export default async function HomePage() {
     getCategories(),
   ]);
 
-  const featuredProperties = propertiesRes?.data || [];
+  const featuredProperties = propertiesRes?.data.items || [];
   const categories = categoriesRes?.data || [];
 
   return (
@@ -21,7 +22,18 @@ export default async function HomePage() {
 
       {/* Categories Section */}
       <section className="max-w-7xl mx-auto px-6 space-y-6">
-        <h2 className="text-2xl font-bold text-gray-800 text-center">Explore by Category</h2>
+        <div className="text-center space-y-3 max-w-2xl mx-auto mb-10 sm:mb-12">
+          <div className="inline-flex items-center gap-2 bg-purple-50 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold border border-purple-200/60">
+            <LayoutGrid className="w-3.5 h-3.5" />
+            <span>Categories</span>
+          </div>
+          <h2 className="text-2xl sm:text-4xl font-extrabold text-gray-900 tracking-tight">
+            Explore by Category
+          </h2>
+          <p className="text-xs sm:text-sm text-gray-500">
+            Find your ideal rental property type tailored to your living needs.
+          </p>
+        </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
           {categories.map((cat: any) => (
             <Link
@@ -38,10 +50,18 @@ export default async function HomePage() {
 
       {/* Featured Properties Section */}
       <section className="max-w-7xl mx-auto px-6 space-y-6">
-        <div className="flex justify-between items-center gap-3">
-          <div>
-            <h2 className="text-2xl font-bold text-gray-800">Featured Properties</h2>
-            <p className="text-sm text-gray-500">Handpicked recent listings for you</p>
+           <div className="flex justify-between items-center gap-3 ">
+            <div className="space-y-2">
+            <div className="inline-flex items-center gap-2 bg-purple-50 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold border border-purple-200/60">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Popular Deals</span>
+            </div>
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-gray-900 tracking-tight">
+              Featured Properties
+            </h2>
+            <p className="text-xs sm:text-sm text-gray-500">
+              Handpicked recent listings verified for high comfort and quality.
+            </p>
           </div>
           <Link
             href="/properties"
@@ -51,7 +71,7 @@ export default async function HomePage() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
           {featuredProperties.slice(0, 6).map((item: any) => (
             <div key={item.id} className="bg-white border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col justify-between">
               <div className="h-48 bg-gray-200 relative flex items-center justify-center">
@@ -67,8 +87,9 @@ export default async function HomePage() {
               <div className="p-5 space-y-3 flex-1 flex flex-col justify-between">
                 <div>
                   <h3 className="font-bold text-gray-900 line-clamp-1">{item.title}</h3>
-                  <p className="text-xs text-gray-500 flex items-center gap-1 mt-1">
-                    <MapPin className="w-3.5 h-3.5 text-gray-400" /> {item.location}
+                  <p className="text-gray-600 text-xs sm:text-sm leading-relaxed">{item.description}</p>
+                  <p className="text-xs text-blue-500 flex items-center gap-1 mt-1">
+                    <MapPin className="w-3.5 h-3.5 text-blue-400" /> {item.location}
                   </p>
                 </div>
                 <div className="flex items-center justify-between border-t pt-3 mt-3">
@@ -85,6 +106,7 @@ export default async function HomePage() {
           ))}
         </div>
       </section>
+      <LandingExtraSections/>
     </div>
   );
 }

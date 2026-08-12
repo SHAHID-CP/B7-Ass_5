@@ -7,6 +7,7 @@ export async function getProperties(params?: {
   minPrice?: string | number;
   maxPrice?: string | number;
   categoryId?: string;
+  sortBy?: string;
   page?: number;
   limit?: number;
 }) {
@@ -16,9 +17,12 @@ export async function getProperties(params?: {
     if (params?.minPrice) query.append('minPrice', params.minPrice.toString());
     if (params?.maxPrice) query.append('maxPrice', params.maxPrice.toString());
     if (params?.categoryId) query.append('categoryId', params.categoryId);
+    
+    // 1. sortBy miss filter fix
+    if (params?.sortBy) query.append('sortBy', params.sortBy);
+    
     if (params?.page) query.append('page', params.page.toString());
     if (params?.limit) query.append('limit', params.limit.toString());
-
 
     const res = await fetch(`${process.env.BACKEND_API_URL}/api/properties?${query.toString()}`, {
       cache: "no-store", 
@@ -26,7 +30,11 @@ export async function getProperties(params?: {
 
     const data = await res.json();
 
-    return { success: true, data: data?.data?.items || data?.data  };
+    // 2. Return total data object so { items, meta } is accessible in frontend
+    return { 
+      success: true, 
+      data: data?.data || { items: [], meta: { totalPages: 1 } } 
+    };
   } catch (err: any) {
     return { success: false, error: err.message || 'Failed to fetch properties' };
   }

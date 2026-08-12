@@ -59,7 +59,7 @@ export default function AddPropertyPage() {
           }
         }
       } catch (error) {
-        console.error('Failed to fetch categories:', error);
+        toast.error('Failed to fetch categories:');
       } finally {
         setLoadingCategories(false);
       }
@@ -112,14 +112,12 @@ export default function AddPropertyPage() {
       const res = await createProperty(updatedData);
 
       if (res?.error) {
-        console.log(res.error);
         toast.error(res.error);
       } else {
         toast.success('Property created successfully!');
         router.push('/dashboard/landlord');
       }
     } catch (err) {
-      console.error('Submission error:', err);
       toast.error('Failed to create property.');
       setUploading(false);
     }

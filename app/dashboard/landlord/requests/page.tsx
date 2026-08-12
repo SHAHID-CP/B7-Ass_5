@@ -19,6 +19,8 @@ import {
   Building,
   User,
   MapPin,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -64,6 +66,10 @@ export default function ManageRequestsPage() {
   const [loading, setLoading] = useState(true);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
 
+  // Pagination States
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
   // Tenant History Modal States
   const [selectedTenantHistory, setSelectedTenantHistory] = useState<TenantHistoryData | null>(null);
   const [fetchingHistory, setFetchingHistory] = useState(false);
@@ -82,6 +88,17 @@ export default function ManageRequestsPage() {
     loadRequests();
   }, []);
 
+  // Pagination Logic
+  const totalPages = Math.ceil(requests.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentRequests = requests.slice(startIndex, startIndex + itemsPerPage);
+
+  const handlePageChange = (newPage: number) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    }
+  };
+
   // Handle Request Status Change
   const handleStatusUpdate = async (id: string, newStatus: 'APPROVED' | 'REJECTED') => {
     setUpdatingId(id);
@@ -93,7 +110,7 @@ export default function ManageRequestsPage() {
       setRequests((prev) =>
         prev.map((req) => (req.id === id ? { ...req, status: newStatus } : req))
       );
-      toast.success("Status changes successfully")
+      toast.success("Status changes successfully");
     }
     setUpdatingId(null);
   };
@@ -148,7 +165,7 @@ export default function ManageRequestsPage() {
         <div className="bg-white rounded-2xl border border-gray-200/80 shadow-xs overflow-hidden">
           {/* Mobile View: Cards */}
           <div className="block md:hidden divide-y divide-gray-100">
-            {requests.map((item) => (
+            {currentRequests.map((item) => (
               <div key={item.id} className="p-4 space-y-3">
                 <div className="flex items-start justify-between gap-2">
                   <div>
@@ -229,7 +246,7 @@ export default function ManageRequestsPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
-                {requests.map((item) => (
+                {currentRequests.map((item) => (
                   <tr key={item.id} className="hover:bg-gray-50/50 transition">
                     <td className="py-3.5 px-4 font-bold text-gray-900 max-w-[200px] truncate">
                       {item.property?.title || 'N/A'}
@@ -312,6 +329,53 @@ export default function ManageRequestsPage() {
               </tbody>
             </table>
           </div>
+
+          {/* Pagination Controls */}
+          {totalPages > 1 && (
+            <div className="px-4 py-3 bg-gray-50/50 border-t border-gray-100 flex items-center justify-between text-xs text-gray-600">
+              <p>
+                Showing <span className="font-semibold text-gray-900">{startIndex + 1}</span> to{' '}
+                <span className="font-semibold text-gray-900">
+                  {Math.min(startIndex + itemsPerPage, requests.length)}
+                </span>{' '}
+                of <span className="font-semibold text-gray-900">{requests.length}</span> entries
+              </p>
+
+              <div className="flex items-center gap-1.5">
+                <button
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="p-1.5 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 disabled:opacity-40 disabled:hover:bg-white transition cursor-pointer"
+                  title="Previous Page"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                  <button
+                    key={page}
+                    onClick={() => handlePageChange(page)}
+                    className={`px-2.5 py-1 rounded-lg border text-xs font-medium transition cursor-pointer ${
+                      currentPage === page
+                        ? 'bg-blue-600 text-white border-blue-600'
+                        : 'border-gray-200 bg-white hover:bg-gray-50 text-gray-700'
+                    }`}
+                  >
+                    {page}
+                  </button>
+                ))}
+
+                <button
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className="p-1.5 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 disabled:opacity-40 disabled:hover:bg-white transition cursor-pointer"
+                  title="Next Page"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       )}
 

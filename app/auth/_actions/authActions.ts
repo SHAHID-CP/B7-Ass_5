@@ -3,7 +3,7 @@
 import jwt, { JwtPayload } from "jsonwebtoken"
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
-
+import { isRedirectError } from "next/dist/client/components/redirect-error";
 type RegisterState = {
     success?: boolean;
     statusCode?: number;
@@ -127,3 +127,63 @@ export const loginAction = async (redirectTo: string, prevState: RegisterState, 
 
     return result;
 }
+
+
+export const googleLoginAction = async (idToken: string, redirectTo?: string) => {
+    try {
+        const res = await fetch(`${process.env.BACKEND_API_URL}/api/auth/google-login`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ idToken })
+        });
+
+        const result = await res.json();
+
+        if (result.success && result.data) {
+            const cookieStore = await cookies();
+
+            // Set HTTP-Only Cookies
+            cookieStore.set("accessToken", result.data.accessToken, {
+                httpOnly: true,
+                maxAge: 60 * 60 * 24, // 1 day
+                sameSite: "lax",
+                path: "/"
+            });
+
+            cookieStore.set("refreshToken", result.data.refreshToken, {
+                httpOnly: true,
+                maxAge: 60 * 60 * 24 * 7, // 7 days
+                sameSite: "lax",
+                path: "/"
+            });
+
+            // Redirect handling
+            if (redirectTo && typeof redirectTo === "string" && redirectTo.startsWith("/") && !redirectTo.startsWith("//")) {
+                redirect(redirectTo);
+            }
+
+            const decodedToken = jwt.decode(result.data.accessToken) as JwtPayload;
+            const userRole = decodedToken?.role;
+
+            if (userRole === "ADMIN") {
+                redirect("/dashboard/admin");
+            } else if (userRole === "LANDLORD") {
+                redirect("/dashboard/landlord");
+            } else {
+                redirect("/dashboard/tenant");
+            }
+        }
+
+        return result;
+    } catch (error) {
+    if (isRedirectError(error)) {
+        throw error; 
+    }
+    return {
+        success: false,
+        message: "Something went wrong during Google Authentication."
+    };
+}
+};

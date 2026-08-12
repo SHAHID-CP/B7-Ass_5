@@ -66,7 +66,7 @@ export default function AdminPage() {
       const res = await getAdminStats();
       if (res?.success) setStats(res.data);
     } catch (err) {
-      console.error('Failed to load stats:', err);
+      toast.error('Failed to load stats:');
     } finally {
       setStatsLoading(false);
     }
@@ -105,7 +105,7 @@ export default function AdminPage() {
         });
       }
     } catch (err) {
-      console.error('Failed to load users:', err);
+      toast.error('Failed to load users:');
     } finally {
       setUsersLoading(false);
     }
@@ -131,7 +131,7 @@ export default function AdminPage() {
         toast.success("User Status changes succesfully")
       }
     } catch (err) {
-      console.error('Error updating status:', err);
+      toast.error('Error updating status:');
       toast.error('An unexpected error occurred.');
     } finally {
       setUpdatingId(null);

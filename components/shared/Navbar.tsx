@@ -31,6 +31,7 @@ const navItems = [
   { label: "Properties", href: "/properties" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
+  { label: "Support", href: "/support" }, // Support route added here
 ];
 
 export function Navbar({ user }: NavbarProps) {
@@ -73,7 +74,7 @@ export function Navbar({ user }: NavbarProps) {
     setIsMobileMenuOpen(false);
 
     await logout();
-    toast.success("User Logout Successfully")
+    toast.success("User Logout Successfully");
     router.push("/auth/login");
     router.refresh();
   };
@@ -82,9 +83,7 @@ export function Navbar({ user }: NavbarProps) {
 
   return (
     <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
-
       <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8">
-
         <div className="flex items-center justify-between h-14 sm:h-16">
           
           {/* Logo */}
@@ -123,7 +122,7 @@ export function Navbar({ user }: NavbarProps) {
 
                 {/* Dropdown Menu Card */}
                 {isDropdownOpen && (
-                  <div className=" absolute right-0 mt-2 w-56 sm:w-60 bg-white rounded-xl shadow-lg border border-gray-100 py-1.5 z-50 animate-in fade-in zoom-in-95 duration-150">
+                  <div className="absolute right-0 mt-2 w-56 sm:w-60 bg-white rounded-xl shadow-lg border border-gray-100 py-1.5 z-50 animate-in fade-in zoom-in-95 duration-150">
                     {/* User Info Header */}
                     <div className="px-3.5 sm:px-4 py-2 sm:py-2.5 border-b border-gray-100">
                       <p className="text-xs sm:text-sm font-bold text-gray-800 truncate">
@@ -148,7 +147,7 @@ export function Navbar({ user }: NavbarProps) {
                       </button>
 
                       <Link
-                        href="/profile"
+                        href="/dashboard/profile"
                         onClick={() => setIsDropdownOpen(false)}
                         className="flex items-center gap-2.5 px-3.5 sm:px-4 py-2 text-xs sm:text-sm text-gray-700 hover:bg-gray-50 transition"
                       >
@@ -255,7 +254,7 @@ export function Navbar({ user }: NavbarProps) {
                     </button>
 
                     <Link
-                      href="/profile"
+                      href="/dashboard/profile"
                       onClick={() => setIsMobileMenuOpen(false)}
                       className="flex items-center gap-2.5 px-3 py-2 text-xs sm:text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg transition"
                     >
