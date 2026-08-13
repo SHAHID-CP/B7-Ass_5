@@ -19,6 +19,7 @@ import { MdPayment } from "react-icons/md";
 import { useUserStore } from '@/store/useUserStore';
 import { logout } from '@/service/logout';
 import { toast } from 'sonner';
+import SidebarSkeleton from '@/skeleton/sidebarSkeleton';
 
 const navItemsByRole: Record<string, Array<{ label: string; href: string; icon: any }>> = {
   TENANT: [
@@ -51,8 +52,12 @@ interface SidebarProps {
 
 export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const router = useRouter();
-  const { user, clearUser } = useUserStore();
+  const { user, clearUser,isLoading } = useUserStore();
   const pathname = usePathname();
+
+  if (isLoading) {
+    return <SidebarSkeleton />;
+  }
   const items = (user?.role && navItemsByRole[user.role]) || [];
 
   const handleLogout = async () => {
@@ -61,7 +66,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
     toast.success("Logged out successfully");
     router.push("/auth/login");
     router.refresh();
-  };
+  }; 
 
   return (
     <>
