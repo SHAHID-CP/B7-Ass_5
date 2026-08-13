@@ -13,6 +13,7 @@ import {
   ChevronLeft, 
   ChevronRight 
 } from 'lucide-react';
+import AdminPropertiesSkeleton from '@/skeleton/adminPropertiesSkeleton';
 
 interface PropertyItem {
   id: string;
@@ -66,10 +67,7 @@ export default function AdminPropertiesPage() {
 
   if (loading) {
     return (
-      <div className="min-h-[60vh] flex flex-col items-center justify-center gap-2 text-slate-500 dark:text-slate-400 text-xs sm:text-sm">
-        <Loader2 className="w-7 h-7 sm:w-8 sm:h-8 animate-spin text-emerald-600 dark:text-emerald-400" />
-        <span>Loading all properties...</span>
-      </div>
+      <AdminPropertiesSkeleton />
     );
   }
 
@@ -89,7 +87,7 @@ export default function AdminPropertiesPage() {
           </p>
         </div>
       </div>
-
+ 
       {/* Main Content Area */}
       {properties.length === 0 ? (
         <div className="text-center py-16 bg-white dark:bg-slate-900 rounded-2xl border border-dashed border-slate-200 dark:border-slate-800 p-6 space-y-2 transition-colors">

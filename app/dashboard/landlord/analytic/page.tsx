@@ -27,6 +27,7 @@ import {
 } from 'recharts';
 import { getLandlordOverview, getLandlordRentalRequests, getMyProperties } from '../_action/landlordActions';
 import { toast } from 'sonner';
+import LandlordAnalyticsSkeleton from '@/skeleton/landlordAnalyticsSkeleton';
 
 export default function LandlordAnalyticsPage() {
   const [loading, setLoading] = useState(true);
@@ -62,13 +63,10 @@ export default function LandlordAnalyticsPage() {
 
     loadAnalyticsData();
   }, []);
-
+ 
   if (loading) {
     return (
-      <div className="min-h-[60vh] flex flex-col items-center justify-center gap-2 text-gray-500 dark:text-gray-400 text-xs sm:text-sm">
-        <Loader2 className="w-8 h-8 animate-spin text-emerald-600 dark:text-emerald-500" />
-        <span>Loading Landlord Analytics...</span>
-      </div>
+    <LandlordAnalyticsSkeleton />
     );
   }
 

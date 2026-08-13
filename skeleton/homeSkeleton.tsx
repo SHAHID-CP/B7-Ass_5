@@ -1,6 +1,6 @@
-import { Loader2 } from 'lucide-react';
+import React from 'react';
 
-export default function Loading() {
+export default function HomeSkeleton() {
   return (
     <div className="min-h-screen space-y-12 pb-12 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-200 animate-pulse">
       

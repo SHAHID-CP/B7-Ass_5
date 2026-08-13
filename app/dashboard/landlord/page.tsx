@@ -28,6 +28,7 @@ import {
 
 import { toast } from 'sonner';
 import { PropertyFormDataUpdate, propertySchemaUpadte } from '@/utils/contactValidation';
+import MyPropertiesSkeleton from '@/skeleton/myPropertiesSkeleton';
 
 // --- Types ---
 interface Category {
@@ -223,13 +224,10 @@ export default function MyPropertiesPage() {
       toast.error('Failed to update property.');
     }
   };
-
+ 
   if (loading) {
     return (
-      <div className="min-h-[60vh] flex flex-col items-center justify-center gap-2 text-gray-500 dark:text-gray-400 text-xs sm:text-sm">
-        <Loader2 className="w-7 h-7 sm:w-8 sm:h-8 animate-spin text-emerald-600 dark:text-emerald-500" />
-        <span>Loading your properties...</span>
-      </div>
+    <MyPropertiesSkeleton />
     );
   }
 

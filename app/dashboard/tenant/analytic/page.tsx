@@ -23,6 +23,7 @@ import {
   Legend
 } from 'recharts';
 import { getTenantPayments, getTenantRentals } from '../_action/tenantActions';
+import AnalyticsSkeleton from '@/skeleton/analyticsSkeleton';
 
 export default function AnalyticsPage() {
   const [rentals, setRentals] = useState<any[]>([]);
@@ -51,11 +52,10 @@ export default function AnalyticsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-[60vh] flex items-center justify-center">
-        <Loader2 className="w-8 h-8 sm:w-10 sm:h-10 animate-spin text-emerald-600 dark:text-emerald-400" />
-      </div>
+      <AnalyticsSkeleton />
     );
   }
+
 
   // --- 1. Rental Request Status Calculation ---
   const approvedCount = rentals.filter((r) => r.status === 'APPROVED' || r.status === 'PAID').length;

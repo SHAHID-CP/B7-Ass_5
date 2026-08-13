@@ -6,6 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import { Building2, MapPin, Search, Filter, Loader2, RotateCcw, ChevronLeft, ChevronRight } from 'lucide-react';
 import { getCategories, getProperties } from './_action/publicPropertyActions';
 import { toast } from 'sonner';
+import BrowsePropertiesSkeleton from '@/skeleton/browsePropertiesSkeleton';
 
 export default function BrowsePropertiesPage() {
   const searchParams = useSearchParams(); 
@@ -176,9 +177,7 @@ export default function BrowsePropertiesPage() {
 
       {/* Property Cards Grid */}
       {loading ? (
-        <div className="flex justify-center py-20">
-          <Loader2 className="w-8 h-8 animate-spin text-emerald-600 dark:text-emerald-500" />
-        </div>
+      <BrowsePropertiesSkeleton></BrowsePropertiesSkeleton>
       ) : properties.length === 0 ? (
         <div className="text-center py-16 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-dashed border-slate-300 dark:border-slate-800">
           <Building2 className="w-12 h-12 text-slate-400 dark:text-slate-600 mx-auto mb-2" />

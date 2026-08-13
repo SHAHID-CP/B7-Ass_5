@@ -23,6 +23,8 @@ import {
   ChevronRight,
 } from 'lucide-react';
 import { toast } from 'sonner';
+import ManageRequestsSkeleton from '@/skeleton/manageRequestsSkeleton';
+import TenantHistorySkeleton from '@/skeleton/tenantHistorySkeleton';
 
 interface RentalRequest {
   id: string;
@@ -133,11 +135,8 @@ export default function ManageRequestsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-[60vh] flex flex-col items-center justify-center gap-2 text-gray-500 dark:text-gray-400 text-xs sm:text-sm">
-        <Loader2 className="w-7 h-7 sm:w-8 sm:h-8 animate-spin text-emerald-600 dark:text-emerald-500" />
-        <span>Loading rental requests...</span>
-      </div>
-    );
+      <ManageRequestsSkeleton />
+    ); 
   }
 
   return (
@@ -413,22 +412,19 @@ export default function ManageRequestsPage() {
             </h2>
 
             {fetchingHistory ? (
-              <div className="flex flex-col items-center justify-center py-10 space-y-2">
-                <Loader2 className="w-7 h-7 animate-spin text-purple-600 dark:text-purple-400" />
-                <p className="text-xs text-gray-500 dark:text-gray-400">Loading tenant details...</p>
-              </div>
+                  <TenantHistorySkeleton />
             ) : selectedTenantHistory ? (
               <div className="space-y-4">
                 {/* User Info Header */}
-                <div className="flex items-center gap-3.5 bg-purple-50/70 dark:bg-purple-950/40 p-3.5 rounded-xl border border-purple-100/80 dark:border-purple-800/50">
+                <div className="flex items-center gap-3.5 bg-emerald-50/70 dark:bg-emerald-950/40 p-3.5 rounded-xl border border-emerald-100/80 dark:border-emerald-800/50">
                   {selectedTenantHistory.profileImage ? (
                     <img
                       src={selectedTenantHistory.profileImage}
                       alt={selectedTenantHistory.name}
-                      className="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover border-2 border-purple-200 dark:border-purple-800 shrink-0"
+                      className="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover border-2 border-emerald-200 dark:border-emerald-800 shrink-0"
                     />
                   ) : (
-                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-purple-200 dark:bg-purple-900 text-purple-700 dark:text-purple-300 flex items-center justify-center font-bold text-lg shrink-0">
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-emerald-200 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-300 flex items-center justify-center font-bold text-lg shrink-0">
                       <User className="w-6 h-6" />
                     </div>
                   )}

@@ -13,6 +13,7 @@ import {
   ChevronLeft, 
   ChevronRight 
 } from 'lucide-react';
+import AdminRentalsSkeleton from '@/skeleton/adminRentalsSkeleton';
 
 interface RentalItem {
   id: string;
@@ -70,13 +71,10 @@ export default function AdminRentalsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-[60vh] flex flex-col items-center justify-center gap-2 text-slate-500 dark:text-slate-400 text-xs sm:text-sm">
-        <Loader2 className="w-7 h-7 sm:w-8 sm:h-8 animate-spin text-blue-600 dark:text-blue-400" />
-        <span>Loading all rental requests...</span>
-      </div>
+      <AdminRentalsSkeleton />
     );
   }
-
+ 
   return (
     <div className="max-w-7xl mx-auto px-3.5 sm:px-6 py-5 sm:py-8 space-y-5 sm:space-y-6">
       {/* Header */}

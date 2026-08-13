@@ -35,6 +35,7 @@ import {
   Legend
 } from 'recharts';
 import { toast } from 'sonner';
+import AdminAnalyticsSkeleton from '@/skeleton/adminAnalyticsSkeleton';
 
 export default function AdminAnalyticsPage() {
   const [loading, setLoading] = useState(true);
@@ -73,10 +74,7 @@ export default function AdminAnalyticsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-[60vh] flex flex-col items-center justify-center gap-2 text-slate-500 dark:text-slate-400 text-xs sm:text-sm">
-        <Loader2 className="w-8 h-8 animate-spin text-emerald-600 dark:text-emerald-400" />
-        <span>Loading Admin Analytics...</span>
-      </div>
+    <AdminAnalyticsSkeleton />
     );
   }
 

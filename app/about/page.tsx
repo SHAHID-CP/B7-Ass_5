@@ -85,21 +85,29 @@ export default function AboutPage() {
       </div>
 
       {/* Call To Action */}
-      <div className="bg-slate-900 dark:bg-slate-900/90 border border-slate-800 text-white rounded-3xl p-6 sm:p-10 text-center space-y-4 shadow-xl">
-        <h2 className="text-lg sm:text-2xl font-bold text-slate-100">Ready to find your next place?</h2>
-        <p className="text-xs sm:text-sm text-slate-400 max-w-xl mx-auto">
-          Explore hundreds of verified properties or register as a landlord to start listing today.
-        </p>
-        <div className="pt-2">
-          <Link
-            href="/properties"
-            className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white text-xs sm:text-sm font-semibold px-6 py-2.5 rounded-xl transition shadow-xs cursor-pointer"
-          >
-            <span>Browse Properties</span>
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
-      </div>
+  <div className="bg-gradient-to-br from-emerald-900 via-emerald-800 to-teal-950 dark:from-slate-900 dark:via-emerald-950 dark:to-slate-950 text-white rounded-3xl p-6 sm:p-10 text-center space-y-4 shadow-2xl border border-emerald-700/40 dark:border-emerald-800/40 relative overflow-hidden">
+  <div className="absolute -top-20 -left-20 w-60 h-60 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none" />
+  <div className="absolute -bottom-20 -right-20 w-60 h-60 bg-teal-400/15 dark:bg-emerald-600/15 rounded-full blur-3xl pointer-events-none" />
+
+  <div className="relative space-y-2">
+    <h2 className="text-lg sm:text-2xl font-bold text-white drop-shadow-sm">
+      Ready to find your next place?
+    </h2>
+    <p className="text-xs sm:text-sm text-emerald-100/90 dark:text-slate-300 max-w-xl mx-auto leading-relaxed">
+      Explore hundreds of verified properties or register as a landlord to start listing today.
+    </p>
+  </div>
+
+  <div className="relative pt-2">
+    <Link
+      href="/properties"
+      className="inline-flex items-center gap-2 bg-white text-emerald-950 hover:bg-emerald-50 text-xs sm:text-sm font-semibold px-6 py-2.5 rounded-xl transition-all duration-200 shadow-lg shadow-emerald-950/20 hover:scale-[1.02] cursor-pointer"
+    >
+      <span>Browse Properties</span>
+      <ArrowRight className="w-4 h-4" />
+    </Link>
+  </div>
+</div>
     </div>
   );
 }

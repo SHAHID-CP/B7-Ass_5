@@ -20,6 +20,7 @@ import {
   Calendar
 } from 'lucide-react';
 import { toast } from 'sonner';
+import AdminSkeleton from '@/skeleton/adminSkeleton';
 
 interface AdminStats {
   totalUsers?: number;
@@ -166,7 +167,9 @@ export default function AdminPage() {
         );
     }
   };
-
+if (statsLoading && usersLoading) {
+  return <AdminSkeleton />;
+}
   return (
     <div className="max-w-7xl mx-auto px-3.5 sm:px-6 py-5 sm:py-8 space-y-6 sm:space-y-8">
       {/* Page Header */}

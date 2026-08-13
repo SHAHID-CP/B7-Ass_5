@@ -68,7 +68,8 @@ export default function PaymentInitiationPage({ params }: PayPageProps) {
       setError(err?.message || 'Something went wrong. Please try again.');
       setLoading(false);
     }
-  };
+  }; 
+  
 
   return (
     <div className="max-w-xl mx-auto px-3.5 py-4 sm:p-6 space-y-4 sm:space-y-6">

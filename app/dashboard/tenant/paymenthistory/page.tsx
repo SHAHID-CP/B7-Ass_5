@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Loader2, Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import { getTenantPayments } from '../_action/tenantActions';
 import LeaveReviewModal from '../LeaveReviewModal';
+import PaymentHistorySkeleton from '@/skeleton/paymentHistorySkeleton';
 
 export default function PaymentHistoryPage() {
   const [payments, setPayments] = useState<any[]>([]);
@@ -49,12 +50,10 @@ export default function PaymentHistoryPage() {
 
   if (loading) {
     return (
-      <div className="min-h-[70vh] flex items-center justify-center">
-        <Loader2 className="w-8 h-8 sm:w-10 sm:h-10 animate-spin text-emerald-600 dark:text-emerald-400" />
-      </div>
+        <PaymentHistorySkeleton />
     );
   }
-
+ 
   return (
     <div className="max-w-6xl mx-auto px-3.5 sm:px-6 py-5 sm:py-8 space-y-6">
       {/* Header */}

@@ -11,6 +11,7 @@ import { getCategories } from '@/app/dashboard/admin/_action/categoryActions';
 import { PlusCircle, Loader2, ArrowLeft, Image as ImageIcon } from 'lucide-react';
 import { toast } from 'sonner';
 import { PropertyFormData, propertySchema } from '@/utils/contactValidation';
+import AddPropertySkeleton from '@/skeleton/addPropertySkeleton';
 
 interface Category {
   id: string;
@@ -114,6 +115,9 @@ export default function AddPropertyPage() {
       setUploading(false);
     }
   };
+  if (loadingCategories) {
+    return <AddPropertySkeleton />;
+  }
 
   return (
     <div className="max-w-2xl mx-auto px-3.5 sm:px-0 py-4 sm:py-6">
@@ -155,7 +159,7 @@ export default function AddPropertyPage() {
               <p className="text-rose-500 dark:text-rose-400 text-[11px] mt-1 font-medium">{errors.title.message}</p>
             )}
           </div>
-
+ 
           {/* Category Dropdown */}
           <div>
             <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">

@@ -18,6 +18,7 @@ import {
 import { ProfileFormData, profileSchema } from '@/utils/contactValidation';
 import { toast } from 'sonner';
 import { getCurrentUserProfile, updateUserProfile } from '@/app/profile/_action/profileAction';
+import ProfileSkeleton from '@/skeleton/profileSkeleton';
 
 interface UserProfile {
   id: string;
@@ -127,9 +128,7 @@ export default function ProfilePage() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-[400px]">
-        <Loader2 className="w-8 h-8 animate-spin text-emerald-600 dark:text-emerald-400" />
-      </div>
+    <ProfileSkeleton></ProfileSkeleton> 
     );
   }
 

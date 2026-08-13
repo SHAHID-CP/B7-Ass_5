@@ -14,6 +14,7 @@ import {
   ChevronLeft,
   ChevronRight
 } from 'lucide-react';
+import RentalRequestsSkeleton from '@/skeleton/rentalRequestsSkeleton';
 
 export default function RentalRequestsPage() {
   const [rentals, setRentals] = useState<any[]>([]);
@@ -84,11 +85,9 @@ export default function RentalRequestsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-[60vh] flex items-center justify-center">
-        <Loader2 className="w-8 h-8 sm:w-10 sm:h-10 animate-spin text-emerald-600 dark:text-emerald-400" />
-      </div>
+    <RentalRequestsSkeleton />
     );
-  }
+  } 
 
   return (
     <div className="max-w-6xl mx-auto space-y-6">

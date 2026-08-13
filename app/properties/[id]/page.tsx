@@ -4,6 +4,7 @@ import { use, useEffect, useState } from 'react';
 import RentalRequestModal from './RentalRequestModal';
 import { Building2, MapPin, User, Star, CheckCircle, XCircle, Loader2 } from 'lucide-react';
 import { getPropertyById } from '../_action/publicPropertyActions';
+import PropertyDetailsSkeleton from '@/skeleton/propertyDetailsSkeleton';
 
 type Props = {
   params: Promise<{
@@ -29,9 +30,7 @@ export default function PropertyDetailsPage({ params }: Props) {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center py-20 sm:py-32">
-        <Loader2 className="w-8 h-8 sm:w-10 sm:h-10 animate-spin text-emerald-600 dark:text-emerald-500" />
-      </div>
+    <PropertyDetailsSkeleton></PropertyDetailsSkeleton>
     );
   }
 

@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { CategoryFormData, categorySchema } from '@/utils/contactValidation';
 import { toast } from 'sonner';
+import CategoryManagementSkeleton from '@/skeleton/categoryManagementSkeleton';
 
 interface Category {
   id: string;
@@ -185,16 +186,11 @@ export default function CategoryManagementPage() {
           )}
         </form>
       </div>
-
+ 
       {/* Categories Content Area */}
       <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs overflow-hidden transition-colors">
         {loading ? (
-          <div className="p-12 text-center text-slate-400 dark:text-slate-500 text-xs">
-            <div className="flex justify-center items-center gap-2">
-              <Loader2 className="w-5 h-5 animate-spin text-emerald-600 dark:text-emerald-400" />
-              <span>Loading categories list...</span>
-            </div>
-          </div>
+        <CategoryManagementSkeleton />
         ) : categories.length === 0 ? (
           <div className="text-center py-12 p-6 space-y-2">
             <Layers className="w-9 h-9 text-slate-300 dark:text-slate-700 mx-auto mb-2" />
